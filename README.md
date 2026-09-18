@@ -16,6 +16,10 @@ A small Python library of common aerospace engineering calculations:
   services: the ESA Open Data Portal, the Copernicus Data Space Ecosystem
   (Sentinel products), the Gaia Archive, and the NEOCC near-Earth object
   risk list.
+- `aero.iss` — connectivity to International Space Station program data
+  services: Open Notify (ISS position, people in space), "Where the ISS
+  at?" (state vectors, position propagation, TLEs), and CelesTrak orbital
+  elements for the ISS and the `stations` group.
 
 ## Installation
 
@@ -76,6 +80,26 @@ client.open_data_search(query="satellite")          # ESA Open Data Portal
 client.copernicus_products(collection="SENTINEL-2")  # Copernicus Sentinel products
 client.gaia_query("select top 10 * from gaiadr3.gaia_source")  # Gaia Archive
 client.neocc_risk_list()                              # NEOCC risk list
+```
+
+### Connecting to International Space Station programs
+
+`aero.iss.ISSClient` provides connectivity to public International Space
+Station data services. None of these read-only endpoints require an API key
+or account.
+
+```python
+from aero import iss
+
+client = iss.ISSClient()
+
+client.current_location()                    # Open Notify: ISS ground track point
+client.people_in_space()                     # Open Notify: crew currently in orbit
+client.satellite_position()                  # Where the ISS at?: ISS state vector
+client.satellite_positions([1436029892])     # Where the ISS at?: propagated positions
+client.tle()                                 # Where the ISS at?: latest ISS TLE
+client.celestrak_elements()                  # CelesTrak: ISS orbital elements
+client.station_elements()                    # CelesTrak: all "stations" group objects
 ```
 
 ## Running tests
