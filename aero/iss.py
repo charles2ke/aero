@@ -163,6 +163,7 @@ class ISSClient:
         (parsed) or a text format such as ``"tle"`` or ``"csv"`` (returned
         as a string).
         """
+        fmt = fmt.lower()
         params: dict = {"FORMAT": fmt}
         if group is not None:
             params["GROUP"] = group
@@ -170,7 +171,7 @@ class ISSClient:
             params["CATNR"] = norad_id
         else:
             raise ValueError("Either norad_id or group must be provided")
-        if fmt.lower() in ("json", "json-pretty"):
+        if fmt in ("json", "json-pretty"):
             return self._get(CELESTRAK_GP_URL, params)
         return self._get_text(CELESTRAK_GP_URL, params)
 

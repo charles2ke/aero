@@ -139,6 +139,18 @@ def test_celestrak_elements_text_format_returns_text():
     assert kwargs["params"]["FORMAT"] == "tle"
 
 
+def test_celestrak_elements_normalizes_mixed_case_format():
+    session = MagicMock()
+    session.get.return_value = _mock_response([{"OBJECT_NAME": "ISS (ZARYA)"}])
+    client = iss.ISSClient(session=session)
+
+    result = client.celestrak_elements(fmt="JSON")
+
+    assert result == [{"OBJECT_NAME": "ISS (ZARYA)"}]
+    args, kwargs = session.get.call_args
+    assert kwargs["params"]["FORMAT"] == "json"
+
+
 def test_celestrak_elements_requires_target():
     client = iss.ISSClient(session=MagicMock())
 
