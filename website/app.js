@@ -117,21 +117,40 @@
     var element = document.getElementById(id);
     var value = parseFloat(element.value);
     if (!isFinite(value)) {
-      throw new RangeError(
+      var error = new RangeError(
         "Enter a number for “" + element.labels[0].textContent.trim() + "”"
       );
+      error.input = element;
+      throw error;
     }
     return value;
   }
 
+  function clearInvalid(output) {
+    var form = output.closest("form");
+    if (!form) return;
+    Array.prototype.forEach.call(form.elements, function (element) {
+      element.removeAttribute("aria-invalid");
+      element.removeAttribute("aria-describedby");
+    });
+  }
+
+  function markInvalid(output, input) {
+    if (!input) return;
+    input.setAttribute("aria-invalid", "true");
+    if (output.id) input.setAttribute("aria-describedby", output.id);
+  }
+
   function render(outputId, compute) {
     var output = document.getElementById(outputId);
+    clearInvalid(output);
     try {
       output.textContent = compute();
       output.classList.remove("error");
     } catch (err) {
-      output.textContent = err.message;
+      output.textContent = "Error: " + err.message;
       output.classList.add("error");
+      markInvalid(output, err.input);
     }
   }
 
