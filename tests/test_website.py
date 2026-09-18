@@ -51,6 +51,29 @@ def test_atmosphere_calculator_reports_out_of_range_altitude(page):
     assert "20000" in page.inner_text("#atmosphere-output")
 
 
+def test_aerodynamics_calculator_matches_library(page):
+    from aero import aerodynamics, atmosphere
+
+    altitude = 5000
+    velocity = 120.0
+    area = 16.2
+    cl = 0.4
+    cd = 0.03
+    page.fill("#aero-alt", str(altitude))
+    page.fill("#aero-v", str(velocity))
+    page.fill("#aero-area", str(area))
+    page.fill("#aero-cl", str(cl))
+    page.fill("#aero-cd", str(cd))
+    page.dispatch_event("#aero-cd", "input")
+    rho = atmosphere.density(altitude)
+    text = page.inner_text("#aero-output")
+    assert f"{aerodynamics.dynamic_pressure(rho, velocity):.1f} Pa" in text
+    assert f"{aerodynamics.lift(rho, velocity, area, cl):.1f} N" in text
+    assert f"{aerodynamics.drag(rho, velocity, area, cd):.1f} N" in text
+    assert f"{aerodynamics.lift_to_drag_ratio(cl, cd):.2f}" in text
+    assert f"{aerodynamics.mach_number(velocity, altitude):.3f}" in text
+
+
 def test_orbital_calculator_matches_library(page):
     from aero import orbital
 
@@ -60,3 +83,4 @@ def test_orbital_calculator_matches_library(page):
     text = page.inner_text("#orbital-output")
     assert f"{orbital.circular_orbital_velocity(orbital.EARTH_MU, radius):.1f} m/s" in text
     assert f"{orbital.orbital_period(orbital.EARTH_MU, radius) / 60:.2f} min" in text
+    assert f"{orbital.escape_velocity(orbital.EARTH_MU, radius):.1f} m/s" in text

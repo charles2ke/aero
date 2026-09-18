@@ -130,7 +130,9 @@
 
   function updateOrbital() {
     render("orbital-output", function () {
-      var radius = EARTH_RADIUS + readNumber("orb-alt") * 1000;
+      var altitude = readNumber("orb-alt");
+      if (altitude < 0) throw new RangeError("altitude must be non-negative");
+      var radius = EARTH_RADIUS + altitude * 1000;
       var period = orbitalPeriod(EARTH_MU, radius);
       return (
         "Orbital radius: " + format(radius / 1000, 1) + " km\n" +
