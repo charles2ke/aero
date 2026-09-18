@@ -9,6 +9,10 @@ A small Python library of common aerospace engineering calculations:
   Mach number, and Reynolds number.
 - `aero.orbital` — orbital mechanics helpers (vis-viva orbital velocity,
   circular orbital velocity, orbital period, and escape velocity).
+- `aero.rocketry` — rocket science: the Tsiolkovsky rocket equation,
+  mass ratios, propellant sizing, specific impulse and exhaust velocity,
+  thrust and mass flow, burn time, thrust-to-weight ratio, and multi-stage
+  delta-v budgets.
 - `aero.nasa` — connectivity to NASA's public Open APIs, covering multiple
   NASA programs: APOD, Mars Rover Photos, NeoWs, DONKI, EPIC, InSight Mars
   weather, TechPort, and the Exoplanet Archive.
@@ -34,7 +38,7 @@ pip install -e .
 ## Usage
 
 ```python
-from aero import atmosphere, aerodynamics, orbital
+from aero import atmosphere, aerodynamics, orbital, rocketry
 
 # Standard atmosphere at 5000 m altitude
 rho = atmosphere.density(5000)
@@ -45,6 +49,13 @@ L = aerodynamics.lift(rho=rho, velocity=120.0, area=16.2, cl=0.4)
 
 # Circular low Earth orbit velocity at 400 km altitude
 v = orbital.circular_orbital_velocity(orbital.EARTH_MU, orbital.EARTH_RADIUS + 400_000)
+
+# Ideal delta-v of a stage with a 300 s specific impulse engine
+ve = rocketry.exhaust_velocity(300.0)
+dv = rocketry.delta_v(ve, initial_mass=5500.0, final_mass=1500.0)
+
+# Liftoff thrust-to-weight ratio
+twr = rocketry.thrust_to_weight_ratio(thrust_force=7_600_000.0, mass=549_054.0)
 ```
 
 ### Connecting to NASA programs
