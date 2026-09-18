@@ -240,28 +240,34 @@
       },
       {
         label: "neo_feed() — near-Earth object feed",
-        snippet: "nasa.NASAClient().neo_feed(start_date=\"2024-01-01\")",
+        snippet: "nasa.NASAClient().neo_feed(start_date=\"2024-01-01\", end_date=\"2024-01-02\")",
         url: "https://api.nasa.gov/neo/rest/v1/feed",
         query: { start_date: "2024-01-01", end_date: "2024-01-02" },
         param: { label: "API key", value: "DEMO_KEY", query: "api_key" }
       },
       {
         label: "exoplanets() — Exoplanet Archive (no key)",
-        snippet: "nasa.NASAClient().exoplanets(query=\"select top 5 pl_name from ps\")",
+        snippet: function (value) {
+          return "nasa.NASAClient().exoplanets(query=" + pyStr(value) + ")";
+        },
         url: "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
         query: { format: "json" },
         param: { label: "ADQL query", value: "select top 5 pl_name from ps", query: "query" }
       },
       {
         label: "neo_lookup() — near-Earth object lookup",
-        snippet: "nasa.NASAClient().neo_lookup(asteroid_id=\"3542519\")",
+        snippet: function (value) {
+          return "nasa.NASAClient().neo_lookup(asteroid_id=" + pyStr(value) + ")";
+        },
         url: "https://api.nasa.gov/neo/rest/v1/neo/{ASTEROID_ID}",
         query: { api_key: "DEMO_KEY" },
         param: { label: "Asteroid ID", value: "3542519", token: "{ASTEROID_ID}" }
       },
       {
         label: "donki_notifications() — DONKI space weather notifications",
-        snippet: "nasa.NASAClient().donki_notifications(notification_type=\"all\")",
+        snippet: function (value) {
+          return "nasa.NASAClient().donki_notifications(notification_type=" + pyStr(value) + ")";
+        },
         url: "https://api.nasa.gov/DONKI/notifications",
         query: { api_key: "DEMO_KEY" },
         param: { label: "Notification type", value: "all", query: "type" }
@@ -286,7 +292,11 @@
       },
       {
         label: "techport_project() — TechPort project detail",
-        snippet: "nasa.NASAClient().techport_project(project_id=14700)",
+        snippet: function (value) {
+          var num = Number(value);
+          return "nasa.NASAClient().techport_project(project_id=" +
+            (Number.isFinite(num) && value.trim() !== "" ? num : pyStr(value)) + ")";
+        },
         url: "https://api.nasa.gov/techport/api/projects/{PROJECT_ID}",
         query: { api_key: "DEMO_KEY" },
         param: { label: "Project ID", value: "14700", token: "{PROJECT_ID}" }
@@ -295,20 +305,26 @@
     esa: [
       {
         label: "open_data_search() — ESA Open Data Portal",
-        snippet: "esa.ESAClient().open_data_search(query=\"satellite\", rows=5)",
+        snippet: function (value) {
+          return "esa.ESAClient().open_data_search(query=" + pyStr(value) + ", rows=5)";
+        },
         url: "https://data.esa.int/api/3/action/package_search",
         query: { rows: "5" },
         param: { label: "Search query", value: "satellite", query: "q" }
       },
       {
         label: "open_data_dataset() — ESA Open Data Portal dataset detail",
-        snippet: "esa.ESAClient().open_data_dataset(dataset_id=\"copernicus-sentinel-data\")",
+        snippet: function (value) {
+          return "esa.ESAClient().open_data_dataset(dataset_id=" + pyStr(value) + ")";
+        },
         url: "https://data.esa.int/api/3/action/package_show",
         param: { label: "Dataset ID", value: "copernicus-sentinel-data", query: "id" }
       },
       {
         label: "copernicus_products() — Sentinel products",
-        snippet: "esa.ESAClient().copernicus_products(collection=\"SENTINEL-2\", top=5)",
+        snippet: function (value) {
+          return "esa.ESAClient().copernicus_products(collection=" + pyStr(value) + ", top=5)";
+        },
         url: "https://catalogue.dataspace.copernicus.eu/odata/v1/Products",
         query: { $top: "5" },
         param: {
@@ -321,18 +337,22 @@
       },
       {
         label: "gaia_query() — Gaia Archive TAP",
-        snippet: "esa.ESAClient().gaia_query(\"select top 5 * from gaiadr3.gaia_source\")",
+        snippet: function (value) {
+          return "esa.ESAClient().gaia_query(" + pyStr(value) + ")";
+        },
         url: "https://gea.esac.esa.int/tap-server/tap/sync",
         query: { REQUEST: "doQuery", LANG: "ADQL", FORMAT: "json" },
         param: {
           label: "ADQL query",
-          value: "select top 5 source_id from gaiadr3.gaia_source",
+          value: "select top 5 * from gaiadr3.gaia_source",
           query: "QUERY"
         }
       },
       {
         label: "neocc_risk_list() — NEOCC risk list",
-        snippet: "esa.ESAClient().neocc_risk_list()",
+        snippet: function (value) {
+          return "esa.ESAClient().neocc_risk_list(query=" + pyStr(value) + ")";
+        },
         url: "https://neo.ssa.esa.int/tap/sync",
         query: { REQUEST: "doQuery", LANG: "ADQL", FORMAT: "json" },
         param: {
@@ -355,13 +375,21 @@
       },
       {
         label: "satellite_position() — ISS state vector",
-        snippet: "iss.ISSClient().satellite_position()",
+        snippet: function (value) {
+          return "iss.ISSClient().satellite_position(units=" + pyStr(value) + ")";
+        },
         url: "https://api.wheretheiss.at/v1/satellites/25544",
         param: { label: "Units", value: "kilometers", query: "units" }
       },
       {
         label: "satellite_positions() — ISS state vectors for timestamps",
-        snippet: "iss.ISSClient().satellite_positions([1699000000, 1699003600])",
+        snippet: function (value) {
+          var stamps = String(value)
+            .split(",")
+            .map(function (stamp) { return stamp.trim(); })
+            .filter(Boolean);
+          return "iss.ISSClient().satellite_positions([" + stamps.join(", ") + "])";
+        },
         url: "https://api.wheretheiss.at/v1/satellites/25544/positions",
         param: {
           label: "Timestamps (comma-separated)",
@@ -406,7 +434,7 @@
         label: "launches() — Launch Library 2 launches",
         snippet: "isro.ISROClient().launches(limit=5)",
         url: "https://ll.thespacedevs.com/2.2.0/launch/previous/",
-        query: { search: "ISRO", limit: "5", mode: "list" }
+        query: { lsp__id: "31", limit: "5" }
       },
       {
         label: "agency() — Launch Library 2 agency metadata",
@@ -417,11 +445,13 @@
         label: "navic_elements() — NavIC (IRNSS) elements",
         snippet: "isro.ISROClient().navic_elements()",
         url: "https://celestrak.org/NORAD/elements/gp.php",
-        query: { GROUP: "navic", FORMAT: "json" }
+        query: { NAME: "IRNSS", FORMAT: "json" }
       },
       {
         label: "celestrak_elements() — CelesTrak orbital elements",
-        snippet: "isro.ISROClient().celestrak_elements(group=\"gnss\")",
+        snippet: function (value) {
+          return "isro.ISROClient().celestrak_elements(group=" + pyStr(value) + ")";
+        },
         url: "https://celestrak.org/NORAD/elements/gp.php",
         query: { FORMAT: "json" },
         param: { label: "CelesTrak group", value: "gnss", query: "GROUP" }
@@ -440,7 +470,7 @@
     Object.keys(query).forEach(function (key) {
       url.searchParams.set(key, query[key]);
     });
-    if (endpoint.param && !endpoint.param.token && paramValue) {
+    if (endpoint.param && !endpoint.param.token && paramValue !== undefined && paramValue !== null) {
       var extra = endpoint.param.build
         ? endpoint.param.build(paramValue)
         : (function () {
@@ -453,6 +483,10 @@
       });
     }
     return url.toString();
+  }
+
+  function pyStr(value) {
+    return "\"" + String(value).replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"";
   }
 
   function preview(text, limit) {
@@ -492,7 +526,9 @@
         paramLabel.hidden = true;
         paramInput.value = "";
       }
-      snippet.textContent = endpoint.snippet;
+      snippet.textContent = typeof endpoint.snippet === "function"
+        ? endpoint.snippet(paramInput.value)
+        : endpoint.snippet;
       var url = buildUrl(endpoint, paramInput.value);
       link.textContent = url;
       link.href = url;
