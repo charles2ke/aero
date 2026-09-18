@@ -139,6 +139,16 @@ the library. Open `website/index.html` directly, or serve the folder:
 python -m http.server --directory website 8000
 ```
 
+### Publishing to GitHub Pages
+
+The website is published to GitHub Pages by the
+[`Deploy website to GitHub Pages`](.github/workflows/pages.yml) workflow,
+which runs on pushes to `main` that touch `website/` and can also be
+triggered manually from the Actions tab. To enable it, set
+**Settings → Pages → Build and deployment → Source** to **GitHub Actions**.
+The published site is then available at
+`https://charles2ke.github.io/aero/`.
+
 ## Running tests
 
 ```bash
