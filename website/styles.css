@@ -345,7 +345,7 @@ a { color: var(--accent); }
 
   .button:hover { transform: translateY(-2px); }
 
-  .try-link:hover { transform: translateX(2px); }
+  .try-link:hover { transform: none; }
 
   .output.loading { animation: pulse 1.2s ease-in-out infinite; }
 
