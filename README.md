@@ -12,6 +12,10 @@ A small Python library of common aerospace engineering calculations:
 - `aero.nasa` — connectivity to NASA's public Open APIs, covering multiple
   NASA programs: APOD, Mars Rover Photos, NeoWs, DONKI, EPIC, InSight Mars
   weather, TechPort, and the Exoplanet Archive.
+- `aero.esa` — connectivity to public European Space Agency (ESA) data
+  services: the ESA Open Data Portal, the Copernicus Data Space Ecosystem
+  (Sentinel products), the Gaia Archive, and the NEOCC near-Earth object
+  risk list.
 
 ## Installation
 
@@ -55,6 +59,23 @@ client.epic_natural_images()
 client.insight_weather()
 client.techport_projects()
 client.exoplanets(query="select pl_name from ps")  # no API key required
+```
+
+### Connecting to European space programs
+
+`aero.esa.ESAClient` provides connectivity to public European Space
+Agency (ESA) data services. None of these read-only endpoints require an
+API key or account.
+
+```python
+from aero import esa
+
+client = esa.ESAClient()
+
+client.open_data_search(query="satellite")          # ESA Open Data Portal
+client.copernicus_products(collection="SENTINEL-2")  # Copernicus Sentinel products
+client.gaia_query("select top 10 * from gaiadr3.gaia_source")  # Gaia Archive
+client.neocc_risk_list()                              # NEOCC risk list
 ```
 
 ## Running tests
