@@ -5,12 +5,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>aero — Aerospace Engineering Library</title>
 <meta name="description" content="aero is a small Python library of common aerospace engineering calculations: standard atmosphere, aerodynamics, orbital mechanics, and connectivity to NASA, ESA, ISS and ISRO data services.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <symbol id="icon-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2c3 2 5 5.8 5 10l-2.5 3h-5L7 12C7 7.8 9 4 12 2Z"></path>
+    <circle cx="12" cy="9" r="1.7"></circle>
+    <path d="M9.5 15 7 16.5 5 21l4.2-1.6M14.5 15l2.5 1.5 2 4.5-4.2-1.6"></path>
+  </symbol>
+  <symbol id="icon-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 18h9.5a3.5 3.5 0 0 0 .4-7A5 5 0 0 0 7.6 9.4 4.3 4.3 0 0 0 7 18Z"></path>
+    <path d="M3 13h1.5M3.5 16.5H5"></path>
+  </symbol>
+  <symbol id="icon-wing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 16c5.5.4 11-2 16-7l4-3-2 6c-1.8 5.3-5.8 8.4-11 8.6Z"></path>
+    <path d="M6 16.5 14 10"></path>
+  </symbol>
+  <symbol id="icon-orbit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="4"></circle>
+    <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-25 12 12)"></ellipse>
+    <circle cx="20" cy="8.5" r="1.3" fill="currentColor"></circle>
+  </symbol>
+  <symbol id="icon-planet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="7"></circle>
+    <path d="M5 10.5c4.7 2 9.3 2 14 0M12 5c2.5 4.3 2.5 9.7 0 14M12 5c-2.5 4.3-2.5 9.7 0 14"></path>
+  </symbol>
+  <symbol id="icon-satellite" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9.5" y="9.5" width="5" height="5" rx="1"></rect>
+    <path d="M9.5 12H4.5M19.5 12h-5M12 9.5v-5M12 14.5v5"></path>
+    <path d="M3 9.5h3v5H3zM18 9.5h3v5h-3z"></path>
+  </symbol>
+  <symbol id="icon-station" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 6v12"></path>
+    <rect x="4" y="4" width="4" height="6" rx="1"></rect>
+    <rect x="16" y="4" width="4" height="6" rx="1"></rect>
+    <rect x="4" y="14" width="4" height="6" rx="1"></rect>
+    <rect x="16" y="14" width="4" height="6" rx="1"></rect>
+    <path d="M8 7h8M8 17h8"></path>
+  </symbol>
+  <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"></circle>
+    <path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"></path>
+  </symbol>
+  <symbol id="icon-calculator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="3" width="16" height="18" rx="2"></rect>
+    <path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"></path>
+  </symbol>
+  <symbol id="icon-antenna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4.5 19 14 9.5"></path>
+    <path d="M9 5.5a9 9 0 0 1 9.5 9.5L9 5.5Z"></path>
+    <path d="M3 21l3-3"></path>
+  </symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3v11M8 10.5l4 4 4-4"></path>
+    <path d="M4 18.5h16"></path>
+  </symbol>
+  <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 12h15M13.5 6.5 19.5 12l-6 5.5"></path>
+  </symbol>
+  <symbol id="icon-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 3 10.5 13.5M21 3l-6.5 18-4-8-8-4L21 3Z"></path>
+  </symbol>
+</svg>
+<a class="skip-link" href="#main">Skip to main content</a>
 <header class="hero" id="top">
-  <nav class="nav">
-    <a class="brand" href="#top">aero</a>
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="#top"><svg class="icon brand-icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg>aero</a>
     <ul class="nav-links">
       <li><a href="#modules">Modules</a></li>
       <li><a href="#calculators">Calculators</a></li>
@@ -23,75 +85,75 @@
     <h1>aero</h1>
     <p class="tagline">A small Python library of common aerospace engineering calculations — from sea level to orbit.</p>
     <div class="hero-actions">
-      <a class="button primary" href="#install">Get started</a>
-      <a class="button" href="#calculators">Try the calculators</a>
-      <a class="button" href="#explorer">Try the data services</a>
+      <a class="button primary" href="#install"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-download"></use></svg>Get started</a>
+      <a class="button" href="#calculators"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-calculator"></use></svg>Try the calculators</a>
+      <a class="button" href="#explorer"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-antenna"></use></svg>Try the data services</a>
     </div>
   </div>
 </header>
 
-<main>
-  <section id="modules" class="section">
-    <h2>Modules</h2>
+<main id="main">
+  <section id="modules" class="section" aria-labelledby="modules-heading">
+    <h2 id="modules-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg>Modules</h2>
     <div class="cards">
       <article class="card">
-        <h3><code>aero.atmosphere</code></h3>
+        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-cloud"></use></svg><code>aero.atmosphere</code></h3>
         <p>International Standard Atmosphere model: temperature, pressure, density and speed of sound up to 20 km.</p>
-        <p class="card-action"><a class="try-link" href="#atmosphere-form">Try it →</a></p>
+        <p class="card-action"><a class="try-link" href="#atmosphere-form">Try it<span class="sr-only"> with aero.atmosphere</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
       </article>
       <article class="card">
-        <h3><code>aero.aerodynamics</code></h3>
+        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-wing"></use></svg><code>aero.aerodynamics</code></h3>
         <p>Dynamic pressure, lift, drag, lift-to-drag ratio, Mach number and Reynolds number.</p>
-        <p class="card-action"><a class="try-link" href="#aero-form">Try it →</a></p>
+        <p class="card-action"><a class="try-link" href="#aero-form">Try it<span class="sr-only"> with aero.aerodynamics</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
       </article>
       <article class="card">
-        <h3><code>aero.orbital</code></h3>
+        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-orbit"></use></svg><code>aero.orbital</code></h3>
         <p>Vis-viva orbital velocity, circular orbital velocity, orbital period and escape velocity.</p>
-        <p class="card-action"><a class="try-link" href="#orbital-form">Try it →</a></p>
+        <p class="card-action"><a class="try-link" href="#orbital-form">Try it<span class="sr-only"> with aero.orbital</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
       </article>
       <article class="card">
-        <h3><code>aero.rocketry</code></h3>
+        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg><code>aero.rocketry</code></h3>
         <p>Rocket science: Tsiolkovsky rocket equation, mass ratios, propellant sizing, specific impulse, thrust, burn time, thrust-to-weight and staging.</p>
-        <p class="card-action"><a class="try-link" href="#rocketry-form">Try it →</a></p>
+        <p class="card-action"><a class="try-link" href="#rocketry-form">Try it<span class="sr-only"> with aero.rocketry</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
       </article>
       <article class="card">
-        <h3><code>aero.nasa</code></h3>
+        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-planet"></use></svg><code>aero.nasa</code></h3>
         <p>NASA Open APIs: APOD, Mars Rover Photos, NeoWs, DONKI, EPIC, InSight weather, TechPort and the Exoplanet Archive.</p>
-        <p class="card-action"><a class="try-link" href="#nasa-explorer">Try it →</a></p>
+        <p class="card-action"><a class="try-link" href="#nasa-explorer">Try it<span class="sr-only"> with aero.nasa</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
       </article>
       <article class="card">
-        <h3><code>aero.esa</code></h3>
+        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg><code>aero.esa</code></h3>
         <p>ESA services: Open Data Portal, Copernicus Data Space Ecosystem, the Gaia Archive and the NEOCC risk list.</p>
-        <p class="card-action"><a class="try-link" href="#esa-explorer">Try it →</a></p>
+        <p class="card-action"><a class="try-link" href="#esa-explorer">Try it<span class="sr-only"> with aero.esa</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
       </article>
       <article class="card">
-        <h3><code>aero.iss</code></h3>
+        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-station"></use></svg><code>aero.iss</code></h3>
         <p>ISS data: Open Notify position and crew, “Where the ISS at?” state vectors and TLEs, CelesTrak elements.</p>
-        <p class="card-action"><a class="try-link" href="#iss-explorer">Try it →</a></p>
+        <p class="card-action"><a class="try-link" href="#iss-explorer">Try it<span class="sr-only"> with aero.iss</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
       </article>
       <article class="card">
-        <h3><code>aero.isro</code></h3>
+        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg><code>aero.isro</code></h3>
         <p>ISRO data: spacecraft, launchers, customer satellites, centres, Launch Library 2 launches and NavIC elements.</p>
-        <p class="card-action"><a class="try-link" href="#isro-explorer">Try it →</a></p>
+        <p class="card-action"><a class="try-link" href="#isro-explorer">Try it<span class="sr-only"> with aero.isro</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
       </article>
     </div>
   </section>
 
-  <section id="calculators" class="section alt">
-    <h2>Interactive calculators</h2>
+  <section id="calculators" class="section alt" aria-labelledby="calculators-heading">
+    <h2 id="calculators-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-calculator"></use></svg>Interactive calculators</h2>
     <p class="section-intro">These calculators reproduce the formulas implemented in the library, so you can sanity-check values straight from the browser.</p>
 
     <div class="calculators">
-      <form class="calculator" id="atmosphere-form" novalidate>
-        <h3>Standard atmosphere</h3>
+      <form class="calculator" id="atmosphere-form" novalidate aria-labelledby="atmosphere-form-heading">
+        <h3 id="atmosphere-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-cloud"></use></svg>Standard atmosphere</h3>
         <label for="alt">Altitude (m, 0–20000)
           <input type="number" id="alt" value="5000" min="0" max="20000" step="100">
         </label>
-        <output id="atmosphere-output" class="output" role="status"></output>
+        <output id="atmosphere-output" class="output" role="status" aria-label="Standard atmosphere results"></output>
       </form>
 
-      <form class="calculator" id="aero-form" novalidate>
-        <h3>Lift &amp; drag</h3>
+      <form class="calculator" id="aero-form" novalidate aria-labelledby="aero-form-heading">
+        <h3 id="aero-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-wing"></use></svg>Lift &amp; drag</h3>
         <label for="aero-alt">Altitude (m)
           <input type="number" id="aero-alt" value="0" min="0" max="20000" step="100">
         </label>
@@ -107,19 +169,19 @@
         <label for="aero-cd">Drag coefficient C<sub>D</sub>
           <input type="number" id="aero-cd" value="0.03" step="0.001">
         </label>
-        <output id="aero-output" class="output" role="status"></output>
+        <output id="aero-output" class="output" role="status" aria-label="Lift and drag results"></output>
       </form>
 
-      <form class="calculator" id="orbital-form" novalidate>
-        <h3>Circular orbit</h3>
+      <form class="calculator" id="orbital-form" novalidate aria-labelledby="orbital-form-heading">
+        <h3 id="orbital-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-orbit"></use></svg>Circular orbit</h3>
         <label for="orb-alt">Altitude above Earth (km)
           <input type="number" id="orb-alt" value="400" min="0" step="10">
         </label>
-        <output id="orbital-output" class="output" role="status"></output>
+        <output id="orbital-output" class="output" role="status" aria-label="Circular orbit results"></output>
       </form>
 
-      <form class="calculator" id="rocketry-form" novalidate>
-        <h3>Rocket stage</h3>
+      <form class="calculator" id="rocketry-form" novalidate aria-labelledby="rocketry-form-heading">
+        <h3 id="rocketry-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg>Rocket stage</h3>
         <label for="rkt-isp">Specific impulse I<sub>sp</sub> (s)
           <input type="number" id="rkt-isp" value="300" min="0" step="1">
         </label>
@@ -132,79 +194,79 @@
         <label for="rkt-thrust">Thrust (N)
           <input type="number" id="rkt-thrust" value="7600000" min="0" step="1000">
         </label>
-        <output id="rocketry-output" class="output" role="status"></output>
+        <output id="rocketry-output" class="output" role="status" aria-label="Rocket stage results"></output>
       </form>
     </div>
   </section>
 
-  <section id="explorer" class="section">
-    <h2>Try the data services</h2>
+  <section id="explorer" class="section" aria-labelledby="explorer-heading">
+    <h2 id="explorer-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-antenna"></use></svg>Try the data services</h2>
     <p class="section-intro">Pick an endpoint from any data module to build the exact request the Python client would send. Send it live from your browser, or copy the equivalent <code>aero</code> snippet.</p>
 
     <div class="explorers">
-      <form class="explorer" id="nasa-explorer" data-module="nasa" novalidate>
-        <h3><code>aero.nasa</code></h3>
-        <label>Endpoint
-          <select class="explorer-endpoint"></select>
+      <form class="explorer" id="nasa-explorer" data-module="nasa" novalidate aria-labelledby="nasa-explorer-heading">
+        <h3 id="nasa-explorer-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-planet"></use></svg><code>aero.nasa</code></h3>
+        <label for="nasa-endpoint">Endpoint
+          <select class="explorer-endpoint" id="nasa-endpoint"></select>
         </label>
-        <label class="explorer-param-label">Parameter
-          <input type="text" class="explorer-param">
+        <label class="explorer-param-label" for="nasa-param">Parameter
+          <input type="text" class="explorer-param" id="nasa-param">
         </label>
-        <pre class="code snippet"><code class="explorer-snippet"></code></pre>
-        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer"></a></p>
-        <button type="submit" class="button primary explorer-send">Send request</button>
-        <output class="output explorer-output" role="status"></output>
+        <pre class="code snippet" id="nasa-snippet" tabindex="0" role="region" aria-label="aero.nasa Python snippet"><code class="explorer-snippet"></code></pre>
+        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
+        <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.nasa</span></button>
+        <output class="output explorer-output" for="nasa-endpoint nasa-param" aria-label="aero.nasa response" role="status" tabindex="0"></output>
       </form>
 
-      <form class="explorer" id="esa-explorer" data-module="esa" novalidate>
-        <h3><code>aero.esa</code></h3>
-        <label>Endpoint
-          <select class="explorer-endpoint"></select>
+      <form class="explorer" id="esa-explorer" data-module="esa" novalidate aria-labelledby="esa-explorer-heading">
+        <h3 id="esa-explorer-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg><code>aero.esa</code></h3>
+        <label for="esa-endpoint">Endpoint
+          <select class="explorer-endpoint" id="esa-endpoint"></select>
         </label>
-        <label class="explorer-param-label">Parameter
-          <input type="text" class="explorer-param">
+        <label class="explorer-param-label" for="esa-param">Parameter
+          <input type="text" class="explorer-param" id="esa-param">
         </label>
-        <pre class="code snippet"><code class="explorer-snippet"></code></pre>
-        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer"></a></p>
-        <button type="submit" class="button primary explorer-send">Send request</button>
-        <output class="output explorer-output" role="status"></output>
+        <pre class="code snippet" id="esa-snippet" tabindex="0" role="region" aria-label="aero.esa Python snippet"><code class="explorer-snippet"></code></pre>
+        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
+        <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.esa</span></button>
+        <output class="output explorer-output" for="esa-endpoint esa-param" aria-label="aero.esa response" role="status" tabindex="0"></output>
       </form>
 
-      <form class="explorer" id="iss-explorer" data-module="iss" novalidate>
-        <h3><code>aero.iss</code></h3>
-        <label>Endpoint
-          <select class="explorer-endpoint"></select>
+      <form class="explorer" id="iss-explorer" data-module="iss" novalidate aria-labelledby="iss-explorer-heading">
+        <h3 id="iss-explorer-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-station"></use></svg><code>aero.iss</code></h3>
+        <label for="iss-endpoint">Endpoint
+          <select class="explorer-endpoint" id="iss-endpoint"></select>
         </label>
-        <label class="explorer-param-label">Parameter
-          <input type="text" class="explorer-param">
+        <label class="explorer-param-label" for="iss-param">Parameter
+          <input type="text" class="explorer-param" id="iss-param">
         </label>
-        <pre class="code snippet"><code class="explorer-snippet"></code></pre>
-        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer"></a></p>
-        <button type="submit" class="button primary explorer-send">Send request</button>
-        <output class="output explorer-output" role="status"></output>
+        <pre class="code snippet" id="iss-snippet" tabindex="0" role="region" aria-label="aero.iss Python snippet"><code class="explorer-snippet"></code></pre>
+        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
+        <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.iss</span></button>
+        <output class="output explorer-output" for="iss-endpoint iss-param" aria-label="aero.iss response" role="status" tabindex="0"></output>
       </form>
 
-      <form class="explorer" id="isro-explorer" data-module="isro" novalidate>
-        <h3><code>aero.isro</code></h3>
-        <label>Endpoint
-          <select class="explorer-endpoint"></select>
+      <form class="explorer" id="isro-explorer" data-module="isro" novalidate aria-labelledby="isro-explorer-heading">
+        <h3 id="isro-explorer-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg><code>aero.isro</code></h3>
+        <label for="isro-endpoint">Endpoint
+          <select class="explorer-endpoint" id="isro-endpoint"></select>
         </label>
-        <label class="explorer-param-label">Parameter
-          <input type="text" class="explorer-param">
+        <label class="explorer-param-label" for="isro-param">Parameter
+          <input type="text" class="explorer-param" id="isro-param">
         </label>
-        <pre class="code snippet"><code class="explorer-snippet"></code></pre>
-        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer"></a></p>
-        <button type="submit" class="button primary explorer-send">Send request</button>
-        <output class="output explorer-output" role="status"></output>
+        <pre class="code snippet" id="isro-snippet" tabindex="0" role="region" aria-label="aero.isro Python snippet"><code class="explorer-snippet"></code></pre>
+        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
+        <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.isro</span></button>
+        <output class="output explorer-output" for="isro-endpoint isro-param" aria-label="aero.isro response" role="status" tabindex="0"></output>
       </form>
     </div>
-    <p class="section-intro">Live requests run from your browser, so some services may refuse cross-origin calls. The Python clients are not subject to that restriction.</p>
+    <p class="section-intro" id="new-tab-hint">Request URLs open in a new tab. Live requests run from your browser, so some services may refuse cross-origin calls. The Python clients are not subject to that restriction.</p>
   </section>
 
-  <section id="data" class="section">
-    <h2>Connecting to space agency data</h2>
+  <section id="data" class="section" aria-labelledby="data-heading">
+    <h2 id="data-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg>Connecting to space agency data</h2>
     <p class="section-intro">Every client accepts an injectable <code>requests.Session</code> and timeout, and raises a module-specific error on failure.</p>
-<pre class="code"><code>from aero import esa, iss, isro, nasa
+<pre class="code" tabindex="0" role="region" aria-label="Data service client example"><code>from aero import esa, iss, isro, nasa
 
 nasa.NASAClient().apod()                 # Astronomy Picture of the Day
 esa.ESAClient().neocc_risk_list()        # Near-Earth object risk list
@@ -212,10 +274,10 @@ iss.ISSClient().current_location()       # ISS ground track point
 isro.ISROClient().navic_elements()       # NavIC constellation elements</code></pre>
   </section>
 
-  <section id="install" class="section alt">
-    <h2>Installation &amp; usage</h2>
-<pre class="code"><code>pip install -e .</code></pre>
-<pre class="code"><code>from aero import atmosphere, aerodynamics, orbital
+  <section id="install" class="section alt" aria-labelledby="install-heading">
+    <h2 id="install-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-download"></use></svg>Installation &amp; usage</h2>
+<pre class="code" tabindex="0" role="region" aria-label="Installation command"><code>pip install -e .</code></pre>
+<pre class="code" tabindex="0" role="region" aria-label="Usage example"><code>from aero import atmosphere, aerodynamics, orbital
 
 rho = atmosphere.density(5000)
 a = atmosphere.speed_of_sound(5000)
@@ -227,7 +289,7 @@ v = orbital.circular_orbital_velocity(orbital.EARTH_MU,
 </main>
 
 <footer class="footer">
-  <p>aero — aerospace engineering calculations. Released under the MIT License.</p>
+  <p><svg class="icon footer-icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg>aero — aerospace engineering calculations. Released under the MIT License.</p>
 </footer>
 
 <script src="app.js"></script>

@@ -176,3 +176,66 @@ def test_reveal_animation_does_not_hide_content(page):
     )
     assert opacities
     assert all(float(value) > 0.99 for value in opacities)
+
+
+def test_landmarks_and_skip_link(page):
+    assert page.locator("main#main").count() == 1
+    assert page.locator("nav[aria-label]").count() == 1
+    skip = page.locator(".skip-link")
+    assert skip.get_attribute("href") == "#main"
+    skip.focus()
+    page.wait_for_timeout(400)
+    box = skip.bounding_box()
+    assert box is not None and box["y"] >= 0
+
+
+def test_every_element_id_is_unique(page):
+    duplicates = page.evaluate(
+        "() => { const ids = [...document.querySelectorAll('[id]')].map(el => el.id);"
+        " return ids.filter((id, index) => ids.indexOf(id) !== index); }"
+    )
+    assert duplicates == []
+
+
+def test_form_controls_and_outputs_have_accessible_names(page):
+    unnamed = page.evaluate(
+        "() => [...document.querySelectorAll('input, select, output')]"
+        ".filter(el => !(el.getAttribute('aria-label')"
+        " || (el.labels && el.labels.length)))"
+        ".map(el => el.outerHTML)"
+    )
+    assert unnamed == []
+
+
+def test_repeated_links_and_buttons_have_unique_names(page):
+    assert page.get_by_role("link", name="Try it with aero.orbital").count() == 1
+    assert page.get_by_role("button", name="Send request for aero.iss").count() == 1
+
+
+def test_scrollable_code_regions_are_keyboard_reachable(page):
+    missing = page.evaluate(
+        "() => [...document.querySelectorAll('pre.code')]"
+        ".filter(el => el.tabIndex !== 0).length"
+    )
+    assert missing == 0
+
+
+def test_calculator_error_is_announced_and_marks_the_input(page):
+    page.fill("#alt", "")
+    page.dispatch_event("#alt", "input")
+    output = page.locator("#atmosphere-output")
+    assert output.get_attribute("role") == "status"
+    assert page.inner_text("#atmosphere-output").startswith("Error:")
+    assert page.get_attribute("#alt", "aria-invalid") == "true"
+    assert page.get_attribute("#alt", "aria-describedby") == "atmosphere-output"
+    page.fill("#alt", "5000")
+    page.dispatch_event("#alt", "input")
+    assert page.get_attribute("#alt", "aria-invalid") is None
+
+
+def test_decorative_icons_are_hidden_from_assistive_technology(page):
+    exposed = page.evaluate(
+        "() => [...document.querySelectorAll('svg.icon')]"
+        ".filter(el => el.getAttribute('aria-hidden') !== 'true').length"
+    )
+    assert exposed == 0
