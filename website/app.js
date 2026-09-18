@@ -113,6 +113,8 @@
       var area = readNumber("aero-area");
       var cl = readNumber("aero-cl");
       var cd = readNumber("aero-cd");
+      if (v < 0) throw new RangeError("true airspeed must be non-negative");
+      if (area < 0) throw new RangeError("wing area must be non-negative");
       if (cd === 0) throw new RangeError("cd must be non-zero");
       var rho = density(h);
       var q = dynamicPressure(rho, v);
