@@ -134,6 +134,8 @@ class ISSClient:
         stamps = [str(stamp) for stamp in timestamps]
         if not stamps:
             raise ValueError("At least one timestamp is required")
+        if len(stamps) > 10:
+            raise ValueError("At most 10 timestamps are allowed")
         params: dict = {"timestamps": ",".join(stamps)}
         if units is not None:
             params["units"] = units

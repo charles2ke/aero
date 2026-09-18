@@ -92,6 +92,13 @@ def test_satellite_positions_requires_timestamps():
         client.satellite_positions([])
 
 
+def test_satellite_positions_rejects_more_than_ten_timestamps():
+    client = iss.ISSClient(session=MagicMock())
+
+    with pytest.raises(ValueError):
+        client.satellite_positions(range(11))
+
+
 def test_tle():
     session = MagicMock()
     session.get.return_value = _mock_response({"line1": "1 25544U"})
