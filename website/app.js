@@ -251,6 +251,45 @@
         url: "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
         query: { format: "json" },
         param: { label: "ADQL query", value: "select top 5 pl_name from ps", query: "query" }
+      },
+      {
+        label: "neo_lookup() — near-Earth object lookup",
+        snippet: "nasa.NASAClient().neo_lookup(asteroid_id=\"3542519\")",
+        url: "https://api.nasa.gov/neo/rest/v1/neo/{ASTEROID_ID}",
+        query: { api_key: "DEMO_KEY" },
+        param: { label: "Asteroid ID", value: "3542519", token: "{ASTEROID_ID}" }
+      },
+      {
+        label: "donki_notifications() — DONKI space weather notifications",
+        snippet: "nasa.NASAClient().donki_notifications(notification_type=\"all\")",
+        url: "https://api.nasa.gov/DONKI/notifications",
+        query: { api_key: "DEMO_KEY" },
+        param: { label: "Notification type", value: "all", query: "type" }
+      },
+      {
+        label: "epic_natural_images() — EPIC natural-color Earth images",
+        snippet: "nasa.NASAClient().epic_natural_images()",
+        url: "https://api.nasa.gov/EPIC/api/natural",
+        query: { api_key: "DEMO_KEY" }
+      },
+      {
+        label: "insight_weather() — InSight Mars weather",
+        snippet: "nasa.NASAClient().insight_weather()",
+        url: "https://api.nasa.gov/insight_weather/",
+        query: { feedtype: "json", ver: "1.0", api_key: "DEMO_KEY" }
+      },
+      {
+        label: "techport_projects() — TechPort project IDs",
+        snippet: "nasa.NASAClient().techport_projects()",
+        url: "https://api.nasa.gov/techport/api/projects",
+        query: { api_key: "DEMO_KEY" }
+      },
+      {
+        label: "techport_project() — TechPort project detail",
+        snippet: "nasa.NASAClient().techport_project(project_id=14700)",
+        url: "https://api.nasa.gov/techport/api/projects/{PROJECT_ID}",
+        query: { api_key: "DEMO_KEY" },
+        param: { label: "Project ID", value: "14700", token: "{PROJECT_ID}" }
       }
     ],
     esa: [
@@ -260,6 +299,12 @@
         url: "https://data.esa.int/api/3/action/package_search",
         query: { rows: "5" },
         param: { label: "Search query", value: "satellite", query: "q" }
+      },
+      {
+        label: "open_data_dataset() — ESA Open Data Portal dataset detail",
+        snippet: "esa.ESAClient().open_data_dataset(dataset_id=\"copernicus-sentinel-data\")",
+        url: "https://data.esa.int/api/3/action/package_show",
+        param: { label: "Dataset ID", value: "copernicus-sentinel-data", query: "id" }
       },
       {
         label: "copernicus_products() — Sentinel products",
@@ -315,6 +360,16 @@
         param: { label: "Units", value: "kilometers", query: "units" }
       },
       {
+        label: "satellite_positions() — ISS state vectors for timestamps",
+        snippet: "iss.ISSClient().satellite_positions([1699000000, 1699003600])",
+        url: "https://api.wheretheiss.at/v1/satellites/25544/positions",
+        param: {
+          label: "Timestamps (comma-separated)",
+          value: "1699000000,1699003600",
+          query: "timestamps"
+        }
+      },
+      {
         label: "tle() — latest ISS TLE",
         snippet: "iss.ISSClient().tle()",
         url: "https://api.wheretheiss.at/v1/satellites/25544/tles"
@@ -343,27 +398,49 @@
         url: "https://isro.vercel.app/api/centres"
       },
       {
+        label: "customer_satellites() — foreign satellites launched by ISRO",
+        snippet: "isro.ISROClient().customer_satellites()",
+        url: "https://isro.vercel.app/api/customer_satellites"
+      },
+      {
         label: "launches() — Launch Library 2 launches",
         snippet: "isro.ISROClient().launches(limit=5)",
         url: "https://ll.thespacedevs.com/2.2.0/launch/previous/",
         query: { search: "ISRO", limit: "5", mode: "list" }
       },
       {
+        label: "agency() — Launch Library 2 agency metadata",
+        snippet: "isro.ISROClient().agency()",
+        url: "https://ll.thespacedevs.com/2.2.0/agencies/31/"
+      },
+      {
         label: "navic_elements() — NavIC (IRNSS) elements",
         snippet: "isro.ISROClient().navic_elements()",
         url: "https://celestrak.org/NORAD/elements/gp.php",
         query: { GROUP: "navic", FORMAT: "json" }
+      },
+      {
+        label: "celestrak_elements() — CelesTrak orbital elements",
+        snippet: "isro.ISROClient().celestrak_elements(group=\"gnss\")",
+        url: "https://celestrak.org/NORAD/elements/gp.php",
+        query: { FORMAT: "json" },
+        param: { label: "CelesTrak group", value: "gnss", query: "GROUP" }
       }
     ]
   };
 
   function buildUrl(endpoint, paramValue) {
-    var url = new URL(endpoint.url);
+    var rawUrl = endpoint.url;
+    if (endpoint.param && endpoint.param.token) {
+      var tokenValue = paramValue || endpoint.param.value;
+      rawUrl = rawUrl.replace(endpoint.param.token, encodeURIComponent(tokenValue));
+    }
+    var url = new URL(rawUrl);
     var query = endpoint.query || {};
     Object.keys(query).forEach(function (key) {
       url.searchParams.set(key, query[key]);
     });
-    if (endpoint.param && paramValue) {
+    if (endpoint.param && !endpoint.param.token && paramValue) {
       var extra = endpoint.param.build
         ? endpoint.param.build(paramValue)
         : (function () {
