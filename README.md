@@ -128,9 +128,28 @@ client.celestrak_elements(norad_id=41384)  # CelesTrak: elements for one spacecr
 client.navic_elements()                  # CelesTrak: NavIC (IRNSS) constellation
 ```
 
+## Website
+
+A static website for the project lives in [`website/`](website/). It
+documents the modules and includes browser calculators that reproduce the
+standard atmosphere, lift/drag and circular orbit formulas implemented in
+the library. Open `website/index.html` directly, or serve the folder:
+
+```bash
+python -m http.server --directory website 8000
+```
+
 ## Running tests
 
 ```bash
 pip install pytest
 pytest
+```
+
+The website tests use Playwright and are skipped unless it is installed:
+
+```bash
+pip install playwright
+playwright install chromium
+pytest tests/test_website.py
 ```

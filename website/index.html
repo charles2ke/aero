@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>aero — Aerospace Engineering Library</title>
+<meta name="description" content="aero is a small Python library of common aerospace engineering calculations: standard atmosphere, aerodynamics, orbital mechanics, and connectivity to NASA, ESA, ISS and ISRO data services.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero" id="top">
+  <nav class="nav">
+    <a class="brand" href="#top">aero</a>
+    <ul class="nav-links">
+      <li><a href="#modules">Modules</a></li>
+      <li><a href="#calculators">Calculators</a></li>
+      <li><a href="#data">Data services</a></li>
+      <li><a href="#install">Install</a></li>
+    </ul>
+  </nav>
+  <div class="hero-content">
+    <h1>aero</h1>
+    <p class="tagline">A small Python library of common aerospace engineering calculations — from sea level to orbit.</p>
+    <div class="hero-actions">
+      <a class="button primary" href="#install">Get started</a>
+      <a class="button" href="#calculators">Try the calculators</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="modules" class="section">
+    <h2>Modules</h2>
+    <div class="cards">
+      <article class="card">
+        <h3><code>aero.atmosphere</code></h3>
+        <p>International Standard Atmosphere model: temperature, pressure, density and speed of sound up to 20 km.</p>
+      </article>
+      <article class="card">
+        <h3><code>aero.aerodynamics</code></h3>
+        <p>Dynamic pressure, lift, drag, lift-to-drag ratio, Mach number and Reynolds number.</p>
+      </article>
+      <article class="card">
+        <h3><code>aero.orbital</code></h3>
+        <p>Vis-viva orbital velocity, circular orbital velocity, orbital period and escape velocity.</p>
+      </article>
+      <article class="card">
+        <h3><code>aero.nasa</code></h3>
+        <p>NASA Open APIs: APOD, Mars Rover Photos, NeoWs, DONKI, EPIC, InSight weather, TechPort and the Exoplanet Archive.</p>
+      </article>
+      <article class="card">
+        <h3><code>aero.esa</code></h3>
+        <p>ESA services: Open Data Portal, Copernicus Data Space Ecosystem, the Gaia Archive and the NEOCC risk list.</p>
+      </article>
+      <article class="card">
+        <h3><code>aero.iss</code></h3>
+        <p>ISS data: Open Notify position and crew, “Where the ISS at?” state vectors and TLEs, CelesTrak elements.</p>
+      </article>
+      <article class="card">
+        <h3><code>aero.isro</code></h3>
+        <p>ISRO data: spacecraft, launchers, customer satellites, centres, Launch Library 2 launches and NavIC elements.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="calculators" class="section alt">
+    <h2>Interactive calculators</h2>
+    <p class="section-intro">These calculators reproduce the formulas implemented in the library, so you can sanity-check values straight from the browser.</p>
+
+    <div class="calculators">
+      <form class="calculator" id="atmosphere-form" novalidate>
+        <h3>Standard atmosphere</h3>
+        <label for="alt">Altitude (m, 0–20000)
+          <input type="number" id="alt" value="5000" min="0" max="20000" step="100">
+        </label>
+        <output id="atmosphere-output" class="output" role="status"></output>
+      </form>
+
+      <form class="calculator" id="aero-form" novalidate>
+        <h3>Lift &amp; drag</h3>
+        <label for="aero-alt">Altitude (m)
+          <input type="number" id="aero-alt" value="0" min="0" max="20000" step="100">
+        </label>
+        <label for="aero-v">True airspeed (m/s)
+          <input type="number" id="aero-v" value="120" min="0" step="1">
+        </label>
+        <label for="aero-area">Wing area (m²)
+          <input type="number" id="aero-area" value="16.2" min="0" step="0.1">
+        </label>
+        <label for="aero-cl">Lift coefficient C<sub>L</sub>
+          <input type="number" id="aero-cl" value="0.4" step="0.01">
+        </label>
+        <label for="aero-cd">Drag coefficient C<sub>D</sub>
+          <input type="number" id="aero-cd" value="0.03" step="0.001">
+        </label>
+        <output id="aero-output" class="output" role="status"></output>
+      </form>
+
+      <form class="calculator" id="orbital-form" novalidate>
+        <h3>Circular orbit</h3>
+        <label for="orb-alt">Altitude above Earth (km)
+          <input type="number" id="orb-alt" value="400" min="0" step="10">
+        </label>
+        <output id="orbital-output" class="output" role="status"></output>
+      </form>
+    </div>
+  </section>
+
+  <section id="data" class="section">
+    <h2>Connecting to space agency data</h2>
+    <p class="section-intro">Every client accepts an injectable <code>requests.Session</code> and timeout, and raises a module-specific error on failure.</p>
+<pre class="code"><code>from aero import esa, iss, isro, nasa
+
+nasa.NASAClient().apod()                 # Astronomy Picture of the Day
+esa.ESAClient().neocc_risk_list()        # Near-Earth object risk list
+iss.ISSClient().current_location()       # ISS ground track point
+isro.ISROClient().navic_elements()       # NavIC constellation elements</code></pre>
+  </section>
+
+  <section id="install" class="section alt">
+    <h2>Installation &amp; usage</h2>
+<pre class="code"><code>pip install -e .</code></pre>
+<pre class="code"><code>from aero import atmosphere, aerodynamics, orbital
+
+rho = atmosphere.density(5000)
+a = atmosphere.speed_of_sound(5000)
+L = aerodynamics.lift(rho=rho, velocity=120.0, area=16.2, cl=0.4)
+v = orbital.circular_orbital_velocity(orbital.EARTH_MU,
+                                      orbital.EARTH_RADIUS + 400_000)</code></pre>
+    <p>Run the test suite with <code>pip install pytest</code> then <code>pytest</code>.</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>aero — aerospace engineering calculations. Released under the MIT License.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
