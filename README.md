@@ -20,6 +20,10 @@ A small Python library of common aerospace engineering calculations:
   services: Open Notify (ISS position, people in space), "Where the ISS
   at?" (state vectors, position propagation, TLEs), and CelesTrak orbital
   elements for the ISS and the `stations` group.
+- `aero.isro` — connectivity to Indian Space Research Organisation (ISRO)
+  data services: the public ISRO API (spacecraft, launchers, customer
+  satellites, centres), ISRO launch records from Launch Library 2, and
+  CelesTrak orbital elements for ISRO spacecraft including NavIC (IRNSS).
 
 ## Installation
 
@@ -100,6 +104,28 @@ client.satellite_positions([1436029892])     # Where the ISS at?: propagated pos
 client.tle()                                 # Where the ISS at?: latest ISS TLE
 client.celestrak_elements()                  # CelesTrak: ISS orbital elements
 client.station_elements()                    # CelesTrak: all "stations" group objects
+```
+
+### Connecting to ISRO programs
+
+`aero.isro.ISROClient` provides connectivity to public Indian Space
+Research Organisation (ISRO) data services. None of these read-only
+endpoints require an API key or account.
+
+```python
+from aero import isro
+
+client = isro.ISROClient()
+
+client.spacecrafts()                     # ISRO API: spacecraft and satellites
+client.launchers()                       # ISRO API: launch vehicles
+client.customer_satellites()             # ISRO API: customer satellites launched
+client.centres()                         # ISRO API: ISRO centres and units
+client.launches(limit=10)                # Launch Library 2: past ISRO launches
+client.launches(upcoming=True)           # Launch Library 2: upcoming ISRO launches
+client.agency()                          # Launch Library 2: ISRO agency metadata
+client.celestrak_elements(norad_id=41384)  # CelesTrak: elements for one spacecraft
+client.navic_elements()                  # CelesTrak: NavIC (IRNSS) constellation
 ```
 
 ## Running tests
