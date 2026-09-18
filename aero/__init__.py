@@ -1,7 +1,7 @@
 """aero: a small library of common aerospace engineering calculations."""
 
-from . import aerodynamics, atmosphere, orbital
+from . import aerodynamics, atmosphere, nasa, orbital
 
 __version__ = "0.1.0"
 
-__all__ = ["aerodynamics", "atmosphere", "orbital", "__version__"]
+__all__ = ["aerodynamics", "atmosphere", "nasa", "orbital", "__version__"]
