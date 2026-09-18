@@ -14,6 +14,7 @@
     <ul class="nav-links">
       <li><a href="#modules">Modules</a></li>
       <li><a href="#calculators">Calculators</a></li>
+      <li><a href="#explorer">Data explorer</a></li>
       <li><a href="#data">Data services</a></li>
       <li><a href="#install">Install</a></li>
     </ul>
@@ -24,6 +25,7 @@
     <div class="hero-actions">
       <a class="button primary" href="#install">Get started</a>
       <a class="button" href="#calculators">Try the calculators</a>
+      <a class="button" href="#explorer">Try the data services</a>
     </div>
   </div>
 </header>
@@ -35,34 +37,42 @@
       <article class="card">
         <h3><code>aero.atmosphere</code></h3>
         <p>International Standard Atmosphere model: temperature, pressure, density and speed of sound up to 20 km.</p>
+        <p class="card-action"><a class="try-link" href="#atmosphere-form">Try it →</a></p>
       </article>
       <article class="card">
         <h3><code>aero.aerodynamics</code></h3>
         <p>Dynamic pressure, lift, drag, lift-to-drag ratio, Mach number and Reynolds number.</p>
+        <p class="card-action"><a class="try-link" href="#aero-form">Try it →</a></p>
       </article>
       <article class="card">
         <h3><code>aero.orbital</code></h3>
         <p>Vis-viva orbital velocity, circular orbital velocity, orbital period and escape velocity.</p>
+        <p class="card-action"><a class="try-link" href="#orbital-form">Try it →</a></p>
       </article>
       <article class="card">
         <h3><code>aero.rocketry</code></h3>
         <p>Rocket science: Tsiolkovsky rocket equation, mass ratios, propellant sizing, specific impulse, thrust, burn time, thrust-to-weight and staging.</p>
+        <p class="card-action"><a class="try-link" href="#rocketry-form">Try it →</a></p>
       </article>
       <article class="card">
         <h3><code>aero.nasa</code></h3>
         <p>NASA Open APIs: APOD, Mars Rover Photos, NeoWs, DONKI, EPIC, InSight weather, TechPort and the Exoplanet Archive.</p>
+        <p class="card-action"><a class="try-link" href="#nasa-explorer">Try it →</a></p>
       </article>
       <article class="card">
         <h3><code>aero.esa</code></h3>
         <p>ESA services: Open Data Portal, Copernicus Data Space Ecosystem, the Gaia Archive and the NEOCC risk list.</p>
+        <p class="card-action"><a class="try-link" href="#esa-explorer">Try it →</a></p>
       </article>
       <article class="card">
         <h3><code>aero.iss</code></h3>
         <p>ISS data: Open Notify position and crew, “Where the ISS at?” state vectors and TLEs, CelesTrak elements.</p>
+        <p class="card-action"><a class="try-link" href="#iss-explorer">Try it →</a></p>
       </article>
       <article class="card">
         <h3><code>aero.isro</code></h3>
         <p>ISRO data: spacecraft, launchers, customer satellites, centres, Launch Library 2 launches and NavIC elements.</p>
+        <p class="card-action"><a class="try-link" href="#isro-explorer">Try it →</a></p>
       </article>
     </div>
   </section>
@@ -107,7 +117,88 @@
         </label>
         <output id="orbital-output" class="output" role="status"></output>
       </form>
+
+      <form class="calculator" id="rocketry-form" novalidate>
+        <h3>Rocket stage</h3>
+        <label for="rkt-isp">Specific impulse I<sub>sp</sub> (s)
+          <input type="number" id="rkt-isp" value="300" min="0" step="1">
+        </label>
+        <label for="rkt-m0">Initial mass (kg)
+          <input type="number" id="rkt-m0" value="5500" min="0" step="10">
+        </label>
+        <label for="rkt-mf">Final mass (kg)
+          <input type="number" id="rkt-mf" value="1500" min="0" step="10">
+        </label>
+        <label for="rkt-thrust">Thrust (N)
+          <input type="number" id="rkt-thrust" value="7600000" min="0" step="1000">
+        </label>
+        <output id="rocketry-output" class="output" role="status"></output>
+      </form>
     </div>
+  </section>
+
+  <section id="explorer" class="section">
+    <h2>Try the data services</h2>
+    <p class="section-intro">Pick an endpoint from any data module to build the exact request the Python client would send. Send it live from your browser, or copy the equivalent <code>aero</code> snippet.</p>
+
+    <div class="explorers">
+      <form class="explorer" id="nasa-explorer" data-module="nasa" novalidate>
+        <h3><code>aero.nasa</code></h3>
+        <label>Endpoint
+          <select class="explorer-endpoint"></select>
+        </label>
+        <label class="explorer-param-label">Parameter
+          <input type="text" class="explorer-param">
+        </label>
+        <pre class="code snippet"><code class="explorer-snippet"></code></pre>
+        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer"></a></p>
+        <button type="submit" class="button primary explorer-send">Send request</button>
+        <output class="output explorer-output" role="status"></output>
+      </form>
+
+      <form class="explorer" id="esa-explorer" data-module="esa" novalidate>
+        <h3><code>aero.esa</code></h3>
+        <label>Endpoint
+          <select class="explorer-endpoint"></select>
+        </label>
+        <label class="explorer-param-label">Parameter
+          <input type="text" class="explorer-param">
+        </label>
+        <pre class="code snippet"><code class="explorer-snippet"></code></pre>
+        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer"></a></p>
+        <button type="submit" class="button primary explorer-send">Send request</button>
+        <output class="output explorer-output" role="status"></output>
+      </form>
+
+      <form class="explorer" id="iss-explorer" data-module="iss" novalidate>
+        <h3><code>aero.iss</code></h3>
+        <label>Endpoint
+          <select class="explorer-endpoint"></select>
+        </label>
+        <label class="explorer-param-label">Parameter
+          <input type="text" class="explorer-param">
+        </label>
+        <pre class="code snippet"><code class="explorer-snippet"></code></pre>
+        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer"></a></p>
+        <button type="submit" class="button primary explorer-send">Send request</button>
+        <output class="output explorer-output" role="status"></output>
+      </form>
+
+      <form class="explorer" id="isro-explorer" data-module="isro" novalidate>
+        <h3><code>aero.isro</code></h3>
+        <label>Endpoint
+          <select class="explorer-endpoint"></select>
+        </label>
+        <label class="explorer-param-label">Parameter
+          <input type="text" class="explorer-param">
+        </label>
+        <pre class="code snippet"><code class="explorer-snippet"></code></pre>
+        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer"></a></p>
+        <button type="submit" class="button primary explorer-send">Send request</button>
+        <output class="output explorer-output" role="status"></output>
+      </form>
+    </div>
+    <p class="section-intro">Live requests run from your browser, so some services may refuse cross-origin calls. The Python clients are not subject to that restriction.</p>
   </section>
 
   <section id="data" class="section">

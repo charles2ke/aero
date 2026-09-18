@@ -84,3 +84,95 @@ def test_orbital_calculator_matches_library(page):
     assert f"{orbital.circular_orbital_velocity(orbital.EARTH_MU, radius):.1f} m/s" in text
     assert f"{orbital.orbital_period(orbital.EARTH_MU, radius) / 60:.2f} min" in text
     assert f"{orbital.escape_velocity(orbital.EARTH_MU, radius):.1f} m/s" in text
+
+
+def test_rocketry_calculator_matches_library(page):
+    from aero import rocketry
+
+    isp = 300.0
+    m0 = 5500.0
+    mf = 1500.0
+    thrust_force = 7_600_000.0
+    page.fill("#rkt-isp", str(isp))
+    page.fill("#rkt-m0", str(m0))
+    page.fill("#rkt-mf", str(mf))
+    page.fill("#rkt-thrust", str(thrust_force))
+    page.dispatch_event("#rkt-thrust", "input")
+    ve = rocketry.exhaust_velocity(isp)
+    flow = rocketry.mass_flow_rate(thrust_force, ve)
+    text = page.inner_text("#rocketry-output")
+    assert f"{ve:.1f} m/s" in text
+    assert f"{rocketry.mass_ratio(m0, mf):.3f}" in text
+    assert f"{rocketry.delta_v(ve, m0, mf):.1f} m/s" in text
+    assert f"{flow:.2f} kg/s" in text
+    assert f"{rocketry.burn_time(m0 - mf, flow):.1f} s" in text
+    assert f"{rocketry.thrust_to_weight_ratio(thrust_force, m0):.2f}" in text
+
+
+def test_rocketry_calculator_reports_invalid_masses(page):
+    page.fill("#rkt-mf", "9000")
+    page.dispatch_event("#rkt-mf", "input")
+    assert "final_mass" in page.inner_text("#rocketry-output")
+    page.fill("#rkt-mf", "1500")
+    page.dispatch_event("#rkt-mf", "input")
+
+
+def test_every_module_has_a_try_it_link(page):
+    targets = [
+        "#atmosphere-form",
+        "#aero-form",
+        "#orbital-form",
+        "#rocketry-form",
+        "#nasa-explorer",
+        "#esa-explorer",
+        "#iss-explorer",
+        "#isro-explorer",
+    ]
+    for target in targets:
+        assert page.locator(f'.try-link[href="{target}"]').count() == 1
+        assert page.locator(target).count() == 1
+
+
+def test_data_service_explorers_build_requests(page):
+    from aero import esa, iss, isro, nasa
+
+    expected_hosts = {
+        "#nasa-explorer": nasa.NASA_API_BASE_URL,
+        "#esa-explorer": esa.ESA_OPEN_DATA_BASE_URL,
+        "#iss-explorer": iss.OPEN_NOTIFY_BASE_URL,
+        "#isro-explorer": isro.ISRO_API_BASE_URL,
+    }
+    for selector, base_url in expected_hosts.items():
+        assert page.locator(f"{selector} .explorer-endpoint option").count() >= 4
+        url = page.inner_text(f"{selector} .explorer-url")
+        assert url.startswith(base_url)
+        assert page.inner_text(f"{selector} .explorer-snippet").strip()
+
+
+def test_explorer_updates_url_when_endpoint_changes(page):
+    from aero import iss
+
+    page.select_option("#iss-explorer .explorer-endpoint", label=iss_astros_label(page))
+    assert "astros.json" in page.inner_text("#iss-explorer .explorer-url")
+    assert iss.OPEN_NOTIFY_BASE_URL in page.inner_text("#iss-explorer .explorer-url")
+    page.select_option("#iss-explorer .explorer-endpoint", index=0)
+
+
+def iss_astros_label(page):
+    options = page.locator("#iss-explorer .explorer-endpoint option")
+    for index in range(options.count()):
+        label = options.nth(index).inner_text()
+        if "people_in_space" in label:
+            return label
+    raise AssertionError("people_in_space endpoint is missing")
+
+
+def test_reveal_animation_does_not_hide_content(page):
+    page.locator("#explorer").scroll_into_view_if_needed()
+    page.wait_for_timeout(1000)
+    opacities = page.eval_on_selector_all(
+        ".card, .calculator, .explorer",
+        "els => els.map(el => getComputedStyle(el).opacity)",
+    )
+    assert opacities
+    assert all(float(value) > 0.99 for value in opacities)

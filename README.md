@@ -142,9 +142,18 @@ client.navic_elements()                  # CelesTrak: NavIC (IRNSS) constellatio
 ## Website
 
 A static website for the project lives in [`website/`](website/). It
-documents the modules and includes browser calculators that reproduce the
-standard atmosphere, lift/drag and circular orbit formulas implemented in
-the library. Open `website/index.html` directly, or serve the folder:
+documents every module and lets you try them all from the browser:
+
+- Calculators reproduce the `atmosphere`, `aerodynamics`, `orbital` and
+  `rocketry` formulas implemented in the library.
+- A data-service explorer builds the exact request each `nasa`, `esa`,
+  `iss` and `isro` client method sends, shows the equivalent Python
+  snippet, and can send the request live from the browser (services that
+  block cross-origin requests can be opened in a new tab instead).
+- Subtle entrance and hover animations, automatically disabled for
+  visitors who prefer reduced motion.
+
+Open `website/index.html` directly, or serve the folder:
 
 ```bash
 python -m http.server --directory website 8000
