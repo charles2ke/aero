@@ -37,6 +37,6 @@ def reynolds_number(
     rho: float, velocity: float, length: float, dynamic_viscosity: float
 ) -> float:
     """Return the Reynolds number Re = rho * V * L / mu."""
-    if dynamic_viscosity == 0:
-        raise ValueError("dynamic_viscosity must be non-zero")
+    if dynamic_viscosity <= 0:
+        raise ValueError("dynamic_viscosity must be positive")
     return rho * velocity * length / dynamic_viscosity
