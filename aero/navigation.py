@@ -23,7 +23,7 @@ def _validate_position(latitude: float, longitude: float) -> None:
 
 
 def _validate_radius(radius: float) -> None:
-    if radius <= 0:
+    if not math.isfinite(radius) or radius <= 0:
         raise ValueError("radius must be positive")
 
 

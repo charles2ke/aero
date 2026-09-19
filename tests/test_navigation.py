@@ -121,9 +121,12 @@ def test_invalid_positions_raise(lat, lon):
         navigation.great_circle_distance(lat, lon, 0.0, 0.0)
 
 
-def test_invalid_radius_raises():
+@pytest.mark.parametrize("radius", [0.0, float("nan"), float("inf")])
+def test_invalid_radius_raises(radius):
     with pytest.raises(ValueError):
-        navigation.great_circle_distance(*JFK, *LHR, radius=0.0)
+        navigation.great_circle_distance(*JFK, *LHR, radius=radius)
+    with pytest.raises(ValueError):
+        navigation.destination_point(*JFK, 90.0, 1.0, radius=radius)
 
 
 def test_negative_distance_raises():
