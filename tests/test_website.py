@@ -307,8 +307,8 @@ def test_explorer_falls_back_to_cors_proxy(isolated_page):
         ".textContent.includes('success')"
     )
     text = output.inner_text()
-    assert "api.allorigins.win" in text
-    assert "api.open-notify.org" in text
+    assert "Fetched through the public CORS proxy" in text
+    assert text.count("blocks direct browser requests") == 1
 
 
 def test_explorer_does_not_proxy_requests_carrying_an_api_key(isolated_page):
