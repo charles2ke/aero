@@ -316,9 +316,14 @@ def test_explorer_offers_opt_in_cors_proxy_retry(isolated_page):
         ".textContent.includes('success')"
     )
     text = output.inner_text()
+    note = output.locator(".output-note")
+    body = output.locator(".output-body")
     assert len(proxied) == 1
     assert "Fetched through the public CORS proxy" in text
-    assert text.count("blocks direct browser requests") == 1
+    assert note.count() == 1
+    assert "Fetched through the public CORS proxy" in note.inner_text()
+    assert note.inner_text().count("blocks direct browser requests") == 1
+    assert body.inner_text() == '{\n  "message": "success"\n}'
 
 
 def test_explorer_does_not_offer_proxy_for_requests_carrying_an_api_key(isolated_page):
@@ -339,3 +344,50 @@ def test_explorer_does_not_offer_proxy_for_requests_carrying_an_api_key(isolated
     assert "Browser request failed" in isolated_page.inner_text(
         "#nasa-explorer .explorer-output"
     )
+
+
+def test_explorer_formats_json_responses(isolated_page):
+    isolated_page.route(
+        "https://api.open-notify.org/**",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='{"message":"success","number":3,"ok":true,"extra":null}',
+        ),
+    )
+    isolated_page.click("#iss-explorer .explorer-send")
+    output = isolated_page.locator("#iss-explorer .explorer-output")
+    isolated_page.wait_for_function(
+        "() => document.querySelector('#iss-explorer .explorer-output')"
+        ".classList.contains('is-json')"
+    )
+    assert '"message": "success"' in output.inner_text()
+    assert output.locator(".json-key", has_text='"message"').count() == 1
+    assert output.locator(".json-string", has_text='"success"').count() == 1
+    assert output.locator(".json-number", has_text="3").count() == 1
+    assert output.locator(".json-boolean", has_text="true").count() == 1
+    assert output.locator(".json-null", has_text="null").count() == 1
+
+
+def test_explorer_shows_non_json_responses_as_text(isolated_page):
+    isolated_page.route(
+        "https://api.open-notify.org/**",
+        lambda route: route.fulfill(
+            status=200, content_type="text/plain", body="not json at all"
+        ),
+    )
+    isolated_page.click("#iss-explorer .explorer-send")
+    output = isolated_page.locator("#iss-explorer .explorer-output")
+    isolated_page.wait_for_function(
+        "() => document.querySelector('#iss-explorer .explorer-output')"
+        ".textContent.includes('not json')"
+    )
+    assert "not json at all" in output.inner_text()
+    assert "is-json" not in (output.get_attribute("class") or "")
+
+
+def test_footer_links_to_linkedin(page):
+    link = page.locator('.footer-links a[href="https://www.linkedin.com/in/charles2ke/"]')
+    assert link.count() == 1
+    assert link.get_attribute("rel") == "noopener noreferrer"
+    assert "LinkedIn" in link.inner_text()

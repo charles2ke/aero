@@ -327,6 +327,33 @@ a { color: var(--accent); }
   white-space: pre-wrap;
 }
 
+.explorer .output.is-json {
+  background: var(--surface);
+  white-space: normal;
+}
+
+.output-note {
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+  white-space: normal;
+}
+
+.output-body {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font: inherit;
+}
+
+.json-key { color: var(--accent); }
+.json-string { color: #9ae6b4; }
+.json-number { color: #f6c177; }
+.json-boolean { color: #c4a7ff; }
+.json-null { color: var(--muted); }
+
 .output.loading { color: var(--muted); }
 
 /* Animations */
@@ -456,6 +483,23 @@ a { color: var(--accent); }
 .link-icon { transition: transform 0.15s ease-in-out; }
 
 .footer p { justify-content: center; }
+
+.footer-links {
+  margin: 0.5rem 0 0;
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.25rem 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-links a:hover,
+.footer-links a:focus { text-decoration: underline; }
 
 .footer-icon { color: var(--accent); }
 

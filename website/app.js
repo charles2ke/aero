@@ -534,6 +534,65 @@
     return text.length > max ? text.slice(0, max) + "\n… truncated" : text;
   }
 
+  // Splits pretty-printed JSON into tokens so each value can be coloured. Nodes are
+  // created with textContent only, so response data is never parsed as HTML.
+  var JSON_TOKEN = /("(\\.|[^"\\])*"\s*:)|("(\\.|[^"\\])*")|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|\b(true|false|null)\b/g;
+
+  function tokenClass(match) {
+    if (/^"/.test(match)) return /:\s*$/.test(match) ? "json-key" : "json-string";
+    if (match === "true" || match === "false") return "json-boolean";
+    if (match === "null") return "json-null";
+    return "json-number";
+  }
+
+  function highlightJSON(text) {
+    var fragment = document.createDocumentFragment();
+    var index = 0;
+    var match;
+    JSON_TOKEN.lastIndex = 0;
+    while ((match = JSON_TOKEN.exec(text)) !== null) {
+      if (match.index > index) {
+        fragment.appendChild(document.createTextNode(text.slice(index, match.index)));
+      }
+      var span = document.createElement("span");
+      span.className = tokenClass(match[0]);
+      span.textContent = match[0];
+      fragment.appendChild(span);
+      index = match.index + match[0].length;
+    }
+    if (index < text.length) {
+      fragment.appendChild(document.createTextNode(text.slice(index)));
+    }
+    return fragment;
+  }
+
+  // Renders a response body: pretty-printed and highlighted when it is JSON,
+  // plain text otherwise, with an optional note above it.
+  function renderBody(output, body, note) {
+    var formatted = null;
+    try {
+      formatted = JSON.stringify(JSON.parse(body), null, 2);
+    } catch (err) {
+      /* not JSON: show the raw body */
+    }
+    output.textContent = "";
+    output.classList.toggle("is-json", formatted !== null);
+    if (note) {
+      var noteElement = document.createElement("p");
+      noteElement.className = "output-note";
+      noteElement.textContent = note;
+      output.appendChild(noteElement);
+    }
+    var pre = document.createElement("pre");
+    pre.className = "output-body";
+    if (formatted === null) {
+      pre.textContent = preview(body);
+    } else {
+      pre.appendChild(highlightJSON(preview(formatted)));
+    }
+    output.appendChild(pre);
+  }
+
   function setupExplorer(form) {
     var endpoints = ENDPOINTS[form.dataset.module];
     if (!endpoints) return;
@@ -588,21 +647,17 @@
       output.classList.remove("loading");
       if (!result.ok) {
         output.classList.add("error");
+        output.classList.remove("is-json");
         output.textContent =
           "Request failed with status " + result.status + "\n" + preview(result.body, 300);
         return;
       }
-      var text = result.body;
-      try {
-        text = JSON.stringify(JSON.parse(result.body), null, 2);
-      } catch (err) {
-        /* not JSON: show the raw body */
-      }
-      output.textContent = (note ? note + "\n\n" : "") + preview(text);
+      renderBody(output, result.body, note);
     }
 
     function showFailure(err, extra) {
       output.classList.remove("loading");
+      output.classList.remove("is-json");
       output.classList.add("error");
       output.textContent =
         "Browser request failed (" + err.message + "). The service may block " +
@@ -613,6 +668,7 @@
     function send() {
       var url = buildUrl(current(), paramInput.value);
       output.classList.remove("error");
+      output.classList.remove("is-json");
       output.classList.add("loading");
       output.textContent = "Requesting …";
       proxyButton.hidden = true;
@@ -639,6 +695,7 @@
           proxyButton.onclick = function () {
             proxyButton.hidden = true;
             output.classList.remove("error");
+            output.classList.remove("is-json");
             output.classList.add("loading");
             output.textContent = "Retrying through the public CORS proxy …";
             request(proxyUrl(url))
