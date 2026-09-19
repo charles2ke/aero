@@ -28,6 +28,18 @@ def page():
         browser.close()
 
 
+@pytest.fixture(scope="module")
+def mobile_page(page):
+    mobile = page.context.browser.new_page(
+        viewport={"width": 320, "height": 568},
+        is_mobile=True,
+        has_touch=True,
+    )
+    mobile.goto(INDEX.as_uri())
+    yield mobile
+    mobile.close()
+
+
 def test_hero_and_sections_render(page):
     assert page.inner_text("h1") == "aero"
     for anchor in ("#modules", "#calculators", "#data", "#install"):
@@ -239,3 +251,29 @@ def test_decorative_icons_are_hidden_from_assistive_technology(page):
         ".filter(el => el.getAttribute('aria-hidden') !== 'true').length"
     )
     assert exposed == 0
+
+
+def test_mobile_layout_has_no_horizontal_overflow(mobile_page):
+    widths = mobile_page.evaluate(
+        "() => ({scroll: document.documentElement.scrollWidth,"
+        " client: document.documentElement.clientWidth})"
+    )
+    assert widths["scroll"] <= widths["client"]
+
+
+def test_mobile_form_controls_avoid_ios_zoom(mobile_page):
+    smallest = mobile_page.evaluate(
+        "() => Math.min(...[...document.querySelectorAll('input, select')]"
+        ".map(el => parseFloat(getComputedStyle(el).fontSize)))"
+    )
+    assert smallest >= 16
+
+
+def test_mobile_tap_targets_are_large_enough(mobile_page):
+    small = mobile_page.evaluate(
+        "() => [...document.querySelectorAll('a, button, input, select')]"
+        ".filter(el => { const r = el.getBoundingClientRect();"
+        " return r.width > 0 && r.height < 44; })"
+        ".map(el => el.outerHTML.slice(0, 80))"
+    )
+    assert small == []
