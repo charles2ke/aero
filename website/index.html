@@ -201,7 +201,7 @@
 
   <section id="explorer" class="section" aria-labelledby="explorer-heading">
     <h2 id="explorer-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-antenna"></use></svg>Try the data services</h2>
-    <p class="section-intro">Pick an endpoint from any data module to build the exact request the Python client would send. Send it live from your browser, or copy the equivalent <code>aero</code> snippet.</p>
+    <p class="section-intro">Pick an endpoint from any data module to build the exact request the Python client would send. Send it live from your browser, or copy the equivalent <code>aero</code> snippet. Services that block cross-origin calls fail in the browser; you can then choose to retry once through a public read-only CORS proxy, which sends the request URL to that third party. The retry is never offered when the request carries your own API key.</p>
 
     <div class="explorers">
       <form class="explorer" id="nasa-explorer" data-module="nasa" novalidate aria-labelledby="nasa-explorer-heading">
@@ -215,6 +215,7 @@
         <pre class="code snippet" id="nasa-snippet" tabindex="0" role="region" aria-label="aero.nasa Python snippet"><code class="explorer-snippet"></code></pre>
         <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
         <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.nasa</span></button>
+        <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.nasa</span></button>
         <output class="output explorer-output" for="nasa-endpoint nasa-param" aria-label="aero.nasa response" role="status" tabindex="0"></output>
       </form>
 
@@ -229,6 +230,7 @@
         <pre class="code snippet" id="esa-snippet" tabindex="0" role="region" aria-label="aero.esa Python snippet"><code class="explorer-snippet"></code></pre>
         <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
         <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.esa</span></button>
+        <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.esa</span></button>
         <output class="output explorer-output" for="esa-endpoint esa-param" aria-label="aero.esa response" role="status" tabindex="0"></output>
       </form>
 
@@ -243,6 +245,7 @@
         <pre class="code snippet" id="iss-snippet" tabindex="0" role="region" aria-label="aero.iss Python snippet"><code class="explorer-snippet"></code></pre>
         <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
         <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.iss</span></button>
+        <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.iss</span></button>
         <output class="output explorer-output" for="iss-endpoint iss-param" aria-label="aero.iss response" role="status" tabindex="0"></output>
       </form>
 
@@ -257,6 +260,7 @@
         <pre class="code snippet" id="isro-snippet" tabindex="0" role="region" aria-label="aero.isro Python snippet"><code class="explorer-snippet"></code></pre>
         <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
         <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.isro</span></button>
+        <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.isro</span></button>
         <output class="output explorer-output" for="isro-endpoint isro-param" aria-label="aero.isro response" role="status" tabindex="0"></output>
       </form>
     </div>

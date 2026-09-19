@@ -277,3 +277,65 @@ def test_mobile_tap_targets_are_large_enough(mobile_page):
         ".map(el => el.outerHTML.slice(0, 80))"
     )
     assert small == []
+
+
+@pytest.fixture
+def isolated_page(page):
+    new_page = page.context.browser.new_page()
+    new_page.goto(INDEX.as_uri())
+    yield new_page
+    new_page.close()
+
+
+def test_explorer_offers_opt_in_cors_proxy_retry(isolated_page):
+    proxied = []
+    isolated_page.route(
+        "https://api.open-notify.org/**", lambda route: route.abort("failed")
+    )
+    isolated_page.route(
+        "https://api.allorigins.win/**",
+        lambda route: (
+            proxied.append(route.request.url),
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body='{"message": "success"}',
+            ),
+        )[-1],
+    )
+    isolated_page.click("#iss-explorer .explorer-send")
+    output = isolated_page.locator("#iss-explorer .explorer-output")
+    retry = isolated_page.locator("#iss-explorer .explorer-proxy")
+    retry.wait_for(state="visible")
+    assert proxied == []
+    assert "Browser request failed" in output.inner_text()
+
+    retry.click()
+    isolated_page.wait_for_function(
+        "() => document.querySelector('#iss-explorer .explorer-output')"
+        ".textContent.includes('success')"
+    )
+    text = output.inner_text()
+    assert len(proxied) == 1
+    assert "Fetched through the public CORS proxy" in text
+    assert text.count("blocks direct browser requests") == 1
+
+
+def test_explorer_does_not_offer_proxy_for_requests_carrying_an_api_key(isolated_page):
+    proxied = []
+    isolated_page.route("https://api.nasa.gov/**", lambda route: route.abort("failed"))
+    isolated_page.route(
+        "https://api.allorigins.win/**",
+        lambda route: (proxied.append(route.request.url), route.abort("failed"))[-1],
+    )
+    isolated_page.fill("#nasa-param", "MY-PRIVATE-KEY")
+    isolated_page.click("#nasa-explorer .explorer-send")
+    isolated_page.wait_for_function(
+        "() => document.querySelector('#nasa-explorer .explorer-output')"
+        ".textContent.includes('API key')"
+    )
+    assert proxied == []
+    assert isolated_page.locator("#nasa-explorer .explorer-proxy").is_hidden()
+    assert "Browser request failed" in isolated_page.inner_text(
+        "#nasa-explorer .explorer-output"
+    )
