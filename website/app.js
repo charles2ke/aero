@@ -508,6 +508,25 @@
     return "\"" + String(value).replace(/\\/g, "\\\\").replace(/"/g, "\\\"") + "\"";
   }
 
+  // Some services do not send CORS headers, so a direct browser request fails even
+  // though the Python client works. Those requests are retried through a public
+  // read-only proxy, which is skipped whenever the URL carries a private key.
+  var CORS_PROXY = "https://api.allorigins.win/raw?url=";
+  var SECRET_QUERY_KEYS = ["api_key", "apikey", "key", "token", "access_token"];
+  var PUBLIC_KEY_VALUES = ["DEMO_KEY", ""];
+
+  function carriesPrivateKey(url) {
+    var params = new URL(url).searchParams;
+    return SECRET_QUERY_KEYS.some(function (name) {
+      var value = params.get(name);
+      return value !== null && PUBLIC_KEY_VALUES.indexOf(value) === -1;
+    });
+  }
+
+  function proxyUrl(url) {
+    return CORS_PROXY + encodeURIComponent(url);
+  }
+
   function preview(text, limit) {
     var max = limit === undefined ? 1200 : limit;
     return text.length > max ? text.slice(0, max) + "\n… truncated" : text;
@@ -553,36 +572,70 @@
       link.href = url;
     }
 
+    function request(url) {
+      return fetch(url, { headers: { Accept: "application/json, text/plain, */*" } })
+        .then(function (response) {
+          return response.text().then(function (body) {
+            return { ok: response.ok, status: response.status, body: body };
+          });
+        });
+    }
+
+    function showResult(result, note) {
+      output.classList.remove("loading");
+      if (!result.ok) {
+        output.classList.add("error");
+        output.textContent =
+          "Request failed with status " + result.status + "\n" + preview(result.body, 300);
+        return;
+      }
+      var text = result.body;
+      try {
+        text = JSON.stringify(JSON.parse(result.body), null, 2);
+      } catch (err) {
+        /* not JSON: show the raw body */
+      }
+      output.textContent = (note ? note + "\n\n" : "") + preview(text);
+    }
+
+    function showFailure(err, extra) {
+      output.classList.remove("loading");
+      output.classList.add("error");
+      output.textContent =
+        "Browser request failed (" + err.message + "). The service may block " +
+        "cross-origin calls — open the URL above, or run the Python snippet." +
+        (extra ? "\n" + extra : "");
+    }
+
     function send() {
       var url = buildUrl(current(), paramInput.value);
       output.classList.remove("error");
       output.classList.add("loading");
       output.textContent = "Requesting …";
-      fetch(url, { headers: { Accept: "application/json, text/plain, */*" } })
-        .then(function (response) {
-          return response.text().then(function (body) {
-            output.classList.remove("loading");
-            if (!response.ok) {
-              output.classList.add("error");
-              output.textContent =
-                "Request failed with status " + response.status + "\n" + preview(body, 300);
-              return;
-            }
-            var text = body;
-            try {
-              text = JSON.stringify(JSON.parse(body), null, 2);
-            } catch (err) {
-              /* not JSON: show the raw body */
-            }
-            output.textContent = preview(text);
-          });
+      request(url)
+        .then(function (result) {
+          showResult(result);
         })
         .catch(function (err) {
-          output.classList.remove("loading");
-          output.classList.add("error");
-          output.textContent =
-            "Browser request failed (" + err.message + "). The service may block " +
-            "cross-origin calls — open the URL above, or run the Python snippet.";
+          if (carriesPrivateKey(url)) {
+            showFailure(
+              err,
+              "The request carries an API key, so it was not retried through the public proxy."
+            );
+            return;
+          }
+          output.textContent = "Blocked by the browser — retrying through a CORS proxy …";
+          return request(proxyUrl(url))
+            .then(function (result) {
+              showResult(
+                result,
+                "Fetched through the public CORS proxy " + CORS_PROXY + " because " +
+                  new URL(url).host + " blocks direct browser requests."
+              );
+            })
+            .catch(function () {
+              showFailure(err, "The CORS proxy fallback failed as well.");
+            });
         });
     }
 

@@ -201,7 +201,7 @@
 
   <section id="explorer" class="section" aria-labelledby="explorer-heading">
     <h2 id="explorer-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-antenna"></use></svg>Try the data services</h2>
-    <p class="section-intro">Pick an endpoint from any data module to build the exact request the Python client would send. Send it live from your browser, or copy the equivalent <code>aero</code> snippet.</p>
+    <p class="section-intro">Pick an endpoint from any data module to build the exact request the Python client would send. Send it live from your browser, or copy the equivalent <code>aero</code> snippet. Services that block cross-origin calls are retried through a public read-only CORS proxy, which is skipped when the request carries your own API key.</p>
 
     <div class="explorers">
       <form class="explorer" id="nasa-explorer" data-module="nasa" novalidate aria-labelledby="nasa-explorer-heading">

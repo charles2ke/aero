@@ -277,3 +277,54 @@ def test_mobile_tap_targets_are_large_enough(mobile_page):
         ".map(el => el.outerHTML.slice(0, 80))"
     )
     assert small == []
+
+
+@pytest.fixture
+def isolated_page(page):
+    new_page = page.context.browser.new_page()
+    new_page.goto(INDEX.as_uri())
+    yield new_page
+    new_page.close()
+
+
+def test_explorer_falls_back_to_cors_proxy(isolated_page):
+    isolated_page.route(
+        "https://api.open-notify.org/**", lambda route: route.abort("failed")
+    )
+    isolated_page.route(
+        "https://api.allorigins.win/**",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='{"message": "success"}',
+        ),
+    )
+    isolated_page.click("#iss-explorer .explorer-send")
+    output = isolated_page.locator("#iss-explorer .explorer-output")
+    output.wait_for()
+    isolated_page.wait_for_function(
+        "() => document.querySelector('#iss-explorer .explorer-output')"
+        ".textContent.includes('success')"
+    )
+    text = output.inner_text()
+    assert "api.allorigins.win" in text
+    assert "api.open-notify.org" in text
+
+
+def test_explorer_does_not_proxy_requests_carrying_an_api_key(isolated_page):
+    proxied = []
+    isolated_page.route("https://api.nasa.gov/**", lambda route: route.abort("failed"))
+    isolated_page.route(
+        "https://api.allorigins.win/**",
+        lambda route: (proxied.append(route.request.url), route.abort("failed"))[-1],
+    )
+    isolated_page.fill("#nasa-param", "MY-PRIVATE-KEY")
+    isolated_page.click("#nasa-explorer .explorer-send")
+    isolated_page.wait_for_function(
+        "() => document.querySelector('#nasa-explorer .explorer-output')"
+        ".textContent.includes('API key')"
+    )
+    assert proxied == []
+    assert "Browser request failed" in isolated_page.inner_text(
+        "#nasa-explorer .explorer-output"
+    )
