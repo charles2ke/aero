@@ -44,6 +44,7 @@ a { color: var(--accent); }
 }
 
 .brand {
+  min-height: 44px;
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -54,13 +55,17 @@ a { color: var(--accent); }
 .nav-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.25rem;
+  gap: 0.25rem 0.75rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.5rem;
   color: var(--muted);
   text-decoration: none;
 }
@@ -95,6 +100,7 @@ a { color: var(--accent); }
 
 .button {
   display: inline-block;
+  min-height: 44px;
   padding: 0.7rem 1.4rem;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -141,7 +147,7 @@ a { color: var(--accent); }
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: 1rem;
 }
 
@@ -164,7 +170,7 @@ a { color: var(--accent); }
 
 .calculators {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 1rem;
 }
 
@@ -193,6 +199,7 @@ a { color: var(--accent); }
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text);
+  min-height: 44px;
   padding: 0.55rem 0.7rem;
   font-size: 1rem;
 }
@@ -234,6 +241,9 @@ a { color: var(--accent); }
 }
 
 .try-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   text-decoration: none;
   font-weight: 600;
 }
@@ -242,7 +252,7 @@ a { color: var(--accent); }
 
 .explorers {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: 1rem;
 }
 
@@ -272,8 +282,9 @@ a { color: var(--accent); }
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text);
+  min-height: 44px;
   padding: 0.55rem 0.7rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .explorer select:focus,
@@ -285,14 +296,19 @@ a { color: var(--accent); }
 .explorer .snippet {
   margin: 0;
   background: var(--bg);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 .request-url {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--muted);
   word-break: break-all;
+}
+
+.explorer-url {
+  display: inline-block;
+  padding: 0.7rem 0;
 }
 
 .explorer-send {
@@ -509,4 +525,26 @@ a { color: var(--accent); }
   .card,
   .calculator,
   .explorer { border: 1px solid CanvasText; }
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+  .nav { padding: 0.75rem 1rem; }
+
+  .hero { padding-bottom: 2.5rem; }
+
+  .hero-content { padding: 2rem 1rem 0; }
+
+  .section { padding: 2.5rem 1rem; }
+
+  .hero-actions .button {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .code { font-size: 0.85rem; }
+
+  .explorer .snippet code { white-space: pre-wrap; }
+
+  .explorer-send { align-self: stretch; }
 }
