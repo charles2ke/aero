@@ -509,8 +509,10 @@
   }
 
   // Some services do not send CORS headers, so a direct browser request fails even
-  // though the Python client works. Those requests are retried through a public
-  // read-only proxy, which is skipped whenever the URL carries a private key.
+  // though the Python client works. Such a request can be retried through a public
+  // read-only proxy, but only when the visitor explicitly asks for it: the retry
+  // sends the whole URL, including any query the visitor typed, to a third party.
+  // The opt-in is never offered when the URL carries a private key.
   var CORS_PROXY = "https://api.allorigins.win/raw?url=";
   var SECRET_QUERY_KEYS = ["api_key", "apikey", "key", "token", "access_token"];
   var PUBLIC_KEY_VALUES = ["DEMO_KEY", ""];
@@ -542,6 +544,7 @@
     var snippet = form.querySelector(".explorer-snippet");
     var link = form.querySelector(".explorer-url");
     var output = form.querySelector(".explorer-output");
+    var proxyButton = form.querySelector(".explorer-proxy");
 
     endpoints.forEach(function (endpoint, index) {
       var option = document.createElement("option");
@@ -612,6 +615,7 @@
       output.classList.remove("error");
       output.classList.add("loading");
       output.textContent = "Requesting …";
+      proxyButton.hidden = true;
       request(url)
         .then(function (result) {
           showResult(result);
@@ -620,22 +624,35 @@
           if (carriesPrivateKey(url)) {
             showFailure(
               err,
-              "The request carries an API key, so it was not retried through the public proxy."
+              "The request carries an API key, so it is not offered for a retry " +
+                "through the public proxy."
             );
             return;
           }
-          output.textContent = "Blocked by the browser — retrying through a CORS proxy …";
-          return request(proxyUrl(url))
-            .then(function (result) {
-              showResult(
-                result,
-                "Fetched through the public CORS proxy " + CORS_PROXY + " because " +
-                  new URL(url).host + " blocks direct browser requests."
-              );
-            })
-            .catch(function () {
-              showFailure(err, "The CORS proxy fallback failed as well.");
-            });
+          showFailure(
+            err,
+            "You can retry through the public read-only CORS proxy " + CORS_PROXY +
+              ", which sends this URL — including the query you typed — to that " +
+              "third-party service."
+          );
+          proxyButton.hidden = false;
+          proxyButton.onclick = function () {
+            proxyButton.hidden = true;
+            output.classList.remove("error");
+            output.classList.add("loading");
+            output.textContent = "Retrying through the public CORS proxy …";
+            request(proxyUrl(url))
+              .then(function (result) {
+                showResult(
+                  result,
+                  "Fetched through the public CORS proxy " + CORS_PROXY + " because " +
+                    new URL(url).host + " blocks direct browser requests."
+                );
+              })
+              .catch(function (proxyErr) {
+                showFailure(proxyErr, "The CORS proxy retry failed as well.");
+              });
+          };
         });
     }
 

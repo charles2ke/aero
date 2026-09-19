@@ -311,12 +311,15 @@ a { color: var(--accent); }
   padding: 0.7rem 0;
 }
 
-.explorer-send {
+.explorer-send,
+.explorer-proxy {
   align-self: flex-start;
   cursor: pointer;
   font: inherit;
   font-weight: 600;
 }
+
+.explorer-proxy[hidden] { display: none; }
 
 .explorer .output {
   max-height: 16rem;
@@ -546,5 +549,6 @@ a { color: var(--accent); }
 
   .explorer .snippet code { white-space: pre-wrap; }
 
-  .explorer-send { align-self: stretch; }
+  .explorer-send,
+  .explorer-proxy { align-self: stretch; }
 }
