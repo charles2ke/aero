@@ -382,7 +382,7 @@ def test_explorer_shows_non_json_responses_as_text(isolated_page):
 
 
 def test_footer_links_to_linkedin(page):
-    link = page.locator('.footer-links a[href*="linkedin.com"]')
+    link = page.locator('.footer-links a[href="https://www.linkedin.com/in/charles2ke/"]')
     assert link.count() == 1
     assert link.get_attribute("rel") == "noopener noreferrer"
     assert "LinkedIn" in link.inner_text()
