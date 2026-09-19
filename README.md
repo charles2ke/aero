@@ -13,6 +13,9 @@ A small Python library of common aerospace engineering calculations:
   mass ratios, propellant sizing, specific impulse and exhaust velocity,
   thrust and mass flow, burn time, thrust-to-weight ratio, and multi-stage
   delta-v budgets.
+- `aero.navigation` — great-circle (shortest path) navigation over a
+  spherical Earth: central angle, distance, initial/final bearing,
+  destination point, intermediate point, and sampled route points.
 - `aero.nasa` — connectivity to NASA's public Open APIs, covering multiple
   NASA programs: APOD, Mars Rover Photos, NeoWs, DONKI, EPIC, InSight Mars
   weather, TechPort, and the Exoplanet Archive.
@@ -38,7 +41,7 @@ pip install -e .
 ## Usage
 
 ```python
-from aero import atmosphere, aerodynamics, orbital, rocketry
+from aero import atmosphere, aerodynamics, navigation, orbital, rocketry
 
 # Standard atmosphere at 5000 m altitude
 rho = atmosphere.density(5000)
@@ -56,6 +59,11 @@ dv = rocketry.delta_v(ve, initial_mass=5500.0, final_mass=1500.0)
 
 # Liftoff thrust-to-weight ratio
 twr = rocketry.thrust_to_weight_ratio(thrust_force=7_600_000.0, mass=549_054.0)
+
+# Shortest path (great circle) from New York JFK to London Heathrow
+distance = navigation.great_circle_distance(40.6413, -73.7781, 51.4700, -0.4543)
+course = navigation.initial_bearing(40.6413, -73.7781, 51.4700, -0.4543)
+route = navigation.shortest_path(40.6413, -73.7781, 51.4700, -0.4543, segments=8)
 ```
 
 ### Connecting to NASA programs

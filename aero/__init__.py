@@ -1,6 +1,16 @@
 """aero: a small library of common aerospace engineering calculations."""
 
-from . import aerodynamics, atmosphere, esa, iss, isro, nasa, orbital, rocketry
+from . import (
+    aerodynamics,
+    atmosphere,
+    esa,
+    iss,
+    isro,
+    nasa,
+    navigation,
+    orbital,
+    rocketry,
+)
 
 __version__ = "0.1.0"
 
@@ -11,6 +21,7 @@ __all__ = [
     "iss",
     "isro",
     "nasa",
+    "navigation",
     "orbital",
     "rocketry",
     "__version__",
