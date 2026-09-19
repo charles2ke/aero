@@ -86,6 +86,14 @@ def test_intermediate_point_same_position():
     assert navigation.intermediate_point(*JFK, *JFK, 0.5) == pytest.approx(JFK)
 
 
+def test_antipodal_interpolation_raises():
+    antipode = (-JFK[0], JFK[1] + 180.0)
+    with pytest.raises(ValueError, match="antipodal"):
+        navigation.intermediate_point(*JFK, *antipode, 0.5)
+    with pytest.raises(ValueError, match="antipodal"):
+        navigation.shortest_path(*JFK, *antipode)
+
+
 def test_shortest_path_sampling():
     path = navigation.shortest_path(*JFK, *LHR, segments=4)
     assert len(path) == 5

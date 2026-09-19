@@ -131,6 +131,8 @@ def intermediate_point(
     """Return the point a given fraction along the shortest path.
 
     ``fraction`` is 0.0 at the first position and 1.0 at the second.
+    Raises ``ValueError`` when the positions are antipodal because their
+    shortest path is not unique.
     """
     if not 0.0 <= fraction <= 1.0:
         raise ValueError("fraction must be between 0 and 1")
@@ -143,6 +145,8 @@ def intermediate_point(
 
     if delta == 0.0:
         return lat1, (lon1 + 540.0) % 360.0 - 180.0
+    if math.isclose(delta, math.pi, rel_tol=0.0, abs_tol=1e-7):
+        raise ValueError("shortest path is undefined for antipodal positions")
 
     a = math.sin((1.0 - fraction) * delta) / math.sin(delta)
     b = math.sin(fraction * delta) / math.sin(delta)
