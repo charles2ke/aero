@@ -316,9 +316,14 @@ def test_explorer_offers_opt_in_cors_proxy_retry(isolated_page):
         ".textContent.includes('success')"
     )
     text = output.inner_text()
+    note = output.locator(".output-note")
+    body = output.locator(".output-body")
     assert len(proxied) == 1
     assert "Fetched through the public CORS proxy" in text
-    assert text.count("blocks direct browser requests") == 1
+    assert note.count() == 1
+    assert "Fetched through the public CORS proxy" in note.inner_text()
+    assert note.inner_text().count("blocks direct browser requests") == 1
+    assert body.inner_text() == '{\n  "message": "success"\n}'
 
 
 def test_explorer_does_not_offer_proxy_for_requests_carrying_an_api_key(isolated_page):
