@@ -8,8 +8,12 @@ calculations — standard atmosphere, aerodynamics, orbital mechanics,
 rocketry and great-circle navigation — plus read-only clients for public
 space-agency data services (NASA, ESA, ISS and ISRO).
 
-Every function is pure Python with type hints, uses SI units, and is
-covered by tests.
+The calculation helpers are pure Python with type hints and use SI units,
+except that `aero.navigation` takes latitude, longitude and bearings in
+degrees (and `central_angle` returns radians). The data-service clients
+perform HTTP requests and return the provider's payload as-is, so their
+values are in whatever units the service publishes. Everything is covered
+by tests.
 
 ## Contents
 
