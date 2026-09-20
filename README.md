@@ -99,7 +99,7 @@ read-only and need no account.
 - Altitudes are geopotential altitudes above mean sea level; the ISA model
   is defined up to 20 km.
 - Latitudes and longitudes are in **degrees** (latitude in `[-90, 90]`,
-  longitude in `[-180, 180]`); bearings are degrees clockwise from true
+  longitude in `[-180, 360]`); bearings are degrees clockwise from true
   north in `[0, 360)`.
 - Invalid inputs (for example a negative mass ratio or an out-of-range
   latitude) raise `ValueError`.
