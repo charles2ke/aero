@@ -1,44 +1,50 @@
 # aero
-Aerospace Engineering
 
-A small Python library of common aerospace engineering calculations:
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 
-- `aero.atmosphere` — International Standard Atmosphere (ISA) model
-  (temperature, pressure, density, and speed of sound up to 20 km).
-- `aero.aerodynamics` — dynamic pressure, lift, drag, lift-to-drag ratio,
-  Mach number, and Reynolds number.
-- `aero.orbital` — orbital mechanics helpers (vis-viva orbital velocity,
-  circular orbital velocity, orbital period, and escape velocity).
-- `aero.rocketry` — rocket science: the Tsiolkovsky rocket equation,
-  mass ratios, propellant sizing, specific impulse and exhaust velocity,
-  thrust and mass flow, burn time, thrust-to-weight ratio, and multi-stage
-  delta-v budgets.
-- `aero.navigation` — great-circle (shortest path) navigation over a
-  spherical Earth: central angle, distance, initial/final bearing,
-  destination point, intermediate point, and sampled route points.
-- `aero.nasa` — connectivity to NASA's public Open APIs, covering multiple
-  NASA programs: APOD, Mars Rover Photos, NeoWs, DONKI, EPIC, InSight Mars
-  weather, TechPort, and the Exoplanet Archive.
-- `aero.esa` — connectivity to public European Space Agency (ESA) data
-  services: the ESA Open Data Portal, the Copernicus Data Space Ecosystem
-  (Sentinel products), the Gaia Archive, and the NEOCC near-Earth object
-  risk list.
-- `aero.iss` — connectivity to International Space Station program data
-  services: Open Notify (ISS position, people in space), "Where the ISS
-  at?" (state vectors, position propagation, TLEs), and CelesTrak orbital
-  elements for the ISS and the `stations` group.
-- `aero.isro` — connectivity to Indian Space Research Organisation (ISRO)
-  data services: the public ISRO API (spacecraft, launchers, customer
-  satellites, centres), ISRO launch records from Launch Library 2, and
-  CelesTrak orbital elements for ISRO spacecraft including NavIC (IRNSS).
+A small, dependency-light Python library of common aerospace engineering
+calculations — standard atmosphere, aerodynamics, orbital mechanics,
+rocketry and great-circle navigation — plus read-only clients for public
+space-agency data services (NASA, ESA, ISS and ISRO).
+
+The calculation helpers are pure Python with type hints and use SI units,
+except that `aero.navigation` takes latitude, longitude and bearings in
+degrees (and `central_angle` returns radians). The data-service clients
+perform HTTP requests and return the provider's payload as-is, so their
+values are in whatever units the service publishes. Everything is covered
+by tests.
+
+## Contents
+
+- [Installation](#installation)
+- [Quick start](#quick-start)
+- [Modules](#modules)
+  - [Calculation modules](#calculation-modules)
+  - [Data-service clients](#data-service-clients)
+- [Units and conventions](#units-and-conventions)
+- [Connecting to NASA programs](#connecting-to-nasa-programs)
+- [Connecting to European space programs](#connecting-to-european-space-programs)
+- [Connecting to International Space Station programs](#connecting-to-international-space-station-programs)
+- [Connecting to ISRO programs](#connecting-to-isro-programs)
+- [Error handling](#error-handling)
+- [Website](#website)
+- [Running tests](#running-tests)
+- [License](#license)
 
 ## Installation
 
+Python 3.8 or newer is required. The only runtime dependency is
+[`requests`](https://pypi.org/project/requests/), used by the data-service
+clients.
+
 ```bash
+git clone https://github.com/charles2ke/aero.git
+cd aero
 pip install -e .
 ```
 
-## Usage
+## Quick start
 
 ```python
 from aero import atmosphere, aerodynamics, navigation, orbital, rocketry
@@ -66,7 +72,43 @@ course = navigation.initial_bearing(40.6413, -73.7781, 51.4700, -0.4543)
 route = navigation.shortest_path(40.6413, -73.7781, 51.4700, -0.4543, segments=8)
 ```
 
-### Connecting to NASA programs
+## Modules
+
+### Calculation modules
+
+| Module | What it provides |
+| --- | --- |
+| `aero.atmosphere` | International Standard Atmosphere (ISA) model: `temperature`, `pressure`, `density`, `speed_of_sound`, valid up to 20 km. |
+| `aero.aerodynamics` | `dynamic_pressure`, `lift`, `drag`, `lift_to_drag_ratio`, `mach_number`, `reynolds_number`. |
+| `aero.orbital` | `orbital_velocity` (vis-viva), `circular_orbital_velocity`, `orbital_period`, `escape_velocity`, plus `EARTH_MU` and `EARTH_RADIUS`. |
+| `aero.rocketry` | Tsiolkovsky rocket equation (`delta_v`), `mass_ratio`, `propellant_mass`, `specific_impulse`/`exhaust_velocity`, `thrust`, `mass_flow_rate`, `burn_time`, `thrust_to_weight_ratio`, and multi-stage budgets (`stage_delta_v`, `total_delta_v`). |
+| `aero.navigation` | Great-circle navigation over a spherical Earth: `central_angle`, `great_circle_distance`, `initial_bearing`, `final_bearing`, `destination_point`, `intermediate_point`, `shortest_path`. |
+
+### Data-service clients
+
+| Module | Client | Services covered |
+| --- | --- | --- |
+| `aero.nasa` | `NASAClient` | NASA Open APIs: APOD, Mars Rover Photos, NeoWs, DONKI, EPIC, InSight Mars weather, TechPort, Exoplanet Archive. |
+| `aero.esa` | `ESAClient` | ESA Open Data Portal, Copernicus Data Space Ecosystem (Sentinel products), Gaia Archive, NEOCC near-Earth object risk list. |
+| `aero.iss` | `ISSClient` | Open Notify (ISS position, people in space), "Where the ISS at?" (state vectors, propagated positions, TLEs), CelesTrak elements for the ISS and the `stations` group. |
+| `aero.isro` | `ISROClient` | ISRO API (spacecraft, launchers, customer satellites, centres), ISRO launch records from Launch Library 2, CelesTrak elements for ISRO spacecraft including NavIC (IRNSS). |
+
+Only the NASA client uses an API key; the ESA, ISS and ISRO services are
+read-only and need no account.
+
+## Units and conventions
+
+- All calculations use **SI units**: metres, seconds, kilograms, kelvin,
+  pascals, newtons.
+- Altitudes are geopotential altitudes above mean sea level; the ISA model
+  is defined up to 20 km.
+- Latitudes and longitudes are in **degrees** (latitude in `[-90, 90]`,
+  longitude in `[-180, 360]`); bearings are degrees clockwise from true
+  north in `[0, 360)`.
+- Invalid inputs (for example a negative mass ratio or an out-of-range
+  latitude) raise `ValueError`.
+
+## Connecting to NASA programs
 
 `aero.nasa.NASAClient` provides connectivity to several NASA Open APIs.
 Register a free API key at https://api.nasa.gov/ and set it via the
@@ -88,7 +130,7 @@ client.techport_projects()
 client.exoplanets(query="select pl_name from ps")  # no API key required
 ```
 
-### Connecting to European space programs
+## Connecting to European space programs
 
 `aero.esa.ESAClient` provides connectivity to public European Space
 Agency (ESA) data services. None of these read-only endpoints require an
@@ -105,7 +147,7 @@ client.gaia_query("select top 10 * from gaiadr3.gaia_source")  # Gaia Archive
 client.neocc_risk_list()                              # NEOCC risk list
 ```
 
-### Connecting to International Space Station programs
+## Connecting to International Space Station programs
 
 `aero.iss.ISSClient` provides connectivity to public International Space
 Station data services. None of these read-only endpoints require an API key
@@ -125,7 +167,7 @@ client.celestrak_elements()                  # CelesTrak: ISS orbital elements
 client.station_elements()                    # CelesTrak: all "stations" group objects
 ```
 
-### Connecting to ISRO programs
+## Connecting to ISRO programs
 
 `aero.isro.ISROClient` provides connectivity to public Indian Space
 Research Organisation (ISRO) data services. None of these read-only
@@ -145,6 +187,26 @@ client.launches(upcoming=True)           # Launch Library 2: upcoming ISRO launc
 client.agency()                          # Launch Library 2: ISRO agency metadata
 client.celestrak_elements(norad_id=41384)  # CelesTrak: elements for one spacecraft
 client.navic_elements()                  # CelesTrak: NavIC (IRNSS) constellation
+```
+
+## Error handling
+
+Each client raises its own `RuntimeError` subclass — `NASAAPIError`,
+`ESAAPIError`, `ISSAPIError`, `ISROAPIError` — when a request fails or the
+service returns a non-OK response. Every client also accepts an injectable
+`requests.Session` and a `timeout` (seconds), which is handy for retries,
+proxies, custom headers and testing.
+
+```python
+import requests
+from aero import iss
+
+client = iss.ISSClient(session=requests.Session(), timeout=10)
+
+try:
+    position = client.current_location()
+except iss.ISSAPIError as exc:
+    print(f"ISS service unavailable: {exc}")
 ```
 
 ## Website
@@ -184,6 +246,9 @@ pip install pytest
 pytest
 ```
 
+The library tests stub out HTTP calls, so no network access or API key is
+needed to run them.
+
 The website tests use Playwright and are skipped unless it is installed:
 
 ```bash
@@ -191,3 +256,7 @@ pip install playwright
 playwright install chromium
 pytest tests/test_website.py
 ```
+
+## License
+
+Released under the [MIT License](LICENSE).
