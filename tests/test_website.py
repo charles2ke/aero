@@ -15,15 +15,13 @@ sync_playwright = pytest.importorskip("playwright.sync_api").sync_playwright
 INDEX = pathlib.Path(__file__).resolve().parent.parent / "website" / "index.html"
 
 
-def assert_clipboard_text(page, expected):
+def wait_for_clipboard_text(page, expected):
     page.wait_for_function(
         "(expected) => navigator.clipboard.readText()"
         ".then((text) => text.trim() === expected.trim())",
         arg=expected,
         timeout=3000,
     )
-    copied = page.evaluate("() => navigator.clipboard.readText()")
-    assert copied.strip() == expected.strip()
 
 
 @pytest.fixture(scope="module")
@@ -180,7 +178,7 @@ def test_copy_button_copies_snippet(page):
     wrapper = page.locator("#install .code-wrapper").first
     expected = wrapper.locator("pre.code").inner_text()
     wrapper.locator(".copy-button").click()
-    assert_clipboard_text(page, expected)
+    wait_for_clipboard_text(page, expected)
     assert "Copied" in wrapper.locator(".copy-button").inner_text()
 
     page.select_option("#nasa-endpoint", label="neo_lookup() — near-Earth object lookup")
@@ -189,7 +187,7 @@ def test_copy_button_copies_snippet(page):
     expected = wrapper.locator("pre.code").inner_text()
     assert 'neo_lookup(asteroid_id="2000433")' in expected
     wrapper.locator(".copy-button").click()
-    assert_clipboard_text(page, expected)
+    wait_for_clipboard_text(page, expected)
 
 
 def test_every_module_has_a_try_it_link(page):
