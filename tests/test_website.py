@@ -174,6 +174,16 @@ def test_copy_button_copies_snippet(page):
     assert copied.strip() == expected.strip()
     assert "Copied" in wrapper.locator(".copy-button").inner_text()
 
+    page.select_option("#nasa-endpoint", "4")
+    page.fill("#nasa-param", "2000433")
+    wrapper = page.locator("#nasa-explorer .code-wrapper")
+    expected = wrapper.locator("pre.code").inner_text()
+    assert 'neo_lookup(asteroid_id="2000433")' in expected
+    wrapper.locator(".copy-button").click()
+    page.wait_for_timeout(200)
+    copied = page.evaluate("() => navigator.clipboard.readText()")
+    assert copied.strip() == expected.strip()
+
 
 def test_every_module_has_a_try_it_link(page):
     targets = [
