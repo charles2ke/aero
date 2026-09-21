@@ -14,6 +14,7 @@ sync_playwright = pytest.importorskip("playwright.sync_api").sync_playwright
 
 INDEX = pathlib.Path(__file__).resolve().parent.parent / "website" / "index.html"
 CLIPBOARD_WAIT_TIMEOUT_MS = 3000
+NASA_NEO_LOOKUP_LABEL = "neo_lookup() — near-Earth object lookup"
 
 
 def wait_for_clipboard_text(page, expected):
@@ -182,7 +183,7 @@ def test_copy_button_copies_snippet(page):
     wait_for_clipboard_text(page, expected)
     assert "Copied" in wrapper.locator(".copy-button").inner_text()
 
-    page.select_option("#nasa-endpoint", label="neo_lookup() — near-Earth object lookup")
+    page.select_option("#nasa-endpoint", label=NASA_NEO_LOOKUP_LABEL)
     page.fill("#nasa-param", "2000433")
     wrapper = page.locator("#nasa-explorer .code-wrapper")
     expected = wrapper.locator("pre.code").inner_text()
