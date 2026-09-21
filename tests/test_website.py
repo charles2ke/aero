@@ -13,7 +13,7 @@ import pytest
 sync_playwright = pytest.importorskip("playwright.sync_api").sync_playwright
 
 INDEX = pathlib.Path(__file__).resolve().parent.parent / "website" / "index.html"
-CLIPBOARD_WAIT_TIMEOUT_MS = 3000
+DEFAULT_WAIT_TIMEOUT_MS = 3000
 NASA_NEO_LOOKUP_LABEL = "neo_lookup() — near-Earth object lookup"
 NASA_NEO_ASTEROID_ID = "2000433"
 
@@ -23,7 +23,7 @@ def wait_for_clipboard_text(page, expected):
         "(expected) => navigator.clipboard.readText()"
         ".then((text) => text.trim() === expected.trim())",
         arg=expected,
-        timeout=CLIPBOARD_WAIT_TIMEOUT_MS,
+        timeout=DEFAULT_WAIT_TIMEOUT_MS,
     )
 
 
@@ -192,7 +192,7 @@ def test_copy_button_copies_snippet(page):
         "(expected) => document.querySelector('#nasa-explorer pre.code')"
         ".innerText.includes(expected)",
         arg=expected_snippet,
-        timeout=CLIPBOARD_WAIT_TIMEOUT_MS,
+        timeout=DEFAULT_WAIT_TIMEOUT_MS,
     )
     expected = wrapper.locator("pre.code").inner_text()
     assert expected_snippet in expected
