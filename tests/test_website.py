@@ -13,6 +13,7 @@ import pytest
 sync_playwright = pytest.importorskip("playwright.sync_api").sync_playwright
 
 INDEX = pathlib.Path(__file__).resolve().parent.parent / "website" / "index.html"
+CLIPBOARD_WAIT_TIMEOUT_MS = 3000
 
 
 def wait_for_clipboard_text(page, expected):
@@ -20,7 +21,7 @@ def wait_for_clipboard_text(page, expected):
         "(expected) => navigator.clipboard.readText()"
         ".then((text) => text.trim() === expected.trim())",
         arg=expected,
-        timeout=3000,
+        timeout=CLIPBOARD_WAIT_TIMEOUT_MS,
     )
 
 
