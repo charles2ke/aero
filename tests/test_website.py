@@ -18,13 +18,9 @@ NASA_NEO_LOOKUP_LABEL = "neo_lookup() — near-Earth object lookup"
 NASA_NEO_ASTEROID_ID = "2000433"
 
 
-def wait_for_clipboard_text(page, expected):
-    page.wait_for_function(
-        "(expected) => navigator.clipboard.readText()"
-        ".then((text) => text.trim() === expected.trim())",
-        arg=expected,
-        timeout=DEFAULT_WAIT_TIMEOUT_MS,
-    )
+def assert_clipboard_text(page, expected):
+    copied = page.evaluate("() => navigator.clipboard.readText()")
+    assert copied.strip() == expected.strip()
 
 
 def wait_for_locator_text(page, selector, expected):
@@ -193,7 +189,8 @@ def test_copy_button_copies_snippet(page):
     wrapper = page.locator("#install .code-wrapper").first
     expected = wrapper.locator("pre.code").inner_text()
     wrapper.locator(".copy-button").click()
-    wait_for_clipboard_text(page, expected)
+    wait_for_locator_text(page, "#install .code-wrapper .copy-button", "Copied")
+    assert_clipboard_text(page, expected)
     assert "Copied" in wrapper.locator(".copy-button").inner_text()
 
     page.select_option("#nasa-endpoint", label=NASA_NEO_LOOKUP_LABEL)
@@ -204,7 +201,8 @@ def test_copy_button_copies_snippet(page):
     expected = wrapper.locator("pre.code").inner_text()
     assert expected_snippet in expected
     wrapper.locator(".copy-button").click()
-    wait_for_clipboard_text(page, expected)
+    wait_for_locator_text(page, "#nasa-explorer .code-wrapper .copy-button", "Copied")
+    assert_clipboard_text(page, expected)
 
 
 def test_every_module_has_a_try_it_link(page):
