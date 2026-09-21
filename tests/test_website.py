@@ -25,7 +25,10 @@ def assert_clipboard_text(page, expected_text):
 
 def wait_for_locator_text(page, selector, expected_text):
     page.wait_for_function(
-        "([selector, expected]) => document.querySelector(selector).innerText.includes(expected)",
+        "([selector, expected]) => {"
+        "const element = document.querySelector(selector);"
+        "return element ? element.innerText.includes(expected) : false;"
+        "}",
         arg=[selector, expected_text],
         timeout=DEFAULT_WAIT_TIMEOUT_MS,
     )
