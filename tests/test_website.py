@@ -23,7 +23,7 @@ def assert_clipboard_matches(page, expected_text):
     assert copied.strip() == expected_text.strip()
 
 
-def wait_for_locator_text(page, selector, expected_text):
+def wait_for_locator_text(page, selector, expected_text, timeout=DEFAULT_WAIT_TIMEOUT_MS):
     """Wait until the first element matching selector contains expected text."""
     page.wait_for_function(
         "([selector, expected]) => {"
@@ -31,7 +31,7 @@ def wait_for_locator_text(page, selector, expected_text):
         "return element ? element.innerText.includes(expected) : false;"
         "}",
         arg=[selector, expected_text],
-        timeout=DEFAULT_WAIT_TIMEOUT_MS,
+        timeout=timeout,
     )
 
 
