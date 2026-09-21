@@ -182,7 +182,7 @@ def test_copy_button_copies_snippet(page):
     assert_clipboard_text(page, expected)
     assert "Copied" in wrapper.locator(".copy-button").inner_text()
 
-    page.select_option("#nasa-endpoint", "4")
+    page.select_option("#nasa-endpoint", label="neo_lookup() — near-Earth object lookup")
     page.fill("#nasa-param", "2000433")
     wrapper = page.locator("#nasa-explorer .code-wrapper")
     expected = wrapper.locator("pre.code").inner_text()
