@@ -187,10 +187,10 @@ def test_code_blocks_have_copy_buttons(page):
 def test_copy_button_copies_snippet(page):
     page.context.grant_permissions(["clipboard-read", "clipboard-write"])
     wrapper = page.locator("#install .code-wrapper").first
-    expected = wrapper.locator("pre.code").inner_text()
+    install_snippet = wrapper.locator("pre.code").inner_text()
     wrapper.locator(".copy-button").click()
     wait_for_locator_text(page, "#install .code-wrapper .copy-button", "Copied")
-    assert_clipboard_text(page, expected)
+    assert_clipboard_text(page, install_snippet)
     assert "Copied" in wrapper.locator(".copy-button").inner_text()
 
     page.select_option("#nasa-endpoint", label=NASA_NEO_LOOKUP_LABEL)
@@ -198,11 +198,11 @@ def test_copy_button_copies_snippet(page):
     wrapper = page.locator("#nasa-explorer .code-wrapper")
     expected_snippet = build_expected_neo_lookup_snippet(NASA_NEO_ASTEROID_ID)
     wait_for_locator_text(page, "#nasa-explorer pre.code", expected_snippet)
-    expected = wrapper.locator("pre.code").inner_text()
-    assert expected_snippet in expected
+    explorer_snippet = wrapper.locator("pre.code").inner_text()
+    assert expected_snippet in explorer_snippet
     wrapper.locator(".copy-button").click()
     wait_for_locator_text(page, "#nasa-explorer .code-wrapper .copy-button", "Copied")
-    assert_clipboard_text(page, expected)
+    assert_clipboard_text(page, explorer_snippet)
 
 
 def test_every_module_has_a_try_it_link(page):
