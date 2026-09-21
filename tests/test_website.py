@@ -27,6 +27,14 @@ def wait_for_clipboard_text(page, expected):
     )
 
 
+def wait_for_locator_text(page, selector, expected):
+    page.wait_for_function(
+        "([selector, expected]) => document.querySelector(selector).innerText.includes(expected)",
+        arg=[selector, expected],
+        timeout=DEFAULT_WAIT_TIMEOUT_MS,
+    )
+
+
 @pytest.fixture(scope="module")
 def page():
     with sync_playwright() as playwright:
@@ -188,12 +196,7 @@ def test_copy_button_copies_snippet(page):
     page.fill("#nasa-param", NASA_NEO_ASTEROID_ID)
     wrapper = page.locator("#nasa-explorer .code-wrapper")
     expected_snippet = f'neo_lookup(asteroid_id="{NASA_NEO_ASTEROID_ID}")'
-    page.wait_for_function(
-        "(expected) => document.querySelector('#nasa-explorer pre.code')"
-        ".innerText.includes(expected)",
-        arg=expected_snippet,
-        timeout=DEFAULT_WAIT_TIMEOUT_MS,
-    )
+    wait_for_locator_text(page, "#nasa-explorer pre.code", expected_snippet)
     expected = wrapper.locator("pre.code").inner_text()
     assert expected_snippet in expected
     wrapper.locator(".copy-button").click()
