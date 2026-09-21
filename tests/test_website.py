@@ -20,6 +20,7 @@ def assert_clipboard_text(page, expected):
         "(expected) => navigator.clipboard.readText()"
         ".then((text) => text.trim() === expected.trim())",
         arg=expected,
+        timeout=3000,
     )
     copied = page.evaluate("() => navigator.clipboard.readText()")
     assert copied.strip() == expected.strip()
