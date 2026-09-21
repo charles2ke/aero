@@ -18,15 +18,15 @@ NASA_NEO_LOOKUP_LABEL = "neo_lookup() — near-Earth object lookup"
 NASA_NEO_ASTEROID_ID = "2000433"
 
 
-def assert_clipboard_text(page, expected):
+def assert_clipboard_text(page, expected_text):
     copied = page.evaluate("() => navigator.clipboard.readText()")
-    assert copied.strip() == expected.strip()
+    assert copied.strip() == expected_text.strip()
 
 
-def wait_for_locator_text(page, selector, expected):
+def wait_for_locator_text(page, selector, expected_text):
     page.wait_for_function(
         "([selector, expected]) => document.querySelector(selector).innerText.includes(expected)",
-        arg=[selector, expected],
+        arg=[selector, expected_text],
         timeout=DEFAULT_WAIT_TIMEOUT_MS,
     )
 
