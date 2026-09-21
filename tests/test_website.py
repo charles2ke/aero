@@ -31,7 +31,7 @@ def wait_for_locator_text(page, selector, expected):
     )
 
 
-def nasa_neo_lookup_snippet(asteroid_id):
+def build_expected_neo_lookup_snippet(asteroid_id):
     return f'neo_lookup(asteroid_id="{asteroid_id}")'
 
 
@@ -196,7 +196,7 @@ def test_copy_button_copies_snippet(page):
     page.select_option("#nasa-endpoint", label=NASA_NEO_LOOKUP_LABEL)
     page.fill("#nasa-param", NASA_NEO_ASTEROID_ID)
     wrapper = page.locator("#nasa-explorer .code-wrapper")
-    expected_snippet = nasa_neo_lookup_snippet(NASA_NEO_ASTEROID_ID)
+    expected_snippet = build_expected_neo_lookup_snippet(NASA_NEO_ASTEROID_ID)
     wait_for_locator_text(page, "#nasa-explorer pre.code", expected_snippet)
     expected = wrapper.locator("pre.code").inner_text()
     assert expected_snippet in expected
