@@ -23,6 +23,7 @@ by tests.
   - [Calculation modules](#calculation-modules)
   - [Data-service clients](#data-service-clients)
 - [Units and conventions](#units-and-conventions)
+- [Project layout](#project-layout)
 - [Connecting to NASA programs](#connecting-to-nasa-programs)
 - [Connecting to European space programs](#connecting-to-european-space-programs)
 - [Connecting to International Space Station programs](#connecting-to-international-space-station-programs)
@@ -107,6 +108,14 @@ read-only and need no account.
   north in `[0, 360)`.
 - Invalid inputs (for example a negative mass ratio or an out-of-range
   latitude) raise `ValueError`.
+
+## Project layout
+
+```
+aero/       library modules (calculations and data-service clients)
+tests/      pytest suite, with HTTP calls stubbed out
+website/    static site: module docs, calculators and data explorer
+```
 
 ## Connecting to NASA programs
 

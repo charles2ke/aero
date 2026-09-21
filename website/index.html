@@ -316,13 +316,14 @@ isro.ISROClient().navic_elements()       # NavIC constellation elements</code></
   <section id="install" class="section alt" aria-labelledby="install-heading">
     <h2 id="install-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-download"></use></svg>Installation &amp; usage</h2>
 <pre class="code" tabindex="0" role="region" aria-label="Installation command"><code>pip install -e .</code></pre>
-<pre class="code" tabindex="0" role="region" aria-label="Usage example"><code>from aero import atmosphere, aerodynamics, orbital
+<pre class="code" tabindex="0" role="region" aria-label="Usage example"><code>from aero import atmosphere, aerodynamics, navigation, orbital
 
 rho = atmosphere.density(5000)
 a = atmosphere.speed_of_sound(5000)
 L = aerodynamics.lift(rho=rho, velocity=120.0, area=16.2, cl=0.4)
 v = orbital.circular_orbital_velocity(orbital.EARTH_MU,
-                                      orbital.EARTH_RADIUS + 400_000)</code></pre>
+                                      orbital.EARTH_RADIUS + 400_000)
+d = navigation.great_circle_distance(40.6413, -73.7781, 51.4700, -0.4543)</code></pre>
     <p>Run the test suite with <code>pip install pytest</code> then <code>pytest</code>.</p>
   </section>
 </main>
