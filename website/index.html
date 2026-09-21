@@ -58,6 +58,14 @@
     <path d="M9 5.5a9 9 0 0 1 9.5 9.5L9 5.5Z"></path>
     <path d="M3 21l3-3"></path>
   </symbol>
+  <symbol id="icon-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"></circle>
+    <path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"></path>
+  </symbol>
+  <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+    <path d="M5 15H4.5A.5.5 0 0 1 4 14.5V5a1 1 0 0 1 1-1h9.5a.5.5 0 0 1 .5.5V5"></path>
+  </symbol>
   <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 3v11M8 10.5l4 4 4-4"></path>
     <path d="M4 18.5h16"></path>
@@ -120,6 +128,11 @@
         <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg><code>aero.rocketry</code></h3>
         <p>Rocket science: Tsiolkovsky rocket equation, mass ratios, propellant sizing, specific impulse, thrust, burn time, thrust-to-weight and staging.</p>
         <p class="card-action"><a class="try-link" href="#rocketry-form">Try it<span class="sr-only"> with aero.rocketry</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      </article>
+      <article class="card">
+        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-compass"></use></svg><code>aero.navigation</code></h3>
+        <p>Great-circle navigation: shortest-path distance, initial and final bearings, destination and intermediate points.</p>
+        <p class="card-action"><a class="try-link" href="#navigation-form">Try it<span class="sr-only"> with aero.navigation</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
       </article>
       <article class="card">
         <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-planet"></use></svg><code>aero.nasa</code></h3>
@@ -200,6 +213,23 @@
           <input type="number" id="rkt-thrust" value="7600000" min="0" step="1000">
         </label>
         <output id="rocketry-output" class="output" role="status" aria-label="Rocket stage results"></output>
+      </form>
+
+      <form class="calculator" id="navigation-form" novalidate aria-labelledby="navigation-form-heading">
+        <h3 id="navigation-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-compass"></use></svg>Great-circle route</h3>
+        <label for="nav-lat1">Start latitude (°)
+          <input type="number" id="nav-lat1" value="40.6413" min="-90" max="90" step="0.0001">
+        </label>
+        <label for="nav-lon1">Start longitude (°)
+          <input type="number" id="nav-lon1" value="-73.7781" min="-180" max="360" step="0.0001">
+        </label>
+        <label for="nav-lat2">Destination latitude (°)
+          <input type="number" id="nav-lat2" value="51.47" min="-90" max="90" step="0.0001">
+        </label>
+        <label for="nav-lon2">Destination longitude (°)
+          <input type="number" id="nav-lon2" value="-0.4543" min="-180" max="360" step="0.0001">
+        </label>
+        <output id="navigation-output" class="output" role="status" aria-label="Great-circle route results"></output>
       </form>
     </div>
   </section>

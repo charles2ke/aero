@@ -214,12 +214,13 @@ except iss.ISSAPIError as exc:
 A static website for the project lives in [`website/`](website/). It
 documents every module and lets you try them all from the browser:
 
-- Calculators reproduce the `atmosphere`, `aerodynamics`, `orbital` and
-  `rocketry` formulas implemented in the library.
+- Calculators reproduce the `atmosphere`, `aerodynamics`, `orbital`,
+  `rocketry` and `navigation` formulas implemented in the library.
 - A data-service explorer builds the exact request each `nasa`, `esa`,
   `iss` and `isro` client method sends, shows the equivalent Python
   snippet, and can send the request live from the browser (services that
   block cross-origin requests can be opened in a new tab instead).
+- Every code block and generated snippet has a one-click copy button.
 - Subtle entrance and hover animations, automatically disabled for
   visitors who prefer reduced motion.
 

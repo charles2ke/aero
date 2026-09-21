@@ -129,12 +129,59 @@ def test_rocketry_calculator_reports_invalid_masses(page):
     page.dispatch_event("#rkt-mf", "input")
 
 
+def test_navigation_calculator_matches_library(page):
+    from aero import navigation
+
+    lat1, lon1 = 40.6413, -73.7781
+    lat2, lon2 = 51.47, -0.4543
+    page.fill("#nav-lat1", str(lat1))
+    page.fill("#nav-lon1", str(lon1))
+    page.fill("#nav-lat2", str(lat2))
+    page.fill("#nav-lon2", str(lon2))
+    page.dispatch_event("#nav-lon2", "input")
+    text = page.inner_text("#navigation-output")
+    distance_km = navigation.great_circle_distance(lat1, lon1, lat2, lon2) / 1000
+    mid_lat, mid_lon = navigation.intermediate_point(lat1, lon1, lat2, lon2, 0.5)
+    assert f"{distance_km:.1f} km" in text
+    assert f"{navigation.initial_bearing(lat1, lon1, lat2, lon2):.1f}" in text
+    assert f"{navigation.final_bearing(lat1, lon1, lat2, lon2):.1f}" in text
+    assert f"{mid_lat:.4f}" in text
+    assert f"{mid_lon:.4f}" in text
+
+
+def test_navigation_calculator_reports_invalid_latitude(page):
+    page.fill("#nav-lat1", "120")
+    page.dispatch_event("#nav-lat1", "input")
+    assert "latitude" in page.inner_text("#navigation-output")
+    page.fill("#nav-lat1", "40.6413")
+    page.dispatch_event("#nav-lat1", "input")
+
+
+def test_code_blocks_have_copy_buttons(page):
+    blocks = page.locator("pre.code")
+    buttons = page.locator(".copy-button")
+    assert blocks.count() > 0
+    assert buttons.count() == blocks.count()
+
+
+def test_copy_button_copies_snippet(page):
+    page.context.grant_permissions(["clipboard-read", "clipboard-write"])
+    wrapper = page.locator("#install .code-wrapper").first
+    expected = wrapper.locator("pre.code").inner_text()
+    wrapper.locator(".copy-button").click()
+    page.wait_for_timeout(200)
+    copied = page.evaluate("() => navigator.clipboard.readText()")
+    assert copied.strip() == expected.strip()
+    assert "Copied" in wrapper.locator(".copy-button").inner_text()
+
+
 def test_every_module_has_a_try_it_link(page):
     targets = [
         "#atmosphere-form",
         "#aero-form",
         "#orbital-form",
         "#rocketry-form",
+        "#navigation-form",
         "#nasa-explorer",
         "#esa-explorer",
         "#iss-explorer",

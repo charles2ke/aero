@@ -229,6 +229,40 @@ a { color: var(--accent); }
   overflow-x: auto;
 }
 
+.code-wrapper {
+  position: relative;
+}
+
+.code-wrapper .code {
+  padding-right: 6.5rem;
+}
+
+.copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding: 0.4rem 0.75rem;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.copy-button:hover,
+.copy-button:focus-visible {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.copy-button.is-error { color: #ffb4b4; }
+
 .footer {
   border-top: 1px solid var(--border);
   color: var(--muted);
@@ -571,6 +605,7 @@ a { color: var(--accent); }
   .button,
   .card,
   .calculator,
+  .copy-button,
   .explorer { border: 1px solid CanvasText; }
 }
 
@@ -590,6 +625,8 @@ a { color: var(--accent); }
   }
 
   .code { font-size: 0.85rem; }
+
+  .code-wrapper .code { padding-right: 1rem; padding-top: 3.25rem; }
 
   .explorer .snippet code { white-space: pre-wrap; }
 
