@@ -187,8 +187,15 @@ def test_copy_button_copies_snippet(page):
     page.select_option("#nasa-endpoint", label=NASA_NEO_LOOKUP_LABEL)
     page.fill("#nasa-param", NASA_NEO_ASTEROID_ID)
     wrapper = page.locator("#nasa-explorer .code-wrapper")
+    expected_snippet = f'neo_lookup(asteroid_id="{NASA_NEO_ASTEROID_ID}")'
+    page.wait_for_function(
+        "(expected) => document.querySelector('#nasa-explorer pre.code')"
+        ".innerText.includes(expected)",
+        arg=expected_snippet,
+        timeout=CLIPBOARD_WAIT_TIMEOUT_MS,
+    )
     expected = wrapper.locator("pre.code").inner_text()
-    assert f'neo_lookup(asteroid_id="{NASA_NEO_ASTEROID_ID}")' in expected
+    assert expected_snippet in expected
     wrapper.locator(".copy-button").click()
     wait_for_clipboard_text(page, expected)
 
