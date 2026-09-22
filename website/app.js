@@ -109,6 +109,76 @@
     return thrustForce / (mass * STANDARD_GRAVITY);
   }
 
+  // aero.navigation constants (IUGG mean Earth radius R1).
+  var EARTH_MEAN_RADIUS = 6371008.8;
+
+  function validatePosition(latitude, longitude) {
+    if (!(latitude >= -90 && latitude <= 90)) {
+      throw new RangeError("latitude must be between -90 and 90 degrees");
+    }
+    if (!(longitude >= -180 && longitude <= 360)) {
+      throw new RangeError("longitude must be between -180 and 360 degrees");
+    }
+  }
+
+  function centralAngle(lat1, lon1, lat2, lon2) {
+    validatePosition(lat1, lon1);
+    validatePosition(lat2, lon2);
+    var phi1 = (lat1 * Math.PI) / 180;
+    var phi2 = (lat2 * Math.PI) / 180;
+    var deltaPhi = phi2 - phi1;
+    var deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
+    var a =
+      Math.pow(Math.sin(deltaPhi / 2), 2) +
+      Math.cos(phi1) * Math.cos(phi2) * Math.pow(Math.sin(deltaLambda / 2), 2);
+    a = Math.min(1, Math.max(0, a));
+    return 2 * Math.asin(Math.sqrt(a));
+  }
+
+  function greatCircleDistance(lat1, lon1, lat2, lon2) {
+    return EARTH_MEAN_RADIUS * centralAngle(lat1, lon1, lat2, lon2);
+  }
+
+  function initialBearing(lat1, lon1, lat2, lon2) {
+    validatePosition(lat1, lon1);
+    validatePosition(lat2, lon2);
+    var phi1 = (lat1 * Math.PI) / 180;
+    var phi2 = (lat2 * Math.PI) / 180;
+    var deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
+    var y = Math.sin(deltaLambda) * Math.cos(phi2);
+    var x =
+      Math.cos(phi1) * Math.sin(phi2) -
+      Math.sin(phi1) * Math.cos(phi2) * Math.cos(deltaLambda);
+    return (((Math.atan2(y, x) * 180) / Math.PI) % 360 + 360) % 360;
+  }
+
+  function finalBearing(lat1, lon1, lat2, lon2) {
+    return (initialBearing(lat2, lon2, lat1, lon1) + 180) % 360;
+  }
+
+  function intermediatePoint(lat1, lon1, lat2, lon2, fraction) {
+    if (!(fraction >= 0 && fraction <= 1)) {
+      throw new RangeError("fraction must be between 0 and 1");
+    }
+    var delta = centralAngle(lat1, lon1, lat2, lon2);
+    var phi1 = (lat1 * Math.PI) / 180;
+    var lambda1 = (lon1 * Math.PI) / 180;
+    var phi2 = (lat2 * Math.PI) / 180;
+    var lambda2 = (lon2 * Math.PI) / 180;
+    if (delta === 0) return [lat1, ((lon1 + 540) % 360) - 180];
+    if (Math.abs(delta - Math.PI) <= 1e-7) {
+      throw new RangeError("shortest path is undefined for antipodal positions");
+    }
+    var a = Math.sin((1 - fraction) * delta) / Math.sin(delta);
+    var b = Math.sin(fraction * delta) / Math.sin(delta);
+    var x = a * Math.cos(phi1) * Math.cos(lambda1) + b * Math.cos(phi2) * Math.cos(lambda2);
+    var y = a * Math.cos(phi1) * Math.sin(lambda1) + b * Math.cos(phi2) * Math.sin(lambda2);
+    var z = a * Math.sin(phi1) + b * Math.sin(phi2);
+    var phi = Math.atan2(z, Math.sqrt(x * x + y * y));
+    var lam = Math.atan2(y, x);
+    return [(phi * 180) / Math.PI, ((((lam * 180) / Math.PI) + 540) % 360) - 180];
+  }
+
   function format(value, digits) {
     return Number(value).toFixed(digits === undefined ? 3 : digits);
   }
@@ -224,8 +294,24 @@
     });
   }
 
-  function bind(formId, handler) {
-    var form = document.getElementById(formId);
+  function updateNavigation() {
+    render("navigation-output", function () {
+      var lat1 = readNumber("nav-lat1");
+      var lon1 = readNumber("nav-lon1");
+      var lat2 = readNumber("nav-lat2");
+      var lon2 = readNumber("nav-lon2");
+      var distance = greatCircleDistance(lat1, lon1, lat2, lon2);
+      var mid = intermediatePoint(lat1, lon1, lat2, lon2, 0.5);
+      return (
+        "Distance: " + format(distance / 1000, 1) + " km\n" +
+        "Initial bearing: " + format(initialBearing(lat1, lon1, lat2, lon2), 1) + "°\n" +
+        "Final bearing: " + format(finalBearing(lat1, lon1, lat2, lon2), 1) + "°\n" +
+        "Midpoint: " + format(mid[0], 4) + "°, " + format(mid[1], 4) + "°"
+      );
+    });
+  }
+
+  function bind(formId, handler) {    var form = document.getElementById(formId);
     if (!form) return;
     form.addEventListener("input", handler);
     form.addEventListener("submit", function (event) {
@@ -239,6 +325,61 @@
   bind("aero-form", updateAerodynamics);
   bind("orbital-form", updateOrbital);
   bind("rocketry-form", updateRocketry);
+  bind("navigation-form", updateNavigation);
+
+  // Adds a copy button to every code block so snippets can be copied in one click.
+  function setupCopyButtons() {
+    var blocks = document.querySelectorAll("pre.code");
+    Array.prototype.forEach.call(blocks, function (block) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "copy-button";
+      button.innerHTML =
+        '<svg class="icon" aria-hidden="true" focusable="false">' +
+        '<use href="#icon-copy"></use></svg><span class="copy-label">Copy</span>';
+      var label = block.getAttribute("aria-label");
+      if (label) {
+        var hint = document.createElement("span");
+        hint.className = "sr-only";
+        hint.textContent = " " + label;
+        button.appendChild(hint);
+      }
+      var wrapper = document.createElement("div");
+      wrapper.className = "code-wrapper";
+      block.parentNode.insertBefore(wrapper, block);
+      wrapper.appendChild(block);
+      wrapper.appendChild(button);
+
+      var reset = null;
+      function feedback(text, failed) {
+        button.querySelector(".copy-label").textContent = text;
+        button.classList.toggle("is-error", Boolean(failed));
+        window.clearTimeout(reset);
+        reset = window.setTimeout(function () {
+          button.querySelector(".copy-label").textContent = "Copy";
+          button.classList.remove("is-error");
+        }, 2000);
+      }
+
+      button.addEventListener("click", function () {
+        var text = block.textContent;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(
+            function () {
+              feedback("Copied");
+            },
+            function () {
+              feedback("Press Ctrl+C", true);
+            }
+          );
+          return;
+        }
+        feedback("Press Ctrl+C", true);
+      });
+    });
+  }
+
+  setupCopyButtons();
 
 
   // Endpoint catalogue mirroring the Python data-service clients.

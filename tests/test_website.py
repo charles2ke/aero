@@ -13,6 +13,30 @@ import pytest
 sync_playwright = pytest.importorskip("playwright.sync_api").sync_playwright
 
 INDEX = pathlib.Path(__file__).resolve().parent.parent / "website" / "index.html"
+DEFAULT_WAIT_TIMEOUT_MS = 3000
+NASA_NEO_LOOKUP_LABEL = "neo_lookup() — near-Earth object lookup"
+NASA_NEO_ASTEROID_ID = "2000433"
+
+
+def assert_clipboard_matches(page, expected_text):
+    copied = page.evaluate("() => navigator.clipboard.readText()")
+    assert copied.strip() == expected_text.strip()
+
+
+def wait_for_locator_text(page, selector, expected_text, timeout=DEFAULT_WAIT_TIMEOUT_MS):
+    """Wait until the first element matching selector contains expected text."""
+    page.wait_for_function(
+        "([selector, expected]) => {"
+        "const element = document.querySelector(selector);"
+        "return element ? element.innerText.includes(expected) : false;"
+        "}",
+        arg=[selector, expected_text],
+        timeout=timeout,
+    )
+
+
+def build_expected_neo_lookup_snippet(asteroid_id):
+    return f'neo_lookup(asteroid_id="{asteroid_id}")'
 
 
 @pytest.fixture(scope="module")
@@ -129,12 +153,69 @@ def test_rocketry_calculator_reports_invalid_masses(page):
     page.dispatch_event("#rkt-mf", "input")
 
 
+def test_navigation_calculator_matches_library(page):
+    from aero import navigation
+
+    lat1, lon1 = 40.6413, -73.7781
+    lat2, lon2 = 51.47, -0.4543
+    page.fill("#nav-lat1", str(lat1))
+    page.fill("#nav-lon1", str(lon1))
+    page.fill("#nav-lat2", str(lat2))
+    page.fill("#nav-lon2", str(lon2))
+    page.dispatch_event("#nav-lon2", "input")
+    text = page.inner_text("#navigation-output")
+    distance_km = navigation.great_circle_distance(lat1, lon1, lat2, lon2) / 1000
+    mid_lat, mid_lon = navigation.intermediate_point(lat1, lon1, lat2, lon2, 0.5)
+    assert f"{distance_km:.1f} km" in text
+    assert f"{navigation.initial_bearing(lat1, lon1, lat2, lon2):.1f}" in text
+    assert f"{navigation.final_bearing(lat1, lon1, lat2, lon2):.1f}" in text
+    assert f"{mid_lat:.4f}" in text
+    assert f"{mid_lon:.4f}" in text
+
+
+def test_navigation_calculator_reports_invalid_latitude(page):
+    page.fill("#nav-lat1", "120")
+    page.dispatch_event("#nav-lat1", "input")
+    assert "latitude" in page.inner_text("#navigation-output")
+    page.fill("#nav-lat1", "40.6413")
+    page.dispatch_event("#nav-lat1", "input")
+
+
+def test_code_blocks_have_copy_buttons(page):
+    blocks = page.locator("pre.code")
+    buttons = page.locator(".copy-button")
+    assert blocks.count() > 0
+    assert buttons.count() == blocks.count()
+
+
+def test_copy_button_copies_snippet(page):
+    page.context.grant_permissions(["clipboard-read", "clipboard-write"])
+    wrapper = page.locator("#install .code-wrapper").first
+    install_snippet = wrapper.locator("pre.code").inner_text()
+    wrapper.locator(".copy-button").click()
+    wait_for_locator_text(page, "#install .code-wrapper .copy-button", "Copied")
+    assert_clipboard_matches(page, install_snippet)
+    assert "Copied" in wrapper.locator(".copy-button").inner_text()
+
+    page.select_option("#nasa-endpoint", label=NASA_NEO_LOOKUP_LABEL)
+    page.fill("#nasa-param", NASA_NEO_ASTEROID_ID)
+    wrapper = page.locator("#nasa-explorer .code-wrapper")
+    expected_snippet = build_expected_neo_lookup_snippet(NASA_NEO_ASTEROID_ID)
+    wait_for_locator_text(page, "#nasa-explorer pre.code", expected_snippet)
+    explorer_snippet = wrapper.locator("pre.code").inner_text()
+    assert expected_snippet in explorer_snippet
+    wrapper.locator(".copy-button").click()
+    wait_for_locator_text(page, "#nasa-explorer .code-wrapper .copy-button", "Copied")
+    assert_clipboard_matches(page, explorer_snippet)
+
+
 def test_every_module_has_a_try_it_link(page):
     targets = [
         "#atmosphere-form",
         "#aero-form",
         "#orbital-form",
         "#rocketry-form",
+        "#navigation-form",
         "#nasa-explorer",
         "#esa-explorer",
         "#iss-explorer",

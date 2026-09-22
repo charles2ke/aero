@@ -23,6 +23,7 @@ by tests.
   - [Calculation modules](#calculation-modules)
   - [Data-service clients](#data-service-clients)
 - [Units and conventions](#units-and-conventions)
+- [Project layout](#project-layout)
 - [Connecting to NASA programs](#connecting-to-nasa-programs)
 - [Connecting to European space programs](#connecting-to-european-space-programs)
 - [Connecting to International Space Station programs](#connecting-to-international-space-station-programs)
@@ -107,6 +108,14 @@ read-only and need no account.
   north in `[0, 360)`.
 - Invalid inputs (for example a negative mass ratio or an out-of-range
   latitude) raise `ValueError`.
+
+## Project layout
+
+```
+aero/       library modules (calculations and data-service clients)
+tests/      pytest suite, with HTTP calls stubbed out
+website/    static site: module docs, calculators and data explorer
+```
 
 ## Connecting to NASA programs
 
@@ -214,12 +223,13 @@ except iss.ISSAPIError as exc:
 A static website for the project lives in [`website/`](website/). It
 documents every module and lets you try them all from the browser:
 
-- Calculators reproduce the `atmosphere`, `aerodynamics`, `orbital` and
-  `rocketry` formulas implemented in the library.
+- Calculators reproduce the `atmosphere`, `aerodynamics`, `orbital`,
+  `rocketry` and `navigation` formulas implemented in the library.
 - A data-service explorer builds the exact request each `nasa`, `esa`,
   `iss` and `isro` client method sends, shows the equivalent Python
   snippet, and can send the request live from the browser (services that
   block cross-origin requests can be opened in a new tab instead).
+- Every code block and generated snippet has a one-click copy button.
 - Subtle entrance and hover animations, automatically disabled for
   visitors who prefer reduced motion.
 
