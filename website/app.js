@@ -1938,8 +1938,9 @@
         { element: item, hash: card ? "#" + card.id : null });
     });
     each(".step", function (step) {
-      add("Guide", 1, textOf(step.querySelector("h3"), ".step-number"), textOf(step.querySelector("pre code")),
-        "install", { element: step, hash: "#install" });
+      add("Guide", 1, textOf(step.querySelector("h3"), ".step-number"),
+        "Install & use \u00b7 step " + textOf(step.querySelector(".step-number")),
+        "install setup " + textOf(step.querySelector("pre code")), { element: step, hash: "#install" });
     });
     return items;
   }
