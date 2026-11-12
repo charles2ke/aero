@@ -3,10 +3,68 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>aero — Aerospace Engineering Library</title>
-<meta name="description" content="aero is a small Python library of common aerospace engineering calculations: standard atmosphere, aerodynamics, orbital mechanics, and connectivity to NASA, ESA, ISS and ISRO data services.">
+<title>aero — Python aerospace engineering library and space data explorer</title>
+<meta name="description" content="Python aerospace engineering library: atmosphere, aerodynamics, orbits, rocketry and navigation calculators, plus live NASA, ESA, ISS and ISRO data clients.">
+<link rel="canonical" href="https://charles2ke.github.io/aero/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#050816">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="aero">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://charles2ke.github.io/aero/">
+<meta property="og:title" content="aero — Python aerospace engineering library">
+<meta property="og:description" content="Atmosphere, aerodynamics, orbits, rocketry and navigation in Python, with live NASA, ESA, ISS and ISRO data one call away.">
+<meta property="og:image" content="https://charles2ke.github.io/aero/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The aero wordmark beside a satellite orbiting Earth, listing its calculation modules and NASA, ESA, ISS and ISRO data clients.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="aero — Python aerospace engineering library">
+<meta name="twitter:description" content="Atmosphere, aerodynamics, orbits, rocketry and navigation in Python, with live NASA, ESA, ISS and ISRO data one call away.">
+<meta name="twitter:image" content="https://charles2ke.github.io/aero/og-image.png">
+<meta name="twitter:image:alt" content="The aero wordmark beside a satellite orbiting Earth, listing its calculation modules and NASA, ESA, ISS and ISRO data clients.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="search" type="application/opensearchdescription+xml" title="aero docs" href="opensearch.xml">
 <link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://charles2ke.github.io/aero/#website",
+      "url": "https://charles2ke.github.io/aero/",
+      "name": "aero",
+      "description": "Python aerospace engineering library and space data explorer.",
+      "inLanguage": "en",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://charles2ke.github.io/aero/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "https://charles2ke.github.io/aero/#software",
+      "name": "aero",
+      "description": "Python aerospace engineering library: atmosphere, aerodynamics, orbits, rocketry and navigation calculators, plus NASA, ESA, ISS and ISRO data clients.",
+      "url": "https://charles2ke.github.io/aero/",
+      "codeRepository": "https://github.com/charles2ke/aero",
+      "programmingLanguage": "Python",
+      "runtimePlatform": "Python 3.8+",
+      "license": "https://opensource.org/licenses/MIT",
+      "dateModified": "2026-11-12",
+      "keywords": "aerospace engineering, Python, standard atmosphere, aerodynamics, orbital mechanics, rocketry, great-circle navigation, NASA API, ESA, ISS, ISRO",
+      "isPartOf": { "@id": "https://charles2ke.github.io/aero/#website" }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
@@ -73,6 +131,9 @@
   <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M4 12h15M13.5 6.5 19.5 12l-6 5.5"></path>
   </symbol>
+  <symbol id="icon-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20V5M6.5 10.5 12 5l5.5 5.5"></path>
+  </symbol>
   <symbol id="icon-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M21 3 10.5 13.5M21 3l-6.5 18-4-8-8-4L21 3Z"></path>
   </symbol>
@@ -81,259 +142,1183 @@
     <path d="M7.5 10.5V17M11.5 17v-3.5a2 2 0 0 1 4 0V17"></path>
     <path d="M7.5 7.3v.01"></path>
   </symbol>
+  <symbol id="icon-github" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path>
+  </symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="6.5"></circle>
+    <path d="m20 20-4.2-4.2"></path>
+  </symbol>
+  <symbol id="icon-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 4h6v6M20 4l-9 9"></path>
+    <path d="M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"></path>
+  </symbol>
+  <symbol id="icon-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 3l1.9 5.1L18 10l-5.1 1.9L11 17l-1.9-5.1L4 10l5.1-1.9L11 3Z"></path>
+    <path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"></path>
+  </symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 6l12 12M18 6 6 18"></path>
+  </symbol>
+  <symbol id="icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5v-15Z"></path>
+    <path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3M9 7h6"></path>
+  </symbol>
+  <symbol id="icon-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"></path>
+  </symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"></circle>
+    <path d="M12 7v5l3 2"></path>
+  </symbol>
+  <symbol id="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3 2.5 20h19L12 3Z"></path>
+    <path d="M12 10v4.5M12 17.5v.01"></path>
+  </symbol>
+  <symbol id="icon-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+    <path d="m7 9 3 3-3 3M12.5 15H17"></path>
+  </symbol>
+  <symbol id="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m7 10 5 5 5-5"></path>
+  </symbol>
 </svg>
+<canvas class="starfield" aria-hidden="true"></canvas>
 <a class="skip-link" href="#main">Skip to main content</a>
-<header class="hero" id="top">
+
+<header class="site-header" id="top">
   <nav class="nav" aria-label="Primary">
-    <a class="brand" href="#top"><svg class="icon brand-icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg>aero</a>
+    <a class="brand" href="#top"><span class="brand-mark"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg></span>aero</a>
     <ul class="nav-links">
+      <li><a href="#updates">Updates</a></li>
       <li><a href="#modules">Modules</a></li>
       <li><a href="#calculators">Calculators</a></li>
-      <li><a href="#explorer">Data explorer</a></li>
-      <li><a href="#data">Data services</a></li>
+      <li><a href="#explorer">Explorer</a></li>
+      <li><a href="#data">Sources</a></li>
+      <li><a href="#api">API</a></li>
       <li><a href="#install">Install</a></li>
     </ul>
+    <button type="button" class="search-trigger" data-search-open aria-haspopup="dialog" aria-controls="search-dialog" aria-keyshortcuts="Control+K">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg><span class="search-trigger-label">Search</span><kbd data-shortcut aria-hidden="true">Ctrl K</kbd>
+    </button>
   </nav>
-  <div class="hero-content">
-    <h1>aero</h1>
-    <p class="tagline">A small Python library of common aerospace engineering calculations — from sea level to orbit.</p>
-    <div class="hero-actions">
-      <a class="button primary" href="#install"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-download"></use></svg>Get started</a>
-      <a class="button" href="#calculators"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-calculator"></use></svg>Try the calculators</a>
-      <a class="button" href="#explorer"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-antenna"></use></svg>Try the data services</a>
-    </div>
-  </div>
 </header>
 
 <main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span>Sources reviewed <time datetime="2026-11-12">12 November 2026</time></p>
+      <h1 id="hero-title">aero</h1>
+      <p class="tagline">Aerospace engineering in Python — from sea-level air to low Earth orbit, with live NASA, ESA, ISS and ISRO data one call away.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#install"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-download"></use></svg>Get started</a>
+        <a class="button" href="#calculators"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-calculator"></use></svg>Calculators</a>
+        <a class="button" href="#explorer"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-antenna"></use></svg>Live data</a>
+      </div>
+      <button type="button" class="search-launcher" data-search-open aria-haspopup="dialog" aria-controls="search-dialog" aria-keyshortcuts="Control+K">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg>
+        <span class="search-launcher-text">Search functions, endpoints and updates</span>
+        <kbd data-shortcut aria-hidden="true">Ctrl K</kbd>
+      </button>
+      <dl class="hero-stats">
+        <div class="stat"><dt>Calculators</dt><dd data-stat="calculators">5</dd></div>
+        <div class="stat"><dt>Data clients</dt><dd data-stat="clients">4</dd></div>
+        <div class="stat"><dt>Explorer endpoints</dt><dd data-stat="endpoints">31</dd></div>
+        <div class="stat"><dt>API entries</dt><dd data-stat="functions">65</dd></div>
+      </dl>
+    </div>
+
+    <div class="hero-visual">
+      <svg class="orbit-art" viewBox="0 0 520 520" aria-hidden="true" focusable="false">
+        <defs>
+          <radialGradient id="earth-fill" cx="38%" cy="32%" r="75%">
+            <stop offset="0" stop-color="#5cc8ff"></stop>
+            <stop offset="0.45" stop-color="#2554c7"></stop>
+            <stop offset="0.8" stop-color="#0b1a4a"></stop>
+            <stop offset="1" stop-color="#050816"></stop>
+          </radialGradient>
+          <radialGradient id="earth-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0.55" stop-color="#5cc8ff" stop-opacity="0.32"></stop>
+            <stop offset="1" stop-color="#5cc8ff" stop-opacity="0"></stop>
+          </radialGradient>
+          <linearGradient id="earth-shade" x1="0.15" y1="0.1" x2="0.9" y2="0.95">
+            <stop offset="0.45" stop-color="#050816" stop-opacity="0"></stop>
+            <stop offset="1" stop-color="#050816" stop-opacity="0.85"></stop>
+          </linearGradient>
+          <linearGradient id="orbit-stroke" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#5cc8ff"></stop>
+            <stop offset="0.55" stop-color="#a78bfa"></stop>
+            <stop offset="1" stop-color="#f472b6"></stop>
+          </linearGradient>
+          <radialGradient id="sat-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#eef2ff" stop-opacity="0.75"></stop>
+            <stop offset="1" stop-color="#5cc8ff" stop-opacity="0"></stop>
+          </radialGradient>
+          <clipPath id="earth-clip"><circle cx="260" cy="260" r="120"></circle></clipPath>
+          <mask id="sat-mask" maskUnits="userSpaceOnUse" x="-100" y="-100" width="720" height="720">
+            <rect x="-100" y="-100" width="720" height="720" fill="#fff"></rect>
+            <path d="M140 260 A120 120 0 0 1 380 260 Z" fill="#000"></path>
+          </mask>
+        </defs>
+        <circle cx="260" cy="260" r="205" fill="url(#earth-glow)"></circle>
+        <circle class="orbit-outer" cx="260" cy="260" r="248" fill="none" stroke="#94a3ff" stroke-opacity="0.22" stroke-dasharray="2 9"></circle>
+        <g transform="rotate(-16 260 260)">
+          <path d="M45 260 A215 62 0 0 1 475 260" fill="none" stroke="url(#orbit-stroke)" stroke-opacity="0.4" stroke-width="1.5"></path>
+        </g>
+        <circle cx="260" cy="260" r="120" fill="url(#earth-fill)"></circle>
+        <g clip-path="url(#earth-clip)" fill="none" stroke="#b4dcff" stroke-opacity="0.22" stroke-width="1">
+          <ellipse cx="260" cy="260" rx="120" ry="38"></ellipse>
+          <ellipse cx="260" cy="260" rx="120" ry="82"></ellipse>
+          <path d="M140 260H380M260 140V380"></path>
+          <ellipse cx="260" cy="260" rx="44" ry="120"></ellipse>
+          <ellipse cx="260" cy="260" rx="88" ry="120"></ellipse>
+        </g>
+        <g class="ground-stations" fill="#5cc8ff">
+          <circle cx="214" cy="226" r="2.6"></circle>
+          <circle cx="292" cy="204" r="2.2"></circle>
+          <circle cx="318" cy="276" r="2.4"></circle>
+          <circle cx="238" cy="310" r="2"></circle>
+        </g>
+        <circle cx="260" cy="260" r="120" fill="url(#earth-shade)"></circle>
+        <g transform="rotate(-16 260 260)">
+          <path d="M45 260 A215 62 0 0 0 475 260" fill="none" stroke="url(#orbit-stroke)" stroke-width="2"></path>
+          <g mask="url(#sat-mask)">
+            <g class="satellite">
+              <animateMotion dur="14s" repeatCount="indefinite" rotate="auto" path="M45 260 A215 62 0 1 0 475 260 A215 62 0 1 0 45 260"></animateMotion>
+              <circle r="15" fill="url(#sat-glow)"></circle>
+              <rect x="-18" y="-3" width="10" height="6" rx="1" fill="#5cc8ff"></rect>
+              <rect x="8" y="-3" width="10" height="6" rx="1" fill="#5cc8ff"></rect>
+              <rect x="-5" y="-4.5" width="10" height="9" rx="2" fill="#eef2ff"></rect>
+            </g>
+          </g>
+        </g>
+      </svg>
+      <figure class="telemetry">
+        <figcaption><span class="live-dot" aria-hidden="true"></span>Circular orbit at 420 km — about the ISS's altitude</figcaption>
+        <dl>
+          <div><dt>Orbital speed</dt><dd><span data-telemetry="velocity">7.66</span> km/s</dd></div>
+          <div><dt>Period</dt><dd><span data-telemetry="period">92.97</span> min</dd></div>
+          <div><dt>Orbits per day</dt><dd data-telemetry="orbits">15.49</dd></div>
+        </dl>
+        <p class="telemetry-note">Computed in your browser with the <code>aero.orbital</code> formulas.</p>
+      </figure>
+    </div>
+  </section>
+
+  <section id="updates" class="section" aria-labelledby="updates-heading">
+    <div class="section-head">
+      <p class="kicker">What changed</p>
+      <h2 id="updates-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-spark"></use></svg>Latest from the agencies</h2>
+      <p class="section-intro">Space-data services move, retire and change format. These are the changes aero now follows, reviewed against each provider's documentation or source repository on 12 November 2026.</p>
+    </div>
+    <ol class="updates" role="list">
+      <li class="card update is-featured spotlight" id="update-gaia-dr4" data-kind="upcoming">
+        <div class="update-meta">
+          <span class="tag tag-upcoming">Upcoming</span>
+          <span class="tag tag-agency">ESA</span>
+          <time datetime="2026-12-02">2 Dec 2026</time>
+          <span class="countdown" data-countdown="2026-12-02"></span>
+        </div>
+        <h3>Gaia Data Release 4 arrives on 2 December 2026</h3>
+        <p>ESA has scheduled Gaia DR4 for 2 December 2026. Until its tables appear in the Gaia Archive, <code>gaia_query()</code> keeps defaulting to <code>gaiadr3.gaia_source</code>; pass your own ADQL to query DR4 once it is live.</p>
+        <p class="source-links">
+          <a class="chip" href="https://www.cosmos.esa.int/web/gaia/data-release-4" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>ESA: Gaia DR4</a>
+          <a class="chip" href="https://www.cosmos.esa.int/web/gaia-users/archive/programmatic-access" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Gaia Archive access</a>
+        </p>
+      </li>
+      <li class="card update is-featured spotlight" id="update-apod" data-kind="changed">
+        <div class="update-meta">
+          <span class="tag tag-changed">Changed</span>
+          <span class="tag tag-agency">NASA</span>
+          <time datetime="2026-12-01">1 Dec 2026</time>
+          <span class="countdown" data-countdown="2026-12-01"></span>
+        </div>
+        <h3>APOD moved to science.nasa.gov — the old API retires on 1 December 2026</h3>
+        <p>NASA moved the Astronomy Picture of the Day API to science.nasa.gov in September 2026. It needs no API key, and <code>apod()</code> now calls it: <code>hdurl</code> is the image and <code>url</code> the APOD post. The legacy <code>api.nasa.gov/planetary/apod</code> route goes offline on 1 December 2026.</p>
+        <p class="source-links">
+          <a class="chip" href="https://github.com/nasa/api-docs/blob/gh-pages/assets/files/apod/APOD-APIs-and-RSS-info.pdf" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>NASA: APOD migration notice</a>
+          <a class="chip" href="https://api.nasa.gov/" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>api.nasa.gov</a>
+        </p>
+      </li>
+      <li class="card update spotlight" id="update-catalog-99999" data-kind="heads-up">
+        <div class="update-meta">
+          <span class="tag tag-heads-up">Heads-up</span>
+          <span class="tag tag-agency">CelesTrak</span>
+          <time datetime="2026-07">Jul 2026</time>
+        </div>
+        <h3>The satellite catalogue passed 99,999</h3>
+        <p>New objects now receive six-digit catalogue numbers, and CelesTrak's TLE output leaves them out. <code>celestrak_elements()</code>, <code>station_elements()</code> and <code>navic_elements()</code> request JSON (OMM) by default, which carries every object.</p>
+        <p class="source-links">
+          <a class="chip" href="https://celestrak.org/NORAD/documentation/gp-data-formats.php" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>CelesTrak: GP data formats</a>
+          <a class="chip" href="https://github.com/SatDump/SatDump/issues/1221" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-github"></use></svg>SatDump issue #1221</a>
+        </p>
+      </li>
+      <li class="card update spotlight" id="update-mars-rover" data-kind="retired">
+        <div class="update-meta">
+          <span class="tag tag-retired">Retired</span>
+          <span class="tag tag-agency">NASA</span>
+        </div>
+        <h3>Mars Rover Photos API retired</h3>
+        <p>The Mars Rover Photos API is no longer listed on api.nasa.gov, and its source repository is archived. <code>mars_rover_photos()</code> now emits a <code>DeprecationWarning</code>; find rover imagery with <code>image_search()</code> instead.</p>
+        <p class="source-links">
+          <a class="chip" href="https://api.nasa.gov/" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>api.nasa.gov</a>
+          <a class="chip" href="https://github.com/corincerami/mars-photo-api" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-github"></use></svg>Archived repository</a>
+        </p>
+      </li>
+      <li class="card update spotlight" id="update-techport" data-kind="changed">
+        <div class="update-meta">
+          <span class="tag tag-changed">Changed</span>
+          <span class="tag tag-agency">NASA</span>
+        </div>
+        <h3>TechPort's API moved to techport.nasa.gov</h3>
+        <p><code>techport_projects()</code> and <code>techport_project()</code> now call <code>techport.nasa.gov/api</code>. Project listings require <code>updated_since</code>; set <code>TECHPORT_API_TOKEN</code> or pass <code>techport_token</code> to send a bearer token.</p>
+        <p class="source-links">
+          <a class="chip" href="https://techport.nasa.gov/help/articles/api" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>TechPort API help</a>
+        </p>
+      </li>
+      <li class="card update spotlight" id="update-new-clients" data-kind="new">
+        <div class="update-meta">
+          <span class="tag tag-new">New</span>
+          <span class="tag tag-agency">NASA · ESA</span>
+        </div>
+        <h3>Three new keyless data calls</h3>
+        <p><code>eonet_events()</code> lists natural events from NASA EONET, <code>image_search()</code> searches the NASA Image and Video Library, and <code>neocc_query()</code> runs ADQL on ESA NEOCC's TAP service.</p>
+        <p class="source-links">
+          <a class="chip" href="https://eonet.gsfc.nasa.gov/docs/v3" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>EONET v3</a>
+          <a class="chip" href="https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Images API</a>
+          <a class="chip" href="https://neo.ssa.esa.int/computer-access" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>NEOCC access</a>
+        </p>
+      </li>
+      <li class="card update spotlight" id="update-ll2" data-kind="changed">
+        <div class="update-meta">
+          <span class="tag tag-changed">Changed</span>
+          <span class="tag tag-agency">Launch Library 2</span>
+          <time datetime="2024-08-10">Aug 2024</time>
+        </div>
+        <h3>ISRO launches now use Launch Library 2.3.0</h3>
+        <p><code>launches()</code> and <code>agency()</code> call version 2.3.0 and its <code>/launches/previous/</code> and <code>/launches/upcoming/</code> routes. Anonymous access is limited to 15 requests per hour per IP address.</p>
+        <p class="source-links">
+          <a class="chip" href="https://github.com/TheSpaceDevs/Tutorials/blob/main/announcements/LL_230_changelog.md" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-github"></use></svg>2.3.0 changelog</a>
+          <a class="chip" href="https://github.com/TheSpaceDevs/Tutorials/blob/main/faqs/faq_LL2.md" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-github"></use></svg>LL2 FAQ</a>
+        </p>
+      </li>
+      <li class="card update spotlight" id="update-neocc" data-kind="changed">
+        <div class="update-meta">
+          <span class="tag tag-changed">Changed</span>
+          <span class="tag tag-agency">ESA</span>
+        </div>
+        <h3>NEOCC risk list via automated download</h3>
+        <p><code>neocc_risk_list()</code> fetches the daily risk list from NEOCC's automated-access service and returns it as published: pipe-delimited text. <code>open_data_search()</code> and <code>open_data_dataset()</code> are deprecated, because data.esa.int is now the ESA Data Discovery Portal and documents no public CKAN API.</p>
+        <p class="source-links">
+          <a class="chip" href="https://neo.ssa.esa.int/computer-access" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>NEOCC computer access</a>
+        </p>
+      </li>
+      <li class="card update spotlight" id="update-open-notify" data-kind="heads-up">
+        <div class="update-meta">
+          <span class="tag tag-heads-up">Heads-up</span>
+          <span class="tag tag-agency">ISS</span>
+        </div>
+        <h3>Open Notify is HTTP-only and unmaintained</h3>
+        <p>Open Notify has not changed since 2021 and serves plain HTTP only, so browsers block it on HTTPS pages like this one, and its crew list is maintained by hand. The ISS explorer now defaults to “Where the ISS at?”, which serves HTTPS.</p>
+        <p class="source-links">
+          <a class="chip" href="https://github.com/open-notify/Open-Notify-API/issues/19" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-github"></use></svg>Open Notify issue #19</a>
+          <a class="chip" href="https://wheretheiss.at/w/developer" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Where the ISS at? API</a>
+        </p>
+      </li>
+      <li class="card update spotlight" id="update-insight" data-kind="archival">
+        <div class="update-meta">
+          <span class="tag tag-archival">Archival</span>
+          <span class="tag tag-agency">NASA</span>
+        </div>
+        <h3>InSight Mars weather is archival</h3>
+        <p>api.nasa.gov still lists the InSight weather feed, last updated in March 2021, and the mission ended in December 2022. Treat <code>insight_weather()</code> as historical data with gaps.</p>
+        <p class="source-links">
+          <a class="chip" href="https://api.nasa.gov/" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>api.nasa.gov</a>
+        </p>
+      </li>
+      <li class="card update spotlight" id="update-isro-api" data-kind="community">
+        <div class="update-meta">
+          <span class="tag tag-community">Community</span>
+          <span class="tag tag-agency">ISRO</span>
+        </div>
+        <h3>ISRO catalogues come from a community project</h3>
+        <p><code>spacecrafts()</code>, <code>launchers()</code>, <code>customer_satellites()</code> and <code>centres()</code> read the community-run isro.vercel.app API, last updated in January 2025. For current launches use <code>launches()</code>, backed by Launch Library 2.</p>
+        <p class="source-links">
+          <a class="chip" href="https://github.com/isro/api" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-github"></use></svg>isro/api on GitHub</a>
+        </p>
+      </li>
+    </ol>
+  </section>
+
   <section id="modules" class="section" aria-labelledby="modules-heading">
-    <h2 id="modules-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg>Modules</h2>
+    <div class="section-head">
+      <p class="kicker">The library</p>
+      <h2 id="modules-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg>Modules</h2>
+      <p class="section-intro">Five calculation modules implement textbook formulas with input validation. Four data clients wrap public space-agency services behind one consistent interface.</p>
+    </div>
     <div class="cards">
-      <article class="card">
-        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-cloud"></use></svg><code>aero.atmosphere</code></h3>
-        <p>International Standard Atmosphere model: temperature, pressure, density and speed of sound up to 20 km.</p>
-        <p class="card-action"><a class="try-link" href="#atmosphere-form">Try it<span class="sr-only"> with aero.atmosphere</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      <article class="card module-card spotlight" id="module-atmosphere">
+        <div class="card-top"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-cloud"></use></svg></span><span class="card-count" data-count-for="atmosphere">4 functions</span></div>
+        <h3><code>aero.atmosphere</code></h3>
+        <p class="card-desc">International Standard Atmosphere: temperature, pressure, density and speed of sound up to 20 km.</p>
+        <p class="card-actions"><a class="try-link" href="#atmosphere-form">Try it<span class="sr-only"> with aero.atmosphere</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a class="ref-link" href="#api-atmosphere"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Reference<span class="sr-only"> for aero.atmosphere</span></a></p>
       </article>
-      <article class="card">
-        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-wing"></use></svg><code>aero.aerodynamics</code></h3>
-        <p>Dynamic pressure, lift, drag, lift-to-drag ratio, Mach number and Reynolds number.</p>
-        <p class="card-action"><a class="try-link" href="#aero-form">Try it<span class="sr-only"> with aero.aerodynamics</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      <article class="card module-card spotlight" id="module-aerodynamics">
+        <div class="card-top"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-wing"></use></svg></span><span class="card-count" data-count-for="aerodynamics">6 functions</span></div>
+        <h3><code>aero.aerodynamics</code></h3>
+        <p class="card-desc">Dynamic pressure, lift, drag, lift-to-drag ratio, Mach number and Reynolds number.</p>
+        <p class="card-actions"><a class="try-link" href="#aero-form">Try it<span class="sr-only"> with aero.aerodynamics</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a class="ref-link" href="#api-aerodynamics"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Reference<span class="sr-only"> for aero.aerodynamics</span></a></p>
       </article>
-      <article class="card">
-        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-orbit"></use></svg><code>aero.orbital</code></h3>
-        <p>Vis-viva orbital velocity, circular orbital velocity, orbital period and escape velocity.</p>
-        <p class="card-action"><a class="try-link" href="#orbital-form">Try it<span class="sr-only"> with aero.orbital</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      <article class="card module-card spotlight" id="module-orbital">
+        <div class="card-top"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-orbit"></use></svg></span><span class="card-count" data-count-for="orbital">4 functions</span></div>
+        <h3><code>aero.orbital</code></h3>
+        <p class="card-desc">Vis-viva and circular orbital velocity, orbital period and escape velocity.</p>
+        <p class="card-actions"><a class="try-link" href="#orbital-form">Try it<span class="sr-only"> with aero.orbital</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a class="ref-link" href="#api-orbital"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Reference<span class="sr-only"> for aero.orbital</span></a></p>
       </article>
-      <article class="card">
-        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg><code>aero.rocketry</code></h3>
-        <p>Rocket science: Tsiolkovsky rocket equation, mass ratios, propellant sizing, specific impulse, thrust, burn time, thrust-to-weight and staging.</p>
-        <p class="card-action"><a class="try-link" href="#rocketry-form">Try it<span class="sr-only"> with aero.rocketry</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      <article class="card module-card spotlight" id="module-rocketry">
+        <div class="card-top"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg></span><span class="card-count" data-count-for="rocketry">11 functions</span></div>
+        <h3><code>aero.rocketry</code></h3>
+        <p class="card-desc">Tsiolkovsky rocket equation, mass ratios, propellant sizing, specific impulse, thrust, burn time, thrust-to-weight and staging.</p>
+        <p class="card-actions"><a class="try-link" href="#rocketry-form">Try it<span class="sr-only"> with aero.rocketry</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a class="ref-link" href="#api-rocketry"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Reference<span class="sr-only"> for aero.rocketry</span></a></p>
       </article>
-      <article class="card">
-        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-compass"></use></svg><code>aero.navigation</code></h3>
-        <p>Great-circle navigation: shortest-path distance, initial and final bearings, destination and intermediate points.</p>
-        <p class="card-action"><a class="try-link" href="#navigation-form">Try it<span class="sr-only"> with aero.navigation</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      <article class="card module-card spotlight" id="module-navigation">
+        <div class="card-top"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-compass"></use></svg></span><span class="card-count" data-count-for="navigation">7 functions</span></div>
+        <h3><code>aero.navigation</code></h3>
+        <p class="card-desc">Great-circle navigation: shortest-path distance, initial and final bearings, destination and intermediate points.</p>
+        <p class="card-actions"><a class="try-link" href="#navigation-form">Try it<span class="sr-only"> with aero.navigation</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a class="ref-link" href="#api-navigation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Reference<span class="sr-only"> for aero.navigation</span></a></p>
       </article>
-      <article class="card">
-        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-planet"></use></svg><code>aero.nasa</code></h3>
-        <p>NASA Open APIs: APOD, Mars Rover Photos, NeoWs, DONKI, EPIC, InSight weather, TechPort and the Exoplanet Archive.</p>
-        <p class="card-action"><a class="try-link" href="#nasa-explorer">Try it<span class="sr-only"> with aero.nasa</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      <article class="card module-card spotlight" id="module-nasa">
+        <div class="card-top"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-planet"></use></svg></span><span class="card-count" data-count-for="nasa">12 methods</span></div>
+        <h3><code>aero.nasa</code></h3>
+        <p class="card-desc">APOD, NeoWs, DONKI, EPIC, EONET natural events, the Image and Video Library, TechPort and the Exoplanet Archive.</p>
+        <p class="card-actions"><a class="try-link" href="#nasa-explorer">Try it<span class="sr-only"> with aero.nasa</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a class="ref-link" href="#api-nasa"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Reference<span class="sr-only"> for aero.nasa</span></a></p>
       </article>
-      <article class="card">
-        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg><code>aero.esa</code></h3>
-        <p>ESA services: Open Data Portal, Copernicus Data Space Ecosystem, the Gaia Archive and the NEOCC risk list.</p>
-        <p class="card-action"><a class="try-link" href="#esa-explorer">Try it<span class="sr-only"> with aero.esa</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      <article class="card module-card spotlight" id="module-esa">
+        <div class="card-top"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg></span><span class="card-count" data-count-for="esa">6 methods</span></div>
+        <h3><code>aero.esa</code></h3>
+        <p class="card-desc">Copernicus Sentinel products, the Gaia Archive, and NEOCC near-Earth object data including TAP queries.</p>
+        <p class="card-actions"><a class="try-link" href="#esa-explorer">Try it<span class="sr-only"> with aero.esa</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a class="ref-link" href="#api-esa"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Reference<span class="sr-only"> for aero.esa</span></a></p>
       </article>
-      <article class="card">
-        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-station"></use></svg><code>aero.iss</code></h3>
-        <p>ISS data: Open Notify position and crew, “Where the ISS at?” state vectors and TLEs, CelesTrak elements.</p>
-        <p class="card-action"><a class="try-link" href="#iss-explorer">Try it<span class="sr-only"> with aero.iss</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      <article class="card module-card spotlight" id="module-iss">
+        <div class="card-top"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-station"></use></svg></span><span class="card-count" data-count-for="iss">7 methods</span></div>
+        <h3><code>aero.iss</code></h3>
+        <p class="card-desc">“Where the ISS at?” state vectors and TLEs, CelesTrak OMM elements, and Open Notify crew data.</p>
+        <p class="card-actions"><a class="try-link" href="#iss-explorer">Try it<span class="sr-only"> with aero.iss</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a class="ref-link" href="#api-iss"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Reference<span class="sr-only"> for aero.iss</span></a></p>
       </article>
-      <article class="card">
-        <h3><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg><code>aero.isro</code></h3>
-        <p>ISRO data: spacecraft, launchers, customer satellites, centres, Launch Library 2 launches and NavIC elements.</p>
-        <p class="card-action"><a class="try-link" href="#isro-explorer">Try it<span class="sr-only"> with aero.isro</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a></p>
+      <article class="card module-card spotlight" id="module-isro">
+        <div class="card-top"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg></span><span class="card-count" data-count-for="isro">8 methods</span></div>
+        <h3><code>aero.isro</code></h3>
+        <p class="card-desc">ISRO spacecraft, launchers and centres, Launch Library 2 launches and NavIC orbital elements.</p>
+        <p class="card-actions"><a class="try-link" href="#isro-explorer">Try it<span class="sr-only"> with aero.isro</span> <svg class="icon link-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></a><a class="ref-link" href="#api-isro"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Reference<span class="sr-only"> for aero.isro</span></a></p>
       </article>
     </div>
   </section>
 
-  <section id="calculators" class="section alt" aria-labelledby="calculators-heading">
-    <h2 id="calculators-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-calculator"></use></svg>Interactive calculators</h2>
-    <p class="section-intro">These calculators reproduce the formulas implemented in the library, so you can sanity-check values straight from the browser.</p>
+  <section id="calculators" class="section" aria-labelledby="calculators-heading">
+    <div class="section-head">
+      <p class="kicker">Run the numbers</p>
+      <h2 id="calculators-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-calculator"></use></svg>Interactive calculators</h2>
+      <p class="section-intro">These calculators run the library's formulas in your browser, with the same equations and validation as the Python functions, so you can sanity-check values before you write code.</p>
+    </div>
 
     <div class="calculators">
-      <form class="calculator" id="atmosphere-form" novalidate aria-labelledby="atmosphere-form-heading">
-        <h3 id="atmosphere-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-cloud"></use></svg>Standard atmosphere</h3>
-        <label for="alt">Altitude (m, 0–20000)
-          <input type="number" id="alt" value="5000" min="0" max="20000" step="100">
-        </label>
+      <form class="calculator spotlight" id="atmosphere-form" data-module="atmosphere" novalidate aria-labelledby="atmosphere-form-heading">
+        <div class="calc-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-cloud"></use></svg></span>
+          <div><h3 id="atmosphere-form-heading">Standard atmosphere</h3><p class="calc-module"><code>aero.atmosphere</code></p></div>
+        </div>
+        <div class="fields">
+          <label for="alt">Altitude (m, 0–20000)
+            <input type="number" id="alt" value="5000" min="0" max="20000" step="100">
+          </label>
+          <input type="range" class="slider" data-sync="alt" min="0" max="20000" step="100" value="5000" aria-label="Altitude slider, 0 to 20000 m">
+        </div>
         <output id="atmosphere-output" class="output" role="status" aria-label="Standard atmosphere results"></output>
       </form>
 
-      <form class="calculator" id="aero-form" novalidate aria-labelledby="aero-form-heading">
-        <h3 id="aero-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-wing"></use></svg>Lift &amp; drag</h3>
-        <label for="aero-alt">Altitude (m)
-          <input type="number" id="aero-alt" value="0" min="0" max="20000" step="100">
-        </label>
-        <label for="aero-v">True airspeed (m/s)
-          <input type="number" id="aero-v" value="120" min="0" step="1">
-        </label>
-        <label for="aero-area">Wing area (m²)
-          <input type="number" id="aero-area" value="16.2" min="0" step="0.1">
-        </label>
-        <label for="aero-cl">Lift coefficient C<sub>L</sub>
-          <input type="number" id="aero-cl" value="0.4" step="0.01">
-        </label>
-        <label for="aero-cd">Drag coefficient C<sub>D</sub>
-          <input type="number" id="aero-cd" value="0.03" step="0.001">
-        </label>
+      <form class="calculator spotlight" id="aero-form" data-module="aerodynamics" novalidate aria-labelledby="aero-form-heading">
+        <div class="calc-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-wing"></use></svg></span>
+          <div><h3 id="aero-form-heading">Lift &amp; drag</h3><p class="calc-module"><code>aero.aerodynamics</code></p></div>
+        </div>
+        <div class="fields fields-grid">
+          <label for="aero-alt">Altitude (m)
+            <input type="number" id="aero-alt" value="0" min="0" max="20000" step="100">
+          </label>
+          <label for="aero-v">True airspeed (m/s)
+            <input type="number" id="aero-v" value="120" min="0" step="1">
+          </label>
+          <label for="aero-area">Wing area (m²)
+            <input type="number" id="aero-area" value="16.2" min="0" step="0.1">
+          </label>
+          <label for="aero-cl"><span>Lift coefficient C<sub>L</sub></span>
+            <input type="number" id="aero-cl" value="0.4" step="0.01">
+          </label>
+          <label for="aero-cd"><span>Drag coefficient C<sub>D</sub></span>
+            <input type="number" id="aero-cd" value="0.03" step="0.001">
+          </label>
+        </div>
         <output id="aero-output" class="output" role="status" aria-label="Lift and drag results"></output>
       </form>
 
-      <form class="calculator" id="orbital-form" novalidate aria-labelledby="orbital-form-heading">
-        <h3 id="orbital-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-orbit"></use></svg>Circular orbit</h3>
-        <label for="orb-alt">Altitude above Earth (km)
-          <input type="number" id="orb-alt" value="400" min="0" step="10">
-        </label>
+      <form class="calculator spotlight" id="orbital-form" data-module="orbital" novalidate aria-labelledby="orbital-form-heading">
+        <div class="calc-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-orbit"></use></svg></span>
+          <div><h3 id="orbital-form-heading">Circular orbit</h3><p class="calc-module"><code>aero.orbital</code></p></div>
+        </div>
+        <div class="fields">
+          <label for="orb-alt">Altitude above Earth (km)
+            <input type="number" id="orb-alt" value="400" min="0" step="10">
+          </label>
+          <input type="range" class="slider" data-sync="orb-alt" min="0" max="2000" step="10" value="400" aria-label="Orbit altitude slider, 0 to 2000 km">
+        </div>
         <output id="orbital-output" class="output" role="status" aria-label="Circular orbit results"></output>
       </form>
 
-      <form class="calculator" id="rocketry-form" novalidate aria-labelledby="rocketry-form-heading">
-        <h3 id="rocketry-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg>Rocket stage</h3>
-        <label for="rkt-isp">Specific impulse I<sub>sp</sub> (s)
-          <input type="number" id="rkt-isp" value="300" min="0" step="1">
-        </label>
-        <label for="rkt-m0">Initial mass (kg)
-          <input type="number" id="rkt-m0" value="5500" min="0" step="10">
-        </label>
-        <label for="rkt-mf">Final mass (kg)
-          <input type="number" id="rkt-mf" value="1500" min="0" step="10">
-        </label>
-        <label for="rkt-thrust">Thrust (N)
-          <input type="number" id="rkt-thrust" value="7600000" min="0" step="1000">
-        </label>
+      <form class="calculator spotlight" id="rocketry-form" data-module="rocketry" novalidate aria-labelledby="rocketry-form-heading">
+        <div class="calc-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg></span>
+          <div><h3 id="rocketry-form-heading">Rocket stage</h3><p class="calc-module"><code>aero.rocketry</code></p></div>
+        </div>
+        <div class="fields fields-grid">
+          <label for="rkt-isp"><span>Specific impulse I<sub>sp</sub> (s)</span>
+            <input type="number" id="rkt-isp" value="300" min="0" step="1">
+          </label>
+          <label for="rkt-m0">Initial mass (kg)
+            <input type="number" id="rkt-m0" value="5500" min="0" step="10">
+          </label>
+          <label for="rkt-mf">Final mass (kg)
+            <input type="number" id="rkt-mf" value="1500" min="0" step="10">
+          </label>
+          <label for="rkt-thrust">Thrust (N)
+            <input type="number" id="rkt-thrust" value="7600000" min="0" step="1000">
+          </label>
+        </div>
         <output id="rocketry-output" class="output" role="status" aria-label="Rocket stage results"></output>
       </form>
 
-      <form class="calculator" id="navigation-form" novalidate aria-labelledby="navigation-form-heading">
-        <h3 id="navigation-form-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-compass"></use></svg>Great-circle route</h3>
-        <label for="nav-lat1">Start latitude (°)
-          <input type="number" id="nav-lat1" value="40.6413" min="-90" max="90" step="0.0001">
-        </label>
-        <label for="nav-lon1">Start longitude (°)
-          <input type="number" id="nav-lon1" value="-73.7781" min="-180" max="360" step="0.0001">
-        </label>
-        <label for="nav-lat2">Destination latitude (°)
-          <input type="number" id="nav-lat2" value="51.47" min="-90" max="90" step="0.0001">
-        </label>
-        <label for="nav-lon2">Destination longitude (°)
-          <input type="number" id="nav-lon2" value="-0.4543" min="-180" max="360" step="0.0001">
-        </label>
+      <form class="calculator spotlight" id="navigation-form" data-module="navigation" novalidate aria-labelledby="navigation-form-heading">
+        <div class="calc-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-compass"></use></svg></span>
+          <div><h3 id="navigation-form-heading">Great-circle route</h3><p class="calc-module"><code>aero.navigation</code></p></div>
+        </div>
+        <div class="fields fields-grid">
+          <label for="nav-lat1">Start latitude (°)
+            <input type="number" id="nav-lat1" value="40.6413" min="-90" max="90" step="0.0001">
+          </label>
+          <label for="nav-lon1">Start longitude (°)
+            <input type="number" id="nav-lon1" value="-73.7781" min="-180" max="360" step="0.0001">
+          </label>
+          <label for="nav-lat2">Destination latitude (°)
+            <input type="number" id="nav-lat2" value="51.47" min="-90" max="90" step="0.0001">
+          </label>
+          <label for="nav-lon2">Destination longitude (°)
+            <input type="number" id="nav-lon2" value="-0.4543" min="-180" max="360" step="0.0001">
+          </label>
+        </div>
         <output id="navigation-output" class="output" role="status" aria-label="Great-circle route results"></output>
       </form>
     </div>
   </section>
 
   <section id="explorer" class="section" aria-labelledby="explorer-heading">
-    <h2 id="explorer-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-antenna"></use></svg>Try the data services</h2>
-    <p class="section-intro">Pick an endpoint from any data module to build the exact request the Python client would send. Send it live from your browser, or copy the equivalent <code>aero</code> snippet. Services that block cross-origin calls fail in the browser; you can then choose to retry once through a public read-only CORS proxy, which sends the request URL to that third party. The retry is never offered when the request carries your own API key.</p>
+    <div class="section-head">
+      <p class="kicker">Live data</p>
+      <h2 id="explorer-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-antenna"></use></svg>Data explorer</h2>
+      <p class="section-intro">Pick an endpoint to see the exact request the Python client sends, then send it live from your browser or copy the equivalent <code>aero</code> snippet. Services that block cross-origin calls fail in the browser; you can then retry once through a public read-only CORS proxy, which sends the request URL to that third party. The retry is never offered when the request carries your own API key.</p>
+    </div>
 
     <div class="explorers">
-      <form class="explorer" id="nasa-explorer" data-module="nasa" novalidate aria-labelledby="nasa-explorer-heading">
-        <h3 id="nasa-explorer-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-planet"></use></svg><code>aero.nasa</code></h3>
+      <form class="explorer spotlight" id="nasa-explorer" data-module="nasa" novalidate aria-labelledby="nasa-explorer-heading">
+        <div class="explorer-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-planet"></use></svg></span>
+          <h3 id="nasa-explorer-heading"><code>aero.nasa</code></h3>
+          <a class="explorer-docs chip" href="https://api.nasa.gov/" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Docs<span class="sr-only"> for the selected aero.nasa endpoint</span></a>
+        </div>
         <label for="nasa-endpoint">Endpoint
           <select class="explorer-endpoint" id="nasa-endpoint"></select>
         </label>
+        <p class="endpoint-tags"></p>
+        <p class="endpoint-note" hidden></p>
         <label class="explorer-param-label" for="nasa-param">Parameter
-          <input type="text" class="explorer-param" id="nasa-param">
+          <input type="text" class="explorer-param" id="nasa-param" autocomplete="off" spellcheck="false">
         </label>
-        <pre class="code snippet" id="nasa-snippet" tabindex="0" role="region" aria-label="aero.nasa Python snippet"><code class="explorer-snippet"></code></pre>
-        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
-        <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.nasa</span></button>
-        <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.nasa</span></button>
-        <output class="output explorer-output" for="nasa-endpoint nasa-param" aria-label="aero.nasa response" role="status" tabindex="0"></output>
+        <pre class="code snippet" id="nasa-snippet" tabindex="0" role="region" aria-label="aero.nasa Python snippet"><code class="explorer-snippet language-python"></code></pre>
+        <p class="request-url"><span class="method">GET</span> <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
+        <div class="explorer-actions">
+          <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.nasa</span></button>
+          <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.nasa</span></button>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar"><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="terminal-title">Response</span><span class="explorer-status">Ready</span></div>
+          <output class="output explorer-output" for="nasa-endpoint nasa-param" aria-label="aero.nasa response" role="status" tabindex="0"></output>
+        </div>
+        <figure class="explorer-media" hidden>
+          <img alt="" referrerpolicy="no-referrer" loading="lazy" decoding="async">
+          <figcaption></figcaption>
+        </figure>
       </form>
 
-      <form class="explorer" id="esa-explorer" data-module="esa" novalidate aria-labelledby="esa-explorer-heading">
-        <h3 id="esa-explorer-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg><code>aero.esa</code></h3>
+      <form class="explorer spotlight" id="esa-explorer" data-module="esa" novalidate aria-labelledby="esa-explorer-heading">
+        <div class="explorer-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg></span>
+          <h3 id="esa-explorer-heading"><code>aero.esa</code></h3>
+          <a class="explorer-docs chip" href="https://documentation.dataspace.copernicus.eu/APIs/OData.html" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Docs<span class="sr-only"> for the selected aero.esa endpoint</span></a>
+        </div>
         <label for="esa-endpoint">Endpoint
           <select class="explorer-endpoint" id="esa-endpoint"></select>
         </label>
+        <p class="endpoint-tags"></p>
+        <p class="endpoint-note" hidden></p>
         <label class="explorer-param-label" for="esa-param">Parameter
-          <input type="text" class="explorer-param" id="esa-param">
+          <input type="text" class="explorer-param" id="esa-param" autocomplete="off" spellcheck="false">
         </label>
-        <pre class="code snippet" id="esa-snippet" tabindex="0" role="region" aria-label="aero.esa Python snippet"><code class="explorer-snippet"></code></pre>
-        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
-        <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.esa</span></button>
-        <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.esa</span></button>
-        <output class="output explorer-output" for="esa-endpoint esa-param" aria-label="aero.esa response" role="status" tabindex="0"></output>
+        <pre class="code snippet" id="esa-snippet" tabindex="0" role="region" aria-label="aero.esa Python snippet"><code class="explorer-snippet language-python"></code></pre>
+        <p class="request-url"><span class="method">GET</span> <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
+        <div class="explorer-actions">
+          <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.esa</span></button>
+          <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.esa</span></button>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar"><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="terminal-title">Response</span><span class="explorer-status">Ready</span></div>
+          <output class="output explorer-output" for="esa-endpoint esa-param" aria-label="aero.esa response" role="status" tabindex="0"></output>
+        </div>
       </form>
 
-      <form class="explorer" id="iss-explorer" data-module="iss" novalidate aria-labelledby="iss-explorer-heading">
-        <h3 id="iss-explorer-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-station"></use></svg><code>aero.iss</code></h3>
+      <form class="explorer spotlight" id="iss-explorer" data-module="iss" novalidate aria-labelledby="iss-explorer-heading">
+        <div class="explorer-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-station"></use></svg></span>
+          <h3 id="iss-explorer-heading"><code>aero.iss</code></h3>
+          <a class="explorer-docs chip" href="https://wheretheiss.at/w/developer" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Docs<span class="sr-only"> for the selected aero.iss endpoint</span></a>
+        </div>
         <label for="iss-endpoint">Endpoint
           <select class="explorer-endpoint" id="iss-endpoint"></select>
         </label>
+        <p class="endpoint-tags"></p>
+        <p class="endpoint-note" hidden></p>
         <label class="explorer-param-label" for="iss-param">Parameter
-          <input type="text" class="explorer-param" id="iss-param">
+          <input type="text" class="explorer-param" id="iss-param" autocomplete="off" spellcheck="false">
         </label>
-        <pre class="code snippet" id="iss-snippet" tabindex="0" role="region" aria-label="aero.iss Python snippet"><code class="explorer-snippet"></code></pre>
-        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
-        <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.iss</span></button>
-        <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.iss</span></button>
-        <output class="output explorer-output" for="iss-endpoint iss-param" aria-label="aero.iss response" role="status" tabindex="0"></output>
+        <pre class="code snippet" id="iss-snippet" tabindex="0" role="region" aria-label="aero.iss Python snippet"><code class="explorer-snippet language-python"></code></pre>
+        <p class="request-url"><span class="method">GET</span> <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
+        <div class="explorer-actions">
+          <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.iss</span></button>
+          <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.iss</span></button>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar"><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="terminal-title">Response</span><span class="explorer-status">Ready</span></div>
+          <output class="output explorer-output" for="iss-endpoint iss-param" aria-label="aero.iss response" role="status" tabindex="0"></output>
+        </div>
       </form>
 
-      <form class="explorer" id="isro-explorer" data-module="isro" novalidate aria-labelledby="isro-explorer-heading">
-        <h3 id="isro-explorer-heading"><svg class="icon card-icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg><code>aero.isro</code></h3>
+      <form class="explorer spotlight" id="isro-explorer" data-module="isro" novalidate aria-labelledby="isro-explorer-heading">
+        <div class="explorer-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg></span>
+          <h3 id="isro-explorer-heading"><code>aero.isro</code></h3>
+          <a class="explorer-docs chip" href="https://github.com/isro/api" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>Docs<span class="sr-only"> for the selected aero.isro endpoint</span></a>
+        </div>
         <label for="isro-endpoint">Endpoint
           <select class="explorer-endpoint" id="isro-endpoint"></select>
         </label>
+        <p class="endpoint-tags"></p>
+        <p class="endpoint-note" hidden></p>
         <label class="explorer-param-label" for="isro-param">Parameter
-          <input type="text" class="explorer-param" id="isro-param">
+          <input type="text" class="explorer-param" id="isro-param" autocomplete="off" spellcheck="false">
         </label>
-        <pre class="code snippet" id="isro-snippet" tabindex="0" role="region" aria-label="aero.isro Python snippet"><code class="explorer-snippet"></code></pre>
-        <p class="request-url">GET <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
-        <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.isro</span></button>
-        <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.isro</span></button>
-        <output class="output explorer-output" for="isro-endpoint isro-param" aria-label="aero.isro response" role="status" tabindex="0"></output>
+        <pre class="code snippet" id="isro-snippet" tabindex="0" role="region" aria-label="aero.isro Python snippet"><code class="explorer-snippet language-python"></code></pre>
+        <p class="request-url"><span class="method">GET</span> <a class="explorer-url" href="#" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"></a></p>
+        <div class="explorer-actions">
+          <button type="submit" class="button primary explorer-send"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Send request<span class="sr-only"> for aero.isro</span></button>
+          <button type="button" class="button explorer-proxy" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-send"></use></svg>Retry via public CORS proxy<span class="sr-only"> for aero.isro</span></button>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar"><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="terminal-title">Response</span><span class="explorer-status">Ready</span></div>
+          <output class="output explorer-output" for="isro-endpoint isro-param" aria-label="aero.isro response" role="status" tabindex="0"></output>
+        </div>
       </form>
     </div>
-    <p class="section-intro" id="new-tab-hint">Request URLs open in a new tab. Live requests run from your browser, so some services may refuse cross-origin calls. The Python clients are not subject to that restriction.</p>
+    <p class="section-note"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"></use></svg>Live requests run from your browser, so some services refuse them. The Python clients are not subject to that restriction.</p>
   </section>
 
   <section id="data" class="section" aria-labelledby="data-heading">
-    <h2 id="data-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg>Connecting to space agency data</h2>
-    <p class="section-intro">Every client accepts an injectable <code>requests.Session</code> and timeout, and raises a module-specific error on failure.</p>
-<pre class="code" tabindex="0" role="region" aria-label="Data service client example"><code>from aero import esa, iss, isro, nasa
+    <div class="section-head">
+      <p class="kicker">Status board</p>
+      <h2 id="data-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg>Sources &amp; status</h2>
+      <p class="section-intro">Where each client gets its data, what it needs and what to watch for. Every client accepts an injectable <code>requests.Session</code> and timeout, and raises a module-specific error on failure.</p>
+    </div>
+    <div class="sources">
+      <article class="card source-card spotlight" id="source-nasa" aria-labelledby="source-nasa-heading">
+        <h3 id="source-nasa-heading"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-planet"></use></svg></span>NASA <code>aero.nasa</code></h3>
+        <ul class="source-list" role="list">
+          <li class="source-item">
+            <a class="source-link" href="https://api.nasa.gov/" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>api.nasa.gov</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>NeoWs, DONKI, EPIC and InSight. Uses <code>DEMO_KEY</code> unless you set <code>NASA_API_KEY</code>.</p>
+            <p class="source-tags"><span class="tag tag-key">API key</span><span class="tag tag-archival">InSight archival</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://github.com/nasa/api-docs/blob/gh-pages/assets/files/apod/APOD-APIs-and-RSS-info.pdf" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>science.nasa.gov</code><span class="sr-only"> APOD documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>Astronomy Picture of the Day, served from <code>/wp-json/wp/v2/apod-basic</code>.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span><span class="tag tag-updated">Updated</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://eonet.gsfc.nasa.gov/docs/v3" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>eonet.gsfc.nasa.gov</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>EONET v3 natural events: wildfires, storms, volcanoes and more.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span><span class="tag tag-new">New</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>images-api.nasa.gov</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>NASA Image and Video Library search.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span><span class="tag tag-new">New</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://techport.nasa.gov/help/articles/api" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>techport.nasa.gov</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>TechPort technology projects. Sends <code>TECHPORT_API_TOKEN</code> as a bearer token when set.</p>
+            <p class="source-tags"><span class="tag tag-token">Token optional</span><span class="tag tag-updated">Updated</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://exoplanetarchive.ipac.caltech.edu/docs/program_interfaces.html" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>exoplanetarchive.ipac.caltech.edu</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>NASA Exoplanet Archive TAP queries.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span></p>
+          </li>
+        </ul>
+      </article>
+      <article class="card source-card spotlight" id="source-esa" aria-labelledby="source-esa-heading">
+        <h3 id="source-esa-heading"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg></span>ESA <code>aero.esa</code></h3>
+        <ul class="source-list" role="list">
+          <li class="source-item">
+            <a class="source-link" href="https://documentation.dataspace.copernicus.eu/APIs/OData.html" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>catalogue.dataspace.copernicus.eu</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>Copernicus Data Space Ecosystem OData catalogue of Sentinel products.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://www.cosmos.esa.int/web/gaia-users/archive/programmatic-access" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>gea.esac.esa.int</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>Gaia Archive TAP. DR3 is the latest release until DR4 on 2 December 2026.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span><span class="tag tag-upcoming">DR4 soon</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://neo.ssa.esa.int/computer-access" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>neo.ssa.esa.int</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>NEOCC risk list as pipe-delimited text, plus ADQL on <code>dachs.neo.s2p.esa.int</code>.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span><span class="tag tag-updated">Updated</span><span class="tag tag-new">TAP new</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://data.esa.int/" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>data.esa.int</code><span class="sr-only"> portal</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>ESA Data Discovery Portal. The CKAN-style calls in aero are deprecated.</p>
+            <p class="source-tags"><span class="tag tag-deprecated">Deprecated</span></p>
+          </li>
+        </ul>
+      </article>
+      <article class="card source-card spotlight" id="source-iss" aria-labelledby="source-iss-heading">
+        <h3 id="source-iss-heading"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-station"></use></svg></span>ISS <code>aero.iss</code></h3>
+        <ul class="source-list" role="list">
+          <li class="source-item">
+            <a class="source-link" href="https://wheretheiss.at/w/developer" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>api.wheretheiss.at</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>State vectors with altitude and velocity, positions at timestamps, and TLEs.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span><span class="tag tag-new">Explorer default</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://celestrak.org/NORAD/documentation/gp-data-formats.php" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>celestrak.org</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>GP orbital elements, JSON (OMM) by default for six-digit catalogue numbers.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span><span class="tag tag-updated">Updated</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://github.com/open-notify/Open-Notify-API" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>api.open-notify.org</code><span class="sr-only"> source repository</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>People in space and a basic ISS position. Plain HTTP only, unmaintained since 2021.</p>
+            <p class="source-tags"><span class="tag tag-http">HTTP only</span></p>
+          </li>
+        </ul>
+      </article>
+      <article class="card source-card spotlight" id="source-isro" aria-labelledby="source-isro-heading">
+        <h3 id="source-isro-heading"><span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg></span>ISRO <code>aero.isro</code></h3>
+        <ul class="source-list" role="list">
+          <li class="source-item">
+            <a class="source-link" href="https://github.com/TheSpaceDevs/Tutorials/blob/main/faqs/faq_LL2.md" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>ll.thespacedevs.com</code><span class="sr-only"> documentation</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>Launch Library 2.3.0: past and upcoming ISRO launches and agency details.</p>
+            <p class="source-tags"><span class="tag tag-rate">15 req/hour</span><span class="tag tag-updated">Updated</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://github.com/isro/api" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>isro.vercel.app</code><span class="sr-only"> source repository</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>Community catalogue of spacecraft, launchers, customer satellites and centres.</p>
+            <p class="source-tags"><span class="tag tag-community">Community</span></p>
+          </li>
+          <li class="source-item">
+            <a class="source-link" href="https://celestrak.org/NORAD/documentation/gp-data-formats.php" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><code>celestrak.org</code><span class="sr-only"> documentation for NavIC elements</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></a>
+            <p>NavIC (IRNSS) and other GNSS orbital elements.</p>
+            <p class="source-tags"><span class="tag tag-nokey">No key</span></p>
+          </li>
+        </ul>
+      </article>
+    </div>
+<pre class="code" tabindex="0" role="region" aria-label="Data client example"><code class="language-python">from aero import esa, iss, isro, nasa
 
-nasa.NASAClient().apod()                 # Astronomy Picture of the Day
-esa.ESAClient().neocc_risk_list()        # Near-Earth object risk list
-iss.ISSClient().current_location()       # ISS ground track point
-isro.ISROClient().navic_elements()       # NavIC constellation elements</code></pre>
+nasa.NASAClient().apod()                          # Astronomy Picture of the Day, no key
+nasa.NASAClient().image_search(query="artemis")   # NASA Image and Video Library
+esa.ESAClient().neocc_risk_list()                 # NEOCC risk list, pipe-delimited text
+iss.ISSClient().satellite_position()              # ISS state vector over HTTPS
+isro.ISROClient().launches(limit=5)               # Recent ISRO launches, Launch Library 2</code></pre>
   </section>
 
-  <section id="install" class="section alt" aria-labelledby="install-heading">
-    <h2 id="install-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-download"></use></svg>Installation &amp; usage</h2>
-<pre class="code" tabindex="0" role="region" aria-label="Installation command"><code>pip install -e .</code></pre>
-<pre class="code" tabindex="0" role="region" aria-label="Usage example"><code>from aero import atmosphere, aerodynamics, navigation, orbital
+  <section id="api" class="section" aria-labelledby="api-heading">
+    <div class="section-head">
+      <p class="kicker">Reference</p>
+      <h2 id="api-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>API reference</h2>
+      <p class="section-intro">Every public function and client method, generated from the package's signatures and docstrings. Search finds any entry by name<span class="shortcut-hint"> — press <kbd data-shortcut>Ctrl K</kbd></span>.</p>
+      <button type="button" class="button api-toggle" aria-expanded="false"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-chevron"></use></svg><span class="api-toggle-label">Expand all</span></button>
+    </div>
+    <div class="api-grid">
+      <!-- api-reference:start -->
+      <article class="api-module" id="api-atmosphere" aria-labelledby="api-atmosphere-heading">
+        <div class="api-module-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-cloud"></use></svg></span>
+          <h3 id="api-atmosphere-heading"><code>aero.atmosphere</code></h3>
+          <p class="api-blurb">International Standard Atmosphere (ISA) from sea level to 20 km.</p>
+        </div>
+        <details class="api-details">
+          <summary><span class="api-count">4 functions</span><span class="sr-only"> in aero.atmosphere</span></summary>
+          <dl class="api-list">
+            <div class="api-entry" id="api-atmosphere-temperature">
+              <dt><code><span class="api-name">temperature</span>(altitude: float) -&gt; float</code></dt>
+              <dd>Return the ISA temperature (K) at the given geopotential altitude (m).</dd>
+            </div>
+            <div class="api-entry" id="api-atmosphere-pressure">
+              <dt><code><span class="api-name">pressure</span>(altitude: float) -&gt; float</code></dt>
+              <dd>Return the ISA pressure (Pa) at the given geopotential altitude (m).</dd>
+            </div>
+            <div class="api-entry" id="api-atmosphere-density">
+              <dt><code><span class="api-name">density</span>(altitude: float) -&gt; float</code></dt>
+              <dd>Return the ISA density (kg/m^3) at the given geopotential altitude (m).</dd>
+            </div>
+            <div class="api-entry" id="api-atmosphere-speed_of_sound">
+              <dt><code><span class="api-name">speed_of_sound</span>(altitude: float) -&gt; float</code></dt>
+              <dd>Return the local speed of sound (m/s) at the given altitude (m).</dd>
+            </div>
+          </dl>
+        </details>
+      </article>
+      <article class="api-module" id="api-aerodynamics" aria-labelledby="api-aerodynamics-heading">
+        <div class="api-module-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-wing"></use></svg></span>
+          <h3 id="api-aerodynamics-heading"><code>aero.aerodynamics</code></h3>
+          <p class="api-blurb">Dynamic pressure, lift, drag, Mach and Reynolds numbers.</p>
+        </div>
+        <details class="api-details">
+          <summary><span class="api-count">6 functions</span><span class="sr-only"> in aero.aerodynamics</span></summary>
+          <dl class="api-list">
+            <div class="api-entry" id="api-aerodynamics-dynamic_pressure">
+              <dt><code><span class="api-name">dynamic_pressure</span>(rho: float, velocity: float) -&gt; float</code></dt>
+              <dd>Return dynamic pressure q = 1/2 * rho * V^2 (Pa).</dd>
+            </div>
+            <div class="api-entry" id="api-aerodynamics-lift">
+              <dt><code><span class="api-name">lift</span>(rho: float, velocity: float, area: float, cl: float) -&gt; float</code></dt>
+              <dd>Return lift force (N) for given density, velocity, wing area and CL.</dd>
+            </div>
+            <div class="api-entry" id="api-aerodynamics-drag">
+              <dt><code><span class="api-name">drag</span>(rho: float, velocity: float, area: float, cd: float) -&gt; float</code></dt>
+              <dd>Return drag force (N) for given density, velocity, wing area and CD.</dd>
+            </div>
+            <div class="api-entry" id="api-aerodynamics-lift_to_drag_ratio">
+              <dt><code><span class="api-name">lift_to_drag_ratio</span>(cl: float, cd: float) -&gt; float</code></dt>
+              <dd>Return the lift-to-drag ratio L/D for given coefficients.</dd>
+            </div>
+            <div class="api-entry" id="api-aerodynamics-mach_number">
+              <dt><code><span class="api-name">mach_number</span>(velocity: float, altitude: float = 0.0) -&gt; float</code></dt>
+              <dd>Return the Mach number for a velocity (m/s) at a given altitude (m).</dd>
+            </div>
+            <div class="api-entry" id="api-aerodynamics-reynolds_number">
+              <dt><code><span class="api-name">reynolds_number</span>(rho: float, velocity: float, length: float, dynamic_viscosity: float) -&gt; float</code></dt>
+              <dd>Return the Reynolds number Re = rho * V * L / mu.</dd>
+            </div>
+          </dl>
+        </details>
+      </article>
+      <article class="api-module" id="api-orbital" aria-labelledby="api-orbital-heading">
+        <div class="api-module-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-orbit"></use></svg></span>
+          <h3 id="api-orbital-heading"><code>aero.orbital</code></h3>
+          <p class="api-blurb">Two-body orbital velocity, period and escape velocity.</p>
+        </div>
+        <details class="api-details">
+          <summary><span class="api-count">4 functions</span><span class="sr-only"> in aero.orbital</span></summary>
+          <dl class="api-list">
+            <div class="api-entry" id="api-orbital-orbital_velocity">
+              <dt><code><span class="api-name">orbital_velocity</span>(mu: float, radius: float, semi_major_axis: float) -&gt; float</code></dt>
+              <dd>Return orbital speed (m/s) via the vis-viva equation.</dd>
+            </div>
+            <div class="api-entry" id="api-orbital-circular_orbital_velocity">
+              <dt><code><span class="api-name">circular_orbital_velocity</span>(mu: float, radius: float) -&gt; float</code></dt>
+              <dd>Return the speed (m/s) required for a circular orbit of given radius.</dd>
+            </div>
+            <div class="api-entry" id="api-orbital-orbital_period">
+              <dt><code><span class="api-name">orbital_period</span>(mu: float, semi_major_axis: float) -&gt; float</code></dt>
+              <dd>Return the orbital period (s) for a given semi-major axis (m).</dd>
+            </div>
+            <div class="api-entry" id="api-orbital-escape_velocity">
+              <dt><code><span class="api-name">escape_velocity</span>(mu: float, radius: float) -&gt; float</code></dt>
+              <dd>Return the escape velocity (m/s) at a given radius (m).</dd>
+            </div>
+          </dl>
+        </details>
+      </article>
+      <article class="api-module" id="api-rocketry" aria-labelledby="api-rocketry-heading">
+        <div class="api-module-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg></span>
+          <h3 id="api-rocketry-heading"><code>aero.rocketry</code></h3>
+          <p class="api-blurb">Rocket equation, propellant sizing, thrust and staging.</p>
+        </div>
+        <details class="api-details">
+          <summary><span class="api-count">11 functions</span><span class="sr-only"> in aero.rocketry</span></summary>
+          <dl class="api-list">
+            <div class="api-entry" id="api-rocketry-exhaust_velocity">
+              <dt><code><span class="api-name">exhaust_velocity</span>(specific_impulse: float, g0: float = 9.80665) -&gt; float</code></dt>
+              <dd>Return effective exhaust velocity (m/s) for a specific impulse (s).</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-specific_impulse">
+              <dt><code><span class="api-name">specific_impulse</span>(exhaust_speed: float, g0: float = 9.80665) -&gt; float</code></dt>
+              <dd>Return specific impulse (s) for an effective exhaust velocity (m/s).</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-mass_ratio">
+              <dt><code><span class="api-name">mass_ratio</span>(initial_mass: float, final_mass: float) -&gt; float</code></dt>
+              <dd>Return the mass ratio m0 / mf of a rocket or stage.</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-delta_v">
+              <dt><code><span class="api-name">delta_v</span>(exhaust_speed: float, initial_mass: float, final_mass: float) -&gt; float</code></dt>
+              <dd>Return the ideal delta-v (m/s) from the Tsiolkovsky rocket equation.</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-propellant_mass">
+              <dt><code><span class="api-name">propellant_mass</span>(exhaust_speed: float, initial_mass: float, required_delta_v: float) -&gt; float</code></dt>
+              <dd>Return the propellant mass (kg) needed for required_delta_v (m/s).</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-thrust">
+              <dt><code><span class="api-name">thrust</span>(mass_flow_rate: float, exhaust_speed: float) -&gt; float</code></dt>
+              <dd>Return thrust (N) produced by a mass flow rate (kg/s) of propellant.</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-mass_flow_rate">
+              <dt><code><span class="api-name">mass_flow_rate</span>(thrust_force: float, exhaust_speed: float) -&gt; float</code></dt>
+              <dd>Return the propellant mass flow rate (kg/s) for a given thrust (N).</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-burn_time">
+              <dt><code><span class="api-name">burn_time</span>(propellant: float, flow_rate: float) -&gt; float</code></dt>
+              <dd>Return the burn time (s) for a propellant mass (kg) and flow rate (kg/s).</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-thrust_to_weight_ratio">
+              <dt><code><span class="api-name">thrust_to_weight_ratio</span>(thrust_force: float, mass: float, gravity: float = 9.80665) -&gt; float</code></dt>
+              <dd>Return the (dimensionless) thrust-to-weight ratio of a vehicle.</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-stage_delta_v">
+              <dt><code><span class="api-name">stage_delta_v</span>(stages: Sequence[Tuple[float, float, float]], payload_mass: float = 0.0) -&gt; float</code></dt>
+              <dd>Return the total ideal delta-v (m/s) of a serially staged rocket.</dd>
+            </div>
+            <div class="api-entry" id="api-rocketry-total_delta_v">
+              <dt><code><span class="api-name">total_delta_v</span>(delta_vs: Iterable[float]) -&gt; float</code></dt>
+              <dd>Return the sum of a delta-v budget (m/s), rejecting negative entries.</dd>
+            </div>
+          </dl>
+        </details>
+      </article>
+      <article class="api-module" id="api-navigation" aria-labelledby="api-navigation-heading">
+        <div class="api-module-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-compass"></use></svg></span>
+          <h3 id="api-navigation-heading"><code>aero.navigation</code></h3>
+          <p class="api-blurb">Great-circle distance, bearings and waypoints.</p>
+        </div>
+        <details class="api-details">
+          <summary><span class="api-count">7 functions</span><span class="sr-only"> in aero.navigation</span></summary>
+          <dl class="api-list">
+            <div class="api-entry" id="api-navigation-central_angle">
+              <dt><code><span class="api-name">central_angle</span>(lat1: float, lon1: float, lat2: float, lon2: float) -&gt; float</code></dt>
+              <dd>Return the angle (radians) subtended at the center of the sphere.</dd>
+            </div>
+            <div class="api-entry" id="api-navigation-great_circle_distance">
+              <dt><code><span class="api-name">great_circle_distance</span>(lat1: float, lon1: float, lat2: float, lon2: float, radius: float = 6371008.8) -&gt; float</code></dt>
+              <dd>Return the shortest surface distance (m) between two positions.</dd>
+            </div>
+            <div class="api-entry" id="api-navigation-initial_bearing">
+              <dt><code><span class="api-name">initial_bearing</span>(lat1: float, lon1: float, lat2: float, lon2: float) -&gt; float</code></dt>
+              <dd>Return the initial course (degrees from true north) of the shortest path.</dd>
+            </div>
+            <div class="api-entry" id="api-navigation-final_bearing">
+              <dt><code><span class="api-name">final_bearing</span>(lat1: float, lon1: float, lat2: float, lon2: float) -&gt; float</code></dt>
+              <dd>Return the course (degrees from true north) on arrival at the second point.</dd>
+            </div>
+            <div class="api-entry" id="api-navigation-destination_point">
+              <dt><code><span class="api-name">destination_point</span>(lat: float, lon: float, bearing: float, distance: float, radius: float = 6371008.8) -&gt; Tuple[float, float]</code></dt>
+              <dd>Return the position reached by travelling along a great circle.</dd>
+            </div>
+            <div class="api-entry" id="api-navigation-intermediate_point">
+              <dt><code><span class="api-name">intermediate_point</span>(lat1: float, lon1: float, lat2: float, lon2: float, fraction: float) -&gt; Tuple[float, float]</code></dt>
+              <dd>Return the point a given fraction along the shortest path.</dd>
+            </div>
+            <div class="api-entry" id="api-navigation-shortest_path">
+              <dt><code><span class="api-name">shortest_path</span>(lat1: float, lon1: float, lat2: float, lon2: float, segments: int = 16) -&gt; List[Tuple[float, float]]</code></dt>
+              <dd>Return points sampling the shortest path between two positions.</dd>
+            </div>
+          </dl>
+        </details>
+      </article>
+      <article class="api-module" id="api-nasa" aria-labelledby="api-nasa-heading">
+        <div class="api-module-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-planet"></use></svg></span>
+          <h3 id="api-nasa-heading"><code>aero.nasa</code></h3>
+          <p class="api-blurb">NASA Open APIs, APOD, EONET, the Image Library, TechPort and the Exoplanet Archive.</p>
+          <p class="api-client"><code>NASAClient(api_key: Optional[str] = None, session: Optional[requests.Session] = None, timeout: float = 30, techport_token: Optional[str] = None)</code> raises <code>NASAAPIError</code></p>
+        </div>
+        <details class="api-details">
+          <summary><span class="api-count">12 methods</span><span class="sr-only"> in aero.nasa</span></summary>
+          <dl class="api-list">
+            <div class="api-entry" id="api-nasa-apod">
+              <dt><code><span class="api-name">apod</span>(date: Optional[DateLike] = None, start_date: Optional[DateLike] = None, end_date: Optional[DateLike] = None) -&gt; Any</code> <span class="tag tag-updated">Updated</span></dt>
+              <dd>Return Astronomy Picture of the Day entries from NASA Science.</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-mars_rover_photos">
+              <dt><code><span class="api-name">mars_rover_photos</span>(rover: str = &#x27;curiosity&#x27;, sol: Optional[int] = None, earth_date: Optional[str] = None, camera: Optional[str] = None, page: Optional[int] = None) -&gt; Any</code> <span class="tag tag-deprecated">Deprecated</span></dt>
+              <dd>Return Mars Rover photos for the given rover and sol/earth_date.</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-neo_feed">
+              <dt><code><span class="api-name">neo_feed</span>(start_date: Optional[str] = None, end_date: Optional[str] = None) -&gt; Any</code></dt>
+              <dd>Return near-Earth objects within the given date range (max 7 days).</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-neo_lookup">
+              <dt><code><span class="api-name">neo_lookup</span>(asteroid_id: str) -&gt; Any</code></dt>
+              <dd>Return details for a specific near-Earth object by its NASA JPL ID.</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-donki_notifications">
+              <dt><code><span class="api-name">donki_notifications</span>(start_date: Optional[str] = None, end_date: Optional[str] = None, notification_type: str = &#x27;all&#x27;) -&gt; Any</code></dt>
+              <dd>Return DONKI space weather notifications.</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-epic_natural_images">
+              <dt><code><span class="api-name">epic_natural_images</span>(date: Optional[str] = None) -&gt; Any</code></dt>
+              <dd>Return EPIC natural-color Earth images, optionally for a date.</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-eonet_events">
+              <dt><code><span class="api-name">eonet_events</span>(status: str = &#x27;open&#x27;, limit: Optional[int] = None, days: Optional[int] = None, category: Optional[str] = None) -&gt; Any</code> <span class="tag tag-new">New</span></dt>
+              <dd>Return natural events (wildfires, storms, volcanoes...) from EONET.</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-image_search">
+              <dt><code><span class="api-name">image_search</span>(query: Optional[str] = None, media_type: Optional[str] = None, year_start: Optional[int] = None, year_end: Optional[int] = None, page: Optional[int] = None, page_size: Optional[int] = None) -&gt; Any</code> <span class="tag tag-new">New</span></dt>
+              <dd>Search the NASA Image and Video Library (images.nasa.gov).</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-insight_weather">
+              <dt><code><span class="api-name">insight_weather</span>() -&gt; Any</code> <span class="tag tag-archival">Archival</span></dt>
+              <dd>Return the InSight Mars weather feed.</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-techport_projects">
+              <dt><code><span class="api-name">techport_projects</span>(updated_since: str) -&gt; Any</code> <span class="tag tag-updated">Updated</span></dt>
+              <dd>Return IDs of TechPort projects updated since a date.</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-techport_project">
+              <dt><code><span class="api-name">techport_project</span>(project_id: int) -&gt; Any</code> <span class="tag tag-updated">Updated</span></dt>
+              <dd>Return details for a specific NASA TechPort project.</dd>
+            </div>
+            <div class="api-entry" id="api-nasa-exoplanets">
+              <dt><code><span class="api-name">exoplanets</span>(query: str = &#x27;select * from ps&#x27;, fmt: str = &#x27;json&#x27;) -&gt; Any</code></dt>
+              <dd>Query NASA&#x27;s Exoplanet Archive using the TAP ADQL/SQL-like syntax.</dd>
+            </div>
+          </dl>
+        </details>
+      </article>
+      <article class="api-module" id="api-esa" aria-labelledby="api-esa-heading">
+        <div class="api-module-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-satellite"></use></svg></span>
+          <h3 id="api-esa-heading"><code>aero.esa</code></h3>
+          <p class="api-blurb">Copernicus Sentinel products, the Gaia Archive and NEOCC near-Earth object data.</p>
+          <p class="api-client"><code>ESAClient(session: Optional[requests.Session] = None, timeout: float = 30)</code> raises <code>ESAAPIError</code></p>
+        </div>
+        <details class="api-details">
+          <summary><span class="api-count">6 methods</span><span class="sr-only"> in aero.esa</span></summary>
+          <dl class="api-list">
+            <div class="api-entry" id="api-esa-open_data_search">
+              <dt><code><span class="api-name">open_data_search</span>(query: str = &#x27;&#x27;, rows: Optional[int] = None) -&gt; Any</code> <span class="tag tag-deprecated">Deprecated</span></dt>
+              <dd>Search data.esa.int with a CKAN-style package_search request.</dd>
+            </div>
+            <div class="api-entry" id="api-esa-open_data_dataset">
+              <dt><code><span class="api-name">open_data_dataset</span>(dataset_id: str) -&gt; Any</code> <span class="tag tag-deprecated">Deprecated</span></dt>
+              <dd>Fetch data.esa.int metadata with a CKAN-style package_show request.</dd>
+            </div>
+            <div class="api-entry" id="api-esa-copernicus_products">
+              <dt><code><span class="api-name">copernicus_products</span>(collection: Optional[str] = None, filter_: Optional[str] = None, top: Optional[int] = None, orderby: Optional[str] = None) -&gt; Any</code></dt>
+              <dd>Search Copernicus Sentinel satellite products.</dd>
+            </div>
+            <div class="api-entry" id="api-esa-gaia_query">
+              <dt><code><span class="api-name">gaia_query</span>(query: str = &#x27;select top 10 * from gaiadr3.gaia_source&#x27;, fmt: str = &#x27;json&#x27;) -&gt; Any</code></dt>
+              <dd>Query the Gaia star catalogue archive using ADQL.</dd>
+            </div>
+            <div class="api-entry" id="api-esa-neocc_risk_list">
+              <dt><code><span class="api-name">neocc_risk_list</span>() -&gt; str</code> <span class="tag tag-updated">Updated</span></dt>
+              <dd>Return ESA NEOCC&#x27;s current near-Earth object risk list.</dd>
+            </div>
+            <div class="api-entry" id="api-esa-neocc_query">
+              <dt><code><span class="api-name">neocc_query</span>(query: str, fmt: str = &#x27;json&#x27;) -&gt; Any</code> <span class="tag tag-new">New</span></dt>
+              <dd>Run an ADQL query on the ESA NEOCC TAP server.</dd>
+            </div>
+          </dl>
+        </details>
+      </article>
+      <article class="api-module" id="api-iss" aria-labelledby="api-iss-heading">
+        <div class="api-module-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-station"></use></svg></span>
+          <h3 id="api-iss-heading"><code>aero.iss</code></h3>
+          <p class="api-blurb">ISS state vectors, TLEs, CelesTrak elements and Open Notify crew data.</p>
+          <p class="api-client"><code>ISSClient(session: Optional[requests.Session] = None, timeout: float = 30)</code> raises <code>ISSAPIError</code></p>
+        </div>
+        <details class="api-details">
+          <summary><span class="api-count">7 methods</span><span class="sr-only"> in aero.iss</span></summary>
+          <dl class="api-list">
+            <div class="api-entry" id="api-iss-current_location">
+              <dt><code><span class="api-name">current_location</span>() -&gt; Any</code> <span class="tag tag-http">HTTP only</span></dt>
+              <dd>Return the ISS&#x27;s current latitude/longitude from Open Notify.</dd>
+            </div>
+            <div class="api-entry" id="api-iss-people_in_space">
+              <dt><code><span class="api-name">people_in_space</span>() -&gt; Any</code> <span class="tag tag-http">HTTP only</span></dt>
+              <dd>Return the people currently in space and their spacecraft.</dd>
+            </div>
+            <div class="api-entry" id="api-iss-satellite_position">
+              <dt><code><span class="api-name">satellite_position</span>(norad_id: int = 25544, units: Optional[str] = None) -&gt; Any</code></dt>
+              <dd>Return the current state vector for a tracked satellite.</dd>
+            </div>
+            <div class="api-entry" id="api-iss-satellite_positions">
+              <dt><code><span class="api-name">satellite_positions</span>(timestamps: Iterable[Union[int, str]], norad_id: int = 25544, units: Optional[str] = None) -&gt; Any</code></dt>
+              <dd>Return state vectors for up to 10 Unix timestamps.</dd>
+            </div>
+            <div class="api-entry" id="api-iss-tle">
+              <dt><code><span class="api-name">tle</span>(norad_id: int = 25544) -&gt; Any</code></dt>
+              <dd>Return the latest two-line element set for a tracked satellite.</dd>
+            </div>
+            <div class="api-entry" id="api-iss-celestrak_elements">
+              <dt><code><span class="api-name">celestrak_elements</span>(norad_id: Optional[int] = 25544, group: Optional[str] = None, fmt: str = &#x27;json&#x27;) -&gt; Any</code></dt>
+              <dd>Return orbital elements from CelesTrak&#x27;s GP service.</dd>
+            </div>
+            <div class="api-entry" id="api-iss-station_elements">
+              <dt><code><span class="api-name">station_elements</span>(fmt: str = &#x27;json&#x27;) -&gt; Any</code></dt>
+              <dd>Return orbital elements for CelesTrak&#x27;s stations group.</dd>
+            </div>
+          </dl>
+        </details>
+      </article>
+      <article class="api-module" id="api-isro" aria-labelledby="api-isro-heading">
+        <div class="api-module-head">
+          <span class="icon-badge"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-globe"></use></svg></span>
+          <h3 id="api-isro-heading"><code>aero.isro</code></h3>
+          <p class="api-blurb">ISRO catalogues, Launch Library 2 launches and NavIC elements.</p>
+          <p class="api-client"><code>ISROClient(session: Optional[requests.Session] = None, timeout: float = 30)</code> raises <code>ISROAPIError</code></p>
+        </div>
+        <details class="api-details">
+          <summary><span class="api-count">8 methods</span><span class="sr-only"> in aero.isro</span></summary>
+          <dl class="api-list">
+            <div class="api-entry" id="api-isro-spacecrafts">
+              <dt><code><span class="api-name">spacecrafts</span>() -&gt; Any</code></dt>
+              <dd>Return the catalogue of ISRO spacecraft and satellites.</dd>
+            </div>
+            <div class="api-entry" id="api-isro-launchers">
+              <dt><code><span class="api-name">launchers</span>() -&gt; Any</code></dt>
+              <dd>Return the catalogue of ISRO launch vehicles (SLV, PSLV, GSLV...).</dd>
+            </div>
+            <div class="api-entry" id="api-isro-customer_satellites">
+              <dt><code><span class="api-name">customer_satellites</span>() -&gt; Any</code></dt>
+              <dd>Return foreign customer satellites launched by ISRO.</dd>
+            </div>
+            <div class="api-entry" id="api-isro-centres">
+              <dt><code><span class="api-name">centres</span>() -&gt; Any</code></dt>
+              <dd>Return ISRO centres and units with their locations.</dd>
+            </div>
+            <div class="api-entry" id="api-isro-launches">
+              <dt><code><span class="api-name">launches</span>(upcoming: bool = False, search: Optional[str] = None, limit: Optional[int] = None, offset: Optional[int] = None) -&gt; Any</code> <span class="tag tag-updated">Updated</span></dt>
+              <dd>Return ISRO launches from Launch Library 2.</dd>
+            </div>
+            <div class="api-entry" id="api-isro-agency">
+              <dt><code><span class="api-name">agency</span>() -&gt; Any</code> <span class="tag tag-updated">Updated</span></dt>
+              <dd>Return Launch Library 2 agency metadata for ISRO.</dd>
+            </div>
+            <div class="api-entry" id="api-isro-celestrak_elements">
+              <dt><code><span class="api-name">celestrak_elements</span>(norad_id: Optional[int] = None, group: Optional[str] = None, name: Optional[str] = None, fmt: str = &#x27;json&#x27;) -&gt; Any</code></dt>
+              <dd>Return orbital elements for ISRO spacecraft from CelesTrak&#x27;s GP service.</dd>
+            </div>
+            <div class="api-entry" id="api-isro-navic_elements">
+              <dt><code><span class="api-name">navic_elements</span>(fmt: str = &#x27;json&#x27;) -&gt; Any</code></dt>
+              <dd>Return orbital elements for the NavIC (IRNSS) constellation.</dd>
+            </div>
+          </dl>
+        </details>
+      </article>
+      <!-- api-reference:end -->
+    </div>
+  </section>
 
-rho = atmosphere.density(5000)
-a = atmosphere.speed_of_sound(5000)
-L = aerodynamics.lift(rho=rho, velocity=120.0, area=16.2, cl=0.4)
-v = orbital.circular_orbital_velocity(orbital.EARTH_MU,
-                                      orbital.EARTH_RADIUS + 400_000)
-d = navigation.great_circle_distance(40.6413, -73.7781, 51.4700, -0.4543)</code></pre>
-    <p>Run the test suite with <code>pip install pytest</code> then <code>pytest</code>.</p>
+  <section id="install" class="section" aria-labelledby="install-heading">
+    <div class="section-head">
+      <p class="kicker">Get started</p>
+      <h2 id="install-heading"><svg class="icon heading-icon" aria-hidden="true" focusable="false"><use href="#icon-download"></use></svg>Install &amp; use</h2>
+      <p class="section-intro">aero needs Python 3.8 or newer and <code>requests</code>. Install it straight from GitHub; the <code>aero</code> name on PyPI belongs to an unrelated project.</p>
+    </div>
+    <ol class="steps" role="list">
+      <li class="step">
+        <h3><span class="step-number" aria-hidden="true">1</span>Install from GitHub</h3>
+<pre class="code" tabindex="0" role="region" aria-label="Install from GitHub"><code class="language-shell">pip install git+https://github.com/charles2ke/aero.git</code></pre>
+      </li>
+      <li class="step">
+        <h3><span class="step-number" aria-hidden="true">2</span>Or work from a clone</h3>
+<pre class="code" tabindex="0" role="region" aria-label="Install from a clone"><code class="language-shell">git clone https://github.com/charles2ke/aero.git
+cd aero
+pip install -e .</code></pre>
+      </li>
+      <li class="step">
+        <h3><span class="step-number" aria-hidden="true">3</span>Calculate</h3>
+<pre class="code" tabindex="0" role="region" aria-label="Usage example"><code class="language-python">from aero import aerodynamics, atmosphere, orbital
+from aero import navigation, rocketry
+
+rho = atmosphere.density(5000)       # kg/m³ at 5 km
+lift = aerodynamics.lift(rho=rho, velocity=120.0,
+                         area=16.2, cl=0.4)
+v = orbital.circular_orbital_velocity(
+    orbital.EARTH_MU, orbital.EARTH_RADIUS + 420_000)
+dv = rocketry.delta_v(rocketry.exhaust_velocity(300),
+                      5500, 1500)
+d = navigation.great_circle_distance(
+    40.6413, -73.7781, 51.47, -0.4543)  # JFK → LHR</code></pre>
+      </li>
+      <li class="step">
+        <h3><span class="step-number" aria-hidden="true">4</span>Run the tests</h3>
+<pre class="code" tabindex="0" role="region" aria-label="Test commands"><code class="language-shell">pip install pytest
+pytest
+
+# Optional browser tests for this website
+pip install playwright
+playwright install chromium</code></pre>
+      </li>
+    </ol>
   </section>
 </main>
 
 <footer class="footer">
-  <p><svg class="icon footer-icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg>aero — aerospace engineering calculations. Released under the MIT License.</p>
-  <p class="footer-links">
-    <a href="https://www.linkedin.com/in/charles2ke/" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-linkedin"></use></svg>Connect on LinkedIn</a>
-  </p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="footer-title"><span class="brand-mark"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-rocket"></use></svg></span>aero</p>
+      <p>Aerospace engineering calculations and space-agency data clients for Python. Released under the MIT License.</p>
+      <p class="footer-meta">Sources reviewed <time datetime="2026-11-12">12 Nov 2026</time></p>
+    </div>
+    <ul class="footer-links" role="list">
+      <li><a class="chip" href="https://github.com/charles2ke/aero" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-github"></use></svg>GitHub</a></li>
+      <li><a class="chip" href="https://github.com/charles2ke/aero#readme" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg>README</a></li>
+      <li><a class="chip" href="https://github.com/charles2ke/aero/issues" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"></use></svg>Issues</a></li>
+      <li><a class="chip" href="https://www.linkedin.com/in/charles2ke/" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-hint"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-linkedin"></use></svg>Connect on LinkedIn</a></li>
+      <li><a class="chip" href="#top"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up"></use></svg>Back to top</a></li>
+    </ul>
+  </div>
 </footer>
+
+<p id="new-tab-hint" hidden>Opens in a new tab.</p>
+
+<dialog class="search-dialog" id="search-dialog" aria-labelledby="search-dialog-title">
+  <div class="search-panel">
+    <h2 class="sr-only" id="search-dialog-title">Search aero</h2>
+    <div class="search-field">
+      <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg>
+      <input type="search" id="search-input" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-results" aria-label="Search functions, endpoints, updates and sections" placeholder="Search functions, endpoints, updates…" autocomplete="off" spellcheck="false" enterkeyhint="go">
+      <button type="button" class="search-close" data-search-close><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg><span class="sr-only">Close search</span></button>
+    </div>
+    <p class="search-status" id="search-status" role="status"></p>
+    <ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+    <p class="search-hints" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></p>
+  </div>
+</dialog>
 
 <script src="app.js"></script>
 </body>

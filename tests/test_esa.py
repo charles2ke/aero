@@ -25,7 +25,8 @@ def test_open_data_search():
     session.get.return_value = _mock_response({"result": {"count": 1}})
     client = esa.ESAClient(session=session)
 
-    result = client.open_data_search(query="satellite", rows=5)
+    with pytest.warns(DeprecationWarning, match="data.esa.int"):
+        result = client.open_data_search(query="satellite", rows=5)
 
     assert result == {"result": {"count": 1}}
     args, kwargs = session.get.call_args
@@ -39,7 +40,8 @@ def test_open_data_dataset():
     session.get.return_value = _mock_response({"result": {"id": "abc"}})
     client = esa.ESAClient(session=session)
 
-    result = client.open_data_dataset("abc")
+    with pytest.warns(DeprecationWarning, match="data.esa.int"):
+        result = client.open_data_dataset("abc")
 
     assert result == {"result": {"id": "abc"}}
     args, kwargs = session.get.call_args
@@ -102,17 +104,34 @@ def test_gaia_query():
     assert kwargs["params"]["LANG"] == "ADQL"
 
 
-def test_neocc_risk_list():
+def test_neocc_risk_list_downloads_text():
     session = MagicMock()
-    session.get.return_value = _mock_response({"data": []})
+    session.get.return_value = _mock_response(None, text="Last Update: 2026-11-12")
     client = esa.ESAClient(session=session)
 
     result = client.neocc_risk_list()
 
-    assert result == {"data": []}
+    assert result == "Last Update: 2026-11-12"
+    args, kwargs = session.get.call_args
+    assert args[0] == esa.NEOCC_DOWNLOAD_URL
+    assert kwargs["params"] == {"file": "esa_risk_list"}
+
+
+def test_neocc_query_json_and_text_formats():
+    session = MagicMock()
+    session.get.return_value = _mock_response({"data": []}, text="table_name\n")
+    client = esa.ESAClient(session=session)
+    query = "SELECT table_name FROM TAP_SCHEMA.tables"
+
+    assert client.neocc_query(query) == {"data": []}
     args, kwargs = session.get.call_args
     assert args[0] == esa.NEOCC_TAP_SYNC_URL
-    assert kwargs["params"]["QUERY"] == "select * from neocc.risk"
+    assert kwargs["params"]["QUERY"] == query
+    assert kwargs["params"]["FORMAT"] == "json"
+
+    assert client.neocc_query(query, fmt="CSV") == "table_name\n"
+    _, kwargs = session.get.call_args
+    assert kwargs["params"]["FORMAT"] == "csv"
 
 
 def test_error_response_raises():
@@ -123,7 +142,7 @@ def test_error_response_raises():
     client = esa.ESAClient(session=session)
 
     with pytest.raises(esa.ESAAPIError):
-        client.open_data_search()
+        client.copernicus_products()
 
 
 def test_request_exception_raises_esa_error():

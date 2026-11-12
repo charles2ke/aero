@@ -4,11 +4,15 @@ This module provides a lightweight client, :class:`ISROClient`, for
 connecting to public data services covering ISRO programs, missions and
 spacecraft:
 
-- **ISRO public API** — catalogues of ISRO spacecraft, launchers, customer
-  satellites launched by ISRO, and ISRO centres, via
-  https://isro.vercel.app/api/.
+- **ISRO API (community)** — catalogues of ISRO spacecraft, launchers,
+  customer satellites launched by ISRO, and ISRO centres, via
+  https://isro.vercel.app/api/. This is an open-source community project
+  (github.com/isro/api), not an official ISRO service, and its data was
+  last updated in January 2025.
 - **Launch Library 2** — ISRO launch records (past and upcoming) and agency
-  metadata, via https://ll.thespacedevs.com/2.2.0/.
+  metadata, via version 2.3.0 of The Space Devs' API at
+  https://ll.thespacedevs.com/2.3.0/. Anonymous access is limited to 15
+  requests per hour per IP address.
 - **CelesTrak** — orbital elements for ISRO-operated spacecraft, including
   the NavIC (IRNSS) navigation constellation, via
   https://celestrak.org/NORAD/elements/gp.php.
@@ -23,11 +27,11 @@ from typing import Any, Optional
 
 import requests
 
-#: Base URL for the public ISRO API (spacecraft, launchers, centres).
+#: Base URL for the community ISRO API (spacecraft, launchers, centres).
 ISRO_API_BASE_URL = "https://isro.vercel.app/api"
 
-#: Base URL for the Launch Library 2 API.
-LAUNCH_LIBRARY_BASE_URL = "https://ll.thespacedevs.com/2.2.0"
+#: Base URL for the Launch Library 2 API (version 2.3.0).
+LAUNCH_LIBRARY_BASE_URL = "https://ll.thespacedevs.com/2.3.0"
 
 #: Launch Library 2 agency identifier for ISRO.
 ISRO_AGENCY_ID = 31
@@ -130,7 +134,7 @@ class ISROClient:
             params["limit"] = limit
         if offset is not None:
             params["offset"] = offset
-        return self._get(f"{LAUNCH_LIBRARY_BASE_URL}/launch/{endpoint}/", params)
+        return self._get(f"{LAUNCH_LIBRARY_BASE_URL}/launches/{endpoint}/", params)
 
     def agency(self) -> Any:
         """Return Launch Library 2 agency metadata for ISRO."""
@@ -151,8 +155,9 @@ class ISROClient:
         ``"gnss"``), or a ``name`` fragment (such as ``"IRNSS"``). When more
         than one is supplied, ``group`` takes precedence over ``norad_id``,
         which takes precedence over ``name``. ``fmt`` selects the CelesTrak
-        format — ``"json"`` (parsed) or a text format such as ``"tle"`` or
-        ``"csv"`` (returned as a string).
+        format — ``"json"`` (parsed OMM, recommended) or a text format such
+        as ``"csv"`` or ``"tle"`` (returned as a string). TLE output omits
+        objects whose catalogue numbers exceed 99999.
         """
         fmt = fmt.lower()
         params: dict = {"FORMAT": fmt}
