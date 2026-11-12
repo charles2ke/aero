@@ -5,13 +5,20 @@ connecting to public data services covering the International Space Station
 program and its crewed operations:
 
 - **Open Notify** — the current sub-satellite point of the ISS and the list
-  of people currently in space, via https://api.open-notify.org/.
+  of people currently in space, via http://api.open-notify.org/. The
+  service only offers plain HTTP (no HTTPS), is no longer actively
+  maintained, and its crew list is updated by hand, so it can lag behind
+  crew rotations; prefer :meth:`ISSClient.satellite_position` for precise
+  positions.
 - **Where the ISS at?** — ISS state vectors (position, velocity, altitude,
   visibility), historical/predicted positions for given timestamps, and the
   latest two-line element (TLE) set, via https://api.wheretheiss.at/.
 - **CelesTrak** — orbital elements for the ISS and the other objects in the
   ``stations`` group (Tiangong, ISS visiting vehicles, deployed cubesats),
-  via https://celestrak.org/NORAD/elements/gp.php.
+  via https://celestrak.org/NORAD/elements/gp.php. The default JSON (OMM)
+  format is recommended: the NORAD catalogue passed 99,999 in July 2026
+  and CelesTrak's TLE output leaves out objects with six-digit catalogue
+  numbers.
 
 All of these services offer read-only access without requiring an API key
 or account, so :class:`ISSClient` needs no credentials.
@@ -26,8 +33,8 @@ import requests
 #: NORAD catalogue number of the International Space Station (ZARYA).
 ISS_NORAD_ID = 25544
 
-#: Base URL for the Open Notify ISS API.
-OPEN_NOTIFY_BASE_URL = "https://api.open-notify.org"
+#: Base URL for the Open Notify ISS API. Open Notify does not serve HTTPS.
+OPEN_NOTIFY_BASE_URL = "http://api.open-notify.org"
 
 #: Base URL for the "Where the ISS at?" API.
 WHERE_THE_ISS_AT_BASE_URL = "https://api.wheretheiss.at/v1"
@@ -92,14 +99,20 @@ class ISSClient:
     # -- Open Notify -------------------------------------------------------
 
     def current_location(self) -> Any:
-        """Return the ISS's current latitude/longitude from Open Notify."""
+        """Return the ISS's current latitude/longitude from Open Notify.
+
+        Open Notify is served over plain HTTP only and is no longer actively
+        maintained; use :meth:`satellite_position` for an HTTPS source that
+        also reports altitude and velocity.
+        """
         return self._get(f"{OPEN_NOTIFY_BASE_URL}/iss-now.json")
 
     def people_in_space(self) -> Any:
         """Return the people currently in space and their spacecraft.
 
         This covers the ISS expedition crew alongside any other crewed
-        vehicles or stations in orbit at the time of the request.
+        vehicles or stations in orbit. Open Notify maintains this list by
+        hand, so it can lag behind crew rotations.
         """
         return self._get(f"{OPEN_NOTIFY_BASE_URL}/astros.json")
 
@@ -160,8 +173,9 @@ class ISSClient:
         Query either a single object by ``norad_id`` (the ISS by default) or
         a whole ``group`` such as ``"stations"``; when ``group`` is given it
         takes precedence. ``fmt`` selects the CelesTrak format — ``"json"``
-        (parsed) or a text format such as ``"tle"`` or ``"csv"`` (returned
-        as a string).
+        (parsed OMM, recommended) or a text format such as ``"csv"`` or
+        ``"tle"`` (returned as a string). TLE output omits objects whose
+        catalogue numbers exceed 99999.
         """
         fmt = fmt.lower()
         params: dict = {"FORMAT": fmt}

@@ -3,6 +3,7 @@
 All HTTP calls are mocked so the tests run offline and deterministically.
 """
 
+import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -37,26 +38,78 @@ def test_explicit_api_key_overrides_env(monkeypatch):
     assert client.api_key == "explicit-key"
 
 
-def test_apod():
+def test_apod_latest_uses_science_nasa_without_api_key():
+    session = MagicMock()
+    session.get.return_value = _mock_response([{"title": "Latest"}, {"title": "Older"}])
+    client = nasa.NASAClient(api_key="test-key", session=session)
+
+    result = client.apod()
+
+    assert result == {"title": "Latest"}
+    args, kwargs = session.get.call_args
+    assert args[0] == nasa.NASA_APOD_API_URL
+    assert kwargs["params"] == {"page": 1, "per_page": 1}
+
+
+def test_apod_single_date_uses_yymmdd_path():
     session = MagicMock()
     session.get.return_value = _mock_response({"title": "A picture"})
     client = nasa.NASAClient(api_key="test-key", session=session)
 
-    result = client.apod(date="2024-01-01")
-
-    assert result == {"title": "A picture"}
+    assert client.apod(date="2024-01-01") == {"title": "A picture"}
     args, kwargs = session.get.call_args
-    assert args[0] == f"{nasa.NASA_API_BASE_URL}/planetary/apod"
-    assert kwargs["params"]["date"] == "2024-01-01"
-    assert kwargs["params"]["api_key"] == "test-key"
+    assert args[0] == f"{nasa.NASA_APOD_API_URL}/240101"
+    assert not kwargs["params"]
+
+    client.apod(date=datetime.date(1995, 6, 16))
+    args, _ = session.get.call_args
+    assert args[0] == f"{nasa.NASA_APOD_API_URL}/950616"
 
 
-def test_mars_rover_photos():
+def test_apod_date_range_uses_date_codes():
+    session = MagicMock()
+    session.get.return_value = _mock_response([{"title": "a"}, {"title": "b"}])
+    client = nasa.NASAClient(session=session)
+
+    result = client.apod(start_date="2026-09-01", end_date="2026-09-02")
+
+    assert result == [{"title": "a"}, {"title": "b"}]
+    args, kwargs = session.get.call_args
+    assert args[0] == nasa.NASA_APOD_API_URL
+    assert kwargs["params"] == {"date_from": "260901", "date_to": "260902"}
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"date": "2024-01-01", "start_date": "2024-01-01"},
+        {"end_date": "2024-01-01"},
+        {"date": "01/01/2024"},
+    ],
+)
+def test_apod_rejects_invalid_arguments(kwargs):
+    client = nasa.NASAClient(session=MagicMock())
+
+    with pytest.raises(ValueError):
+        client.apod(**kwargs)
+
+
+def test_apod_latest_with_no_entries_raises():
+    session = MagicMock()
+    session.get.return_value = _mock_response([])
+    client = nasa.NASAClient(session=session)
+
+    with pytest.raises(nasa.NASAAPIError):
+        client.apod()
+
+
+def test_mars_rover_photos_is_deprecated():
     session = MagicMock()
     session.get.return_value = _mock_response({"photos": []})
     client = nasa.NASAClient(api_key="test-key", session=session)
 
-    result = client.mars_rover_photos(rover="curiosity", sol=1000, camera="FHAZ")
+    with pytest.warns(DeprecationWarning, match="retired"):
+        result = client.mars_rover_photos(rover="curiosity", sol=1000, camera="FHAZ")
 
     assert result == {"photos": []}
     args, kwargs = session.get.call_args
@@ -143,20 +196,25 @@ def test_insight_weather():
     assert kwargs["params"]["feedtype"] == "json"
 
 
-def test_techport_projects():
+def test_techport_projects_uses_techport_host_with_token(monkeypatch):
+    monkeypatch.delenv("TECHPORT_API_TOKEN", raising=False)
     session = MagicMock()
     session.get.return_value = _mock_response({"projects": []})
-    client = nasa.NASAClient(api_key="test-key", session=session)
+    client = nasa.NASAClient(
+        api_key="test-key", session=session, techport_token="tp-token"
+    )
 
-    result = client.techport_projects(updated_since="2024-01-01T00:00:00Z")
+    result = client.techport_projects(updated_since="2024-01-01")
 
     assert result == {"projects": []}
     args, kwargs = session.get.call_args
-    assert args[0] == f"{nasa.NASA_API_BASE_URL}/techport/api/projects"
-    assert kwargs["params"]["updatedSince"] == "2024-01-01T00:00:00Z"
+    assert args[0] == f"{nasa.TECHPORT_API_BASE_URL}/projects"
+    assert kwargs["params"] == {"updatedSince": "2024-01-01"}
+    assert kwargs["headers"]["Authorization"] == "Bearer tp-token"
 
 
-def test_techport_project():
+def test_techport_project_without_token(monkeypatch):
+    monkeypatch.delenv("TECHPORT_API_TOKEN", raising=False)
     session = MagicMock()
     session.get.return_value = _mock_response({"project": {"id": 12345}})
     client = nasa.NASAClient(api_key="test-key", session=session)
@@ -164,8 +222,44 @@ def test_techport_project():
     result = client.techport_project(12345)
 
     assert result == {"project": {"id": 12345}}
-    args, _ = session.get.call_args
-    assert args[0] == f"{nasa.NASA_API_BASE_URL}/techport/api/projects/12345"
+    args, kwargs = session.get.call_args
+    assert args[0] == f"{nasa.TECHPORT_API_BASE_URL}/projects/12345"
+    assert "Authorization" not in kwargs["headers"]
+
+
+def test_image_search():
+    session = MagicMock()
+    session.get.return_value = _mock_response({"collection": {"items": []}})
+    client = nasa.NASAClient(api_key="test-key", session=session)
+
+    result = client.image_search("perseverance", media_type="image", page_size=5)
+
+    assert result == {"collection": {"items": []}}
+    args, kwargs = session.get.call_args
+    assert args[0] == f"{nasa.NASA_IMAGE_LIBRARY_BASE_URL}/search"
+    assert kwargs["params"] == {
+        "q": "perseverance",
+        "media_type": "image",
+        "page_size": 5,
+    }
+
+
+def test_image_search_requires_a_parameter():
+    with pytest.raises(ValueError):
+        nasa.NASAClient(session=MagicMock()).image_search()
+
+
+def test_eonet_events():
+    session = MagicMock()
+    session.get.return_value = _mock_response({"events": []})
+    client = nasa.NASAClient(api_key="test-key", session=session)
+
+    result = client.eonet_events(limit=5, category="wildfires")
+
+    assert result == {"events": []}
+    args, kwargs = session.get.call_args
+    assert args[0] == f"{nasa.EONET_BASE_URL}/events"
+    assert kwargs["params"] == {"status": "open", "limit": 5, "category": "wildfires"}
 
 
 def test_exoplanets():

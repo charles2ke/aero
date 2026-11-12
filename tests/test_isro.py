@@ -71,7 +71,7 @@ def test_launches_previous_by_default():
 
     assert result == {"results": []}
     args, kwargs = session.get.call_args
-    assert args[0] == f"{isro.LAUNCH_LIBRARY_BASE_URL}/launch/previous/"
+    assert args[0] == f"{isro.LAUNCH_LIBRARY_BASE_URL}/launches/previous/"
     assert kwargs["params"]["lsp__id"] == isro.ISRO_AGENCY_ID
     assert kwargs["params"]["limit"] == 5
     assert "search" not in kwargs["params"]
@@ -85,7 +85,7 @@ def test_launches_upcoming_with_search():
     client.launches(upcoming=True, search="PSLV", offset=10)
 
     args, kwargs = session.get.call_args
-    assert args[0] == f"{isro.LAUNCH_LIBRARY_BASE_URL}/launch/upcoming/"
+    assert args[0] == f"{isro.LAUNCH_LIBRARY_BASE_URL}/launches/upcoming/"
     assert kwargs["params"]["search"] == "PSLV"
     assert kwargs["params"]["offset"] == 10
 
