@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>aero docs</ShortName>
+  <Description>Search aero's Python functions, data endpoints, updates and sources.</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/svg+xml">https://charles2ke.github.io/aero/favicon.svg</Image>
+  <Url type="text/html" method="get" template="https://charles2ke.github.io/aero/?q={searchTerms}"/>
+  <moz:SearchForm xmlns:moz="http://www.mozilla.org/2006/browser/search/">https://charles2ke.github.io/aero/</moz:SearchForm>
+</OpenSearchDescription>

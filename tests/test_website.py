@@ -13,6 +13,7 @@ import pytest
 sync_playwright = pytest.importorskip("playwright.sync_api").sync_playwright
 
 INDEX = pathlib.Path(__file__).resolve().parent.parent / "website" / "index.html"
+SITE_URL = "https://charles2ke.github.io/aero/"
 DEFAULT_WAIT_TIMEOUT_MS = 3000
 NASA_NEO_LOOKUP_LABEL = "neo_lookup() — near-Earth object lookup"
 NASA_NEO_ASTEROID_ID = "2000433"
@@ -231,8 +232,8 @@ def test_data_service_explorers_build_requests(page):
 
     expected_hosts = {
         "#nasa-explorer": nasa.NASA_API_BASE_URL,
-        "#esa-explorer": esa.ESA_OPEN_DATA_BASE_URL,
-        "#iss-explorer": iss.OPEN_NOTIFY_BASE_URL,
+        "#esa-explorer": esa.COPERNICUS_ODATA_BASE_URL,
+        "#iss-explorer": iss.WHERE_THE_ISS_AT_BASE_URL,
         "#isro-explorer": isro.ISRO_API_BASE_URL,
     }
     for selector, base_url in expected_hosts.items():
@@ -371,7 +372,7 @@ def isolated_page(page):
 def test_explorer_offers_opt_in_cors_proxy_retry(isolated_page):
     proxied = []
     isolated_page.route(
-        "https://api.open-notify.org/**", lambda route: route.abort("failed")
+        "https://api.wheretheiss.at/**", lambda route: route.abort("failed")
     )
     isolated_page.route(
         "https://api.allorigins.win/**",
@@ -429,7 +430,7 @@ def test_explorer_does_not_offer_proxy_for_requests_carrying_an_api_key(isolated
 
 def test_explorer_formats_json_responses(isolated_page):
     isolated_page.route(
-        "https://api.open-notify.org/**",
+        "https://api.wheretheiss.at/**",
         lambda route: route.fulfill(
             status=200,
             content_type="application/json",
@@ -452,7 +453,7 @@ def test_explorer_formats_json_responses(isolated_page):
 
 def test_explorer_shows_non_json_responses_as_text(isolated_page):
     isolated_page.route(
-        "https://api.open-notify.org/**",
+        "https://api.wheretheiss.at/**",
         lambda route: route.fulfill(
             status=200, content_type="text/plain", body="not json at all"
         ),
@@ -472,3 +473,105 @@ def test_footer_links_to_linkedin(page):
     assert link.count() == 1
     assert link.get_attribute("rel") == "noopener noreferrer"
     assert "LinkedIn" in link.inner_text()
+
+
+def open_search(page):
+    page.keyboard.press("Control+k")
+    page.locator("#search-dialog").wait_for(state="visible")
+
+
+def test_search_palette_jumps_to_an_api_entry(page):
+    open_search(page)
+    page.fill("#search-input", "neocc_query")
+    first = page.locator("#search-results [role=option]").first
+    assert "neocc_query" in first.inner_text()
+    assert first.locator("mark").first.inner_text() == "neocc_query"
+    assert first.get_attribute("aria-selected") == "true"
+    assert page.get_attribute("#search-input", "aria-expanded") == "true"
+    assert page.get_attribute("#search-input", "aria-activedescendant") == first.get_attribute("id")
+
+    page.keyboard.press("Enter")
+    page.locator("#search-dialog").wait_for(state="hidden")
+    page.wait_for_function("() => location.hash === '#api-esa-neocc_query'")
+    page.locator("#api-esa-neocc_query").wait_for(state="visible")
+    assert page.evaluate(
+        "() => document.activeElement === document.getElementById('api-esa-neocc_query')"
+    )
+
+
+def test_search_palette_selects_explorer_endpoints(page):
+    open_search(page)
+    page.fill("#search-input", "people_in_space")
+    page.locator("#search-results [role=option]").filter(has_text="Endpoint").first.click()
+    page.locator("#search-dialog").wait_for(state="hidden")
+    assert "astros.json" in page.inner_text("#iss-explorer .explorer-url")
+    page.select_option("#iss-explorer .explorer-endpoint", index=0)
+
+
+def test_search_palette_reports_no_results_and_restores_focus(page):
+    page.click(".search-trigger")
+    page.locator("#search-dialog").wait_for(state="visible")
+    page.fill("#search-input", "zzqxv")
+    assert page.locator("#search-results [role=option]").count() == 0
+    assert page.inner_text("#search-status").startswith("No results for")
+    assert page.get_attribute("#search-input", "aria-expanded") == "false"
+    page.keyboard.press("Escape")
+    page.locator("#search-dialog").wait_for(state="hidden")
+    page.wait_for_function("() => document.activeElement.matches('.search-trigger')")
+
+
+def test_search_query_parameter_opens_a_prefilled_palette(page):
+    searching = page.context.browser.new_page()
+    try:
+        searching.goto(INDEX.as_uri() + "?q=delta")
+        searching.locator("#search-dialog").wait_for(state="visible")
+        assert searching.input_value("#search-input") == "delta"
+        titles = searching.locator("#search-results .result-title").all_inner_texts()
+        assert "delta_v" in titles
+    finally:
+        searching.close()
+
+
+def test_api_reference_expands_and_collapses(page):
+    toggle = page.locator(".api-toggle")
+    all_open = "() => [...document.querySelectorAll('details.api-details')].every(d => d.open)"
+    all_closed = "() => [...document.querySelectorAll('details.api-details')].every(d => !d.open)"
+    if page.evaluate(all_open):
+        toggle.click()
+    toggle.click()
+    assert page.evaluate(all_open)
+    assert toggle.get_attribute("aria-expanded") == "true"
+    assert "Collapse all" in toggle.inner_text()
+    toggle.click()
+    assert page.evaluate(all_closed)
+    assert "Expand all" in toggle.inner_text()
+
+
+def test_module_cards_link_to_their_api_reference(page):
+    hrefs = page.eval_on_selector_all(
+        ".module-card .ref-link", "els => els.map(el => el.getAttribute('href'))"
+    )
+    assert len(hrefs) == page.locator(".module-card").count() == 9
+    for href in hrefs:
+        assert page.locator(f"{href}.api-module").count() == 1
+
+
+def test_page_metadata_supports_search_engines(page):
+    meta = page.evaluate(
+        """() => ({
+            canonical: document.querySelector('link[rel="canonical"]').href,
+            image: document.querySelector('meta[property="og:image"]').content,
+            search: document.querySelector('link[rel="search"]').getAttribute('href'),
+            jsonLd: [...document.querySelectorAll('script[type="application/ld+json"]')]
+                .map(script => JSON.parse(script.textContent)),
+        })"""
+    )
+    assert meta["canonical"] == SITE_URL
+    assert meta["image"].startswith(SITE_URL)
+    assert (INDEX.parent / meta["image"][len(SITE_URL):]).is_file()
+    assert (INDEX.parent / meta["search"]).is_file()
+    graph = meta["jsonLd"][0]["@graph"]
+    website = next(node for node in graph if node["@type"] == "WebSite")
+    template = website["potentialAction"]["target"]["urlTemplate"]
+    assert template == SITE_URL + "?q={search_term_string}"
+
